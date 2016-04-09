@@ -17,7 +17,7 @@ public class KnockKnockClient {
 
         try (
                 Socket kkSocket = new Socket(hostName, portNumber);
-                PrintWriter out = new PrintWriter(kkSocket.getOutputStream(), true);
+                PrintWriter socketPrintWriter = new PrintWriter(kkSocket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(kkSocket.getInputStream()));
         ) {
@@ -34,7 +34,7 @@ public class KnockKnockClient {
                 fromUser = stdIn.readLine();
                 if (fromUser != null) {
                     System.out.println("Client: " + fromUser);
-                    out.println(fromUser);
+                    socketPrintWriter.println(fromUser);
                 }
             }
         } catch (UnknownHostException e) {
