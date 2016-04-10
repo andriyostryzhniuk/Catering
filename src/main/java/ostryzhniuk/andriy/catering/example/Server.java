@@ -3,12 +3,14 @@ package ostryzhniuk.andriy.catering.example;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ostryzhniuk.andriy.catering.commands.ClientCommand;
 import ostryzhniuk.andriy.catering.dto.DtoOrdering;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Server implements Runnable {
 
@@ -62,9 +64,11 @@ public class Server implements Runnable {
         try {
             LOGGER.info(this.startDateTime + " run");
             String inputLine;
-            DtoOrdering dtoOrdering = (DtoOrdering) this.objectIsSocket.readObject();
-            System.out.println(dtoOrdering);
-            System.out.println(this.objectIsSocket.readObject());
+            ClientCommand clientCommand = (ClientCommand) this.objectIsSocket.readObject();
+            System.out.println(clientCommand);
+            Object responseObject = clientCommand.processCommand();
+            this.objectOsSocket.writeObject(responseObject);
+
             try {
                 while ((inputLine = bufferedReaderSocket.readLine()) != null) {
                     printWriterSocket.println("got from client stream: " + inputLine);
