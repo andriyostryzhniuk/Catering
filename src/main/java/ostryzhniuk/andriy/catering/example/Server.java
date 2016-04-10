@@ -3,6 +3,7 @@ package ostryzhniuk.andriy.catering.example;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ostryzhniuk.andriy.catering.dto.DtoOrdering;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -14,11 +15,13 @@ public class Server implements Runnable {
     private final Socket clientSocket;
     private final OutputStream socketOutputStream;
     private final InputStream socketInputStream;
-    private final PrintWriter socketPrintWriter;
-    private final BufferedReader socketBufferedReader;
-    private final InputStreamReader socketInputStreamReader;
-    private final OutputStreamWriter socketOutputStreamWriter;
+    private final PrintWriter printWriterSocket;
+    private final BufferedReader bufferedReaderSocket;
+    private final InputStreamReader isReaderSocket;
+    private final OutputStreamWriter osWriterSocket;
     private final LocalDateTime startDateTime;
+    private final ObjectOutputStream objectOsSocket;
+    private final ObjectInputStream objectIsSocket;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Server.class);
 
@@ -43,11 +46,13 @@ public class Server implements Runnable {
         this.clientSocket = clientSocket;
         this.socketOutputStream = clientSocket.getOutputStream();
         this.socketInputStream = clientSocket.getInputStream();
-        this.socketInputStreamReader = new InputStreamReader(this.socketInputStream);
-        this.socketPrintWriter = new PrintWriter(this.socketOutputStream, true);
-        this.socketBufferedReader = new BufferedReader(this.socketInputStreamReader);
-        this.socketOutputStreamWriter = new OutputStreamWriter(this.socketOutputStream);
+        this.isReaderSocket = new InputStreamReader(this.socketInputStream);
+        this.printWriterSocket = new PrintWriter(this.socketOutputStream, true);
+        this.bufferedReaderSocket = new BufferedReader(this.isReaderSocket);
+        this.osWriterSocket = new OutputStreamWriter(this.socketOutputStream);
         this.startDateTime = LocalDateTime.now();
+        this.objectIsSocket = new ObjectInputStream(this.socketInputStream);
+        this.objectOsSocket = new ObjectOutputStream(this.socketOutputStream);
         LOGGER.info("Server {} for Client has been created", this.startDateTime);
     }
 
@@ -57,9 +62,12 @@ public class Server implements Runnable {
         try {
             LOGGER.info(this.startDateTime + " run");
             String inputLine;
+            DtoOrdering dtoOrdering = (DtoOrdering) this.objectIsSocket.readObject();
+            System.out.println(dtoOrdering);
+            System.out.println(this.objectIsSocket.readObject());
             try {
-                while ((inputLine = socketBufferedReader.readLine()) != null) {
-                    socketPrintWriter.println("got from client stream: " + inputLine);
+                while ((inputLine = bufferedReaderSocket.readLine()) != null) {
+                    printWriterSocket.println("got from client stream: " + inputLine);
                     LOGGER.info(this.startDateTime + " got from client " + inputLine);
 //                    break;
                 }

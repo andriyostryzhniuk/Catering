@@ -1,11 +1,14 @@
 package ostryzhniuk.andriy.catering.dto;
 
-import java.sql.Date;
+import lombok.ToString;
 
-/**
- * Created by Andriy on 04/10/2016.
- */
-public class DtoOrdering {
+import java.io.Serializable;
+import java.util.Date;
+
+
+@ToString
+public class DtoOrdering implements Serializable {
+
     private Date date;
     private String client;
     private Double cost;
@@ -13,6 +16,14 @@ public class DtoOrdering {
     private Double paid;
 
     public DtoOrdering() {
+    }
+
+    public DtoOrdering(Date date, String client, Double cost, Double discount, Double paid) {
+        this.date = date;
+        this.client = client;
+        this.cost = cost;
+        this.discount = discount;
+        this.paid = paid;
     }
 
     public Date getDate() {
@@ -54,4 +65,5 @@ public class DtoOrdering {
     public void setPaid(Double paid) {
         this.paid = paid;
     }
+
 }

@@ -3,10 +3,12 @@ package ostryzhniuk.andriy.catering.example;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ostryzhniuk.andriy.catering.dto.DtoOrdering;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Date;
 
 public class Client {
 
@@ -14,20 +16,28 @@ public class Client {
 
     public static void main(String[] args) {
         try (
-                Socket kkSocket = new Socket("localhost", 2000);
+                Socket socket = new Socket("localhost", 2000);
         ) {
             LOGGER.info("I connected!");
-            PrintWriter socketPrintWriter = new PrintWriter(kkSocket.getOutputStream(), true);
+            OutputStream socketOutputStream = socket.getOutputStream();
+            PrintWriter socketPrintWriter = new PrintWriter(socketOutputStream, true);
 
             BufferedReader socketBufferedReader = new BufferedReader(
-                    new InputStreamReader(kkSocket.getInputStream()));
+                    new InputStreamReader(socket.getInputStream()));
 
             BufferedReader bufferedReaderIn = new BufferedReader(new InputStreamReader(System.in));
 
             String fromServer;
             String fromUser;
 
-            socketPrintWriter.println("Hi server!!");
+            DtoOrdering dtoOrdering = new DtoOrdering(new Date(), "some text", 24.0, 2.0, 8.0);
+
+            ObjectOutputStream objectSocketOS = new ObjectOutputStream(socketOutputStream);
+
+//            socketPrintWriter.println("Hi server!!");
+            objectSocketOS.writeObject(dtoOrdering);
+            objectSocketOS.writeObject(dtoOrdering);
+
             while ((fromServer = socketBufferedReader.readLine()) != null) {
                 LOGGER.info("fromServer " + fromServer);
 //                break;
