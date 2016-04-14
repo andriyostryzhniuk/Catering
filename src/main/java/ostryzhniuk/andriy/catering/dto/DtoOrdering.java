@@ -1,14 +1,13 @@
 package ostryzhniuk.andriy.catering.dto;
 
 import lombok.ToString;
-
 import java.io.Serializable;
 import java.util.Date;
-
 
 @ToString
 public class DtoOrdering implements Serializable {
 
+    private int id;
     private Date date;
     private String client;
     private Double cost;
@@ -18,12 +17,21 @@ public class DtoOrdering implements Serializable {
     public DtoOrdering() {
     }
 
-    public DtoOrdering(Date date, String client, Double cost, Double discount, Double paid) {
+    public DtoOrdering(int id, Date date, String client, Double cost, Double discount, Double paid) {
+        this.id = id;
         this.date = date;
         this.client = client;
         this.cost = cost;
-        this.discount = discount;
+        this.discount = discount * cost;
         this.paid = paid;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Date getDate() {

@@ -1,4 +1,4 @@
-package ostryzhniuk.andriy.catering.sql;
+package ostryzhniuk.andriy.catering.mysql;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,7 +14,7 @@ public class DB_Connector {
 
     public static DataSource getDataSource() {
         if(dataSource == null) {
-            dataSource = dataSource("127.0.0.1", "3306", "construction", "root", "qwerty");
+            dataSource = dataSource("127.0.0.1", "3306", "catering", "root", "qwerty");
         }
         return dataSource;
     }

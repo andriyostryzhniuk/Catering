@@ -3,6 +3,7 @@ package ostryzhniuk.andriy.catering.commands;
 import ostryzhniuk.andriy.catering.dto.DtoOrdering;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Andriy on 04/10/2016.
@@ -35,9 +36,13 @@ public class ClientCommand implements Serializable {
 
     public Object processCommand() {
         if (clientCommandType == ClientCommandTypes.WRITE_ORDER) {
-            DtoOrdering order = (DtoOrdering) object;
-            order.setCost(order.getCost() * 2);
-            return order;
+//            DtoOrdering order = (DtoOrdering) object;
+            List<DtoOrdering> orderList = (List<DtoOrdering>) object;
+            orderList.forEach(item -> {
+                item.setCost(item.getCost() * 2);
+            });
+//            orderList.setCost(orderList.getCost() * 2);
+            return orderList;
             // orderDao.createOrder(order);
         } else if (clientCommandType == ClientCommandTypes.READ_LAST_ORDERS){
             ///
