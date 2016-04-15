@@ -1,10 +1,9 @@
-package ostryzhniuk.andriy.catering.example;
-
+package ostryzhniuk.andriy.catering.server;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.commands.ClientCommand;
-import ostryzhniuk.andriy.catering.dto.DtoOrdering;
+import ostryzhniuk.andriy.catering.server.mysql.DB_Connector;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -32,6 +31,7 @@ public class Server implements Runnable {
                 ServerSocket serverSocket = new ServerSocket(2000);
         ) {
             while (true) {
+                DB_Connector.getDataSource();
                 Socket clientSocket = serverSocket.accept();
                 LOGGER.info("Seems like connected");
                 Server server = new Server(clientSocket);
@@ -63,21 +63,20 @@ public class Server implements Runnable {
     public void run() {
         try {
             LOGGER.info(this.startDateTime + " run");
-            String inputLine;
+//            String inputLine;
             ClientCommand clientCommand = (ClientCommand) this.objectIsSocket.readObject();
-            System.out.println(clientCommand);
             Object responseObject = clientCommand.processCommand();
             this.objectOsSocket.writeObject(responseObject);
 
-            try {
-                while ((inputLine = bufferedReaderSocket.readLine()) != null) {
-                    printWriterSocket.println("got from client stream: " + inputLine);
-                    LOGGER.info(this.startDateTime + " got from client " + inputLine);
-//                    break;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                while ((inputLine = bufferedReaderSocket.readLine()) != null) {
+//                    printWriterSocket.println("got from client stream: " + inputLine);
+//                    LOGGER.info(this.startDateTime + " got from client " + inputLine);
+////                    break;
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         } catch (Throwable t) {
             LOGGER.error(this.startDateTime + " Thread is dead", t);
         }

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @ToString
-public class DtoOrdering implements Serializable {
+public class DtoOrder implements Serializable {
 
     private int id;
     private Date date;
@@ -14,15 +14,15 @@ public class DtoOrdering implements Serializable {
     private Double discount;
     private Double paid;
 
-    public DtoOrdering() {
+    public DtoOrder() {
     }
 
-    public DtoOrdering(int id, Date date, String client, Double cost, Double discount, Double paid) {
+    public DtoOrder(int id, Date date, String client, Double cost, Double discount, Double paid) {
         this.id = id;
         this.date = date;
         this.client = client;
         this.cost = cost;
-        this.discount = discount * cost;
+        this.discount = discount;
         this.paid = paid;
     }
 

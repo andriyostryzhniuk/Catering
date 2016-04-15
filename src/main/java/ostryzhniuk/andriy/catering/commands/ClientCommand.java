@@ -1,6 +1,6 @@
 package ostryzhniuk.andriy.catering.commands;
-
-import ostryzhniuk.andriy.catering.dto.DtoOrdering;
+import ostryzhniuk.andriy.catering.dto.DtoOrder;
+import ostryzhniuk.andriy.catering.server.mysql.ODBC_PubsBD;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,19 +11,19 @@ import java.util.List;
 public class ClientCommand implements Serializable {
 
     private ClientCommandTypes clientCommandType;
-    private Object object;
+    private List<Object> objectList;
 
-    public ClientCommand(ClientCommandTypes clientCommandType, Object object) {
+    public ClientCommand(ClientCommandTypes clientCommandType, List<Object> objectList) {
         this.clientCommandType = clientCommandType;
-        this.object = object;
+        this.objectList = objectList;
     }
 
-    public Object getObject() {
-        return object;
+    public List<Object> getObjectList() {
+        return objectList;
     }
 
-    public void setObject(Object object) {
-        this.object = object;
+    public void setObjectList(List<Object> objectList) {
+        this.objectList = objectList;
     }
 
     public ClientCommandTypes getClientCommandType() {
@@ -35,21 +35,19 @@ public class ClientCommand implements Serializable {
     }
 
     public Object processCommand() {
-        if (clientCommandType == ClientCommandTypes.WRITE_ORDER) {
-//            DtoOrdering order = (DtoOrdering) object;
-            List<DtoOrdering> orderList = (List<DtoOrdering>) object;
-            orderList.forEach(item -> {
-                item.setCost(item.getCost() * 2);
-            });
-//            orderList.setCost(orderList.getCost() * 2);
-            return orderList;
-            // orderDao.createOrder(order);
+        if (clientCommandType == ClientCommandTypes.SELECT_ORDER) {
+//            List<DtoOrder> orderList = (List<DtoOrder>) object;
+//            orderList.addAll(ODBC_PubsBD.selectOrders());
+            return selectOrders();
         } else if (clientCommandType == ClientCommandTypes.READ_LAST_ORDERS){
-            ///
             return null;
          } else {
             throw new IllegalArgumentException("NO SUCH COMMAND");
         }
+    }
+
+    public List<DtoOrder> selectOrders(){
+        return ODBC_PubsBD.selectOrders();
     }
 
 }

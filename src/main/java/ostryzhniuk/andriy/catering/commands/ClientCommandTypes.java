@@ -2,7 +2,7 @@ package ostryzhniuk.andriy.catering.commands;
 
 public enum ClientCommandTypes {
 
-    WRITE_ORDER(),
+    SELECT_ORDER(),
     READ_LAST_ORDERS();
 
 }
