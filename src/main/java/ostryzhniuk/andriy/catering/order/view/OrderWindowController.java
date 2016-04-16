@@ -184,6 +184,9 @@ public class OrderWindowController<T extends DtoOrder> {
 
         try {
             objectList.add(new BigDecimal(costTextField.getText()));
+            if (costTextField.getStyleClass().contains("warning")) {
+                isWarning = true;
+            }
         } catch (NumberFormatException e) {
             isWarning = true;
             if (!costTextField.getStyleClass().contains("warning")) {
@@ -193,7 +196,7 @@ public class OrderWindowController<T extends DtoOrder> {
 
         try {
             objectList.add(new BigDecimal(discountTextField.getText()));
-            if (new BigDecimal(discountTextField.getText()).compareTo(new BigDecimal(1)) == 1) {
+            if (discountTextField.getStyleClass().contains("warning")) {
                 isWarning = true;
             }
         } catch (NumberFormatException e) {
@@ -209,6 +212,9 @@ public class OrderWindowController<T extends DtoOrder> {
 
         try {
             objectList.add(new BigDecimal(paidTextField.getText()));
+            if (paidTextField.getStyleClass().contains("warning")) {
+                isWarning = true;
+            }
         } catch (NumberFormatException e) {
             if (paidTextField.getText().isEmpty()) {
                 objectList.add(new BigDecimal(0));
@@ -240,16 +246,22 @@ public class OrderWindowController<T extends DtoOrder> {
             if (!newValue) {
                 costTextField.getStyleClass().remove("warning");
                 try {
-                    new BigDecimal(costTextField.getText());
-                    if (!costTextField.getText().isEmpty() &&
-                            (discountTextField.getText().isEmpty() || discountTextField.getStyleClass().contains("warning"))) {
-                        billTextField.setText(costTextField.getText());
-                    } else if (!costTextField.getText().isEmpty() && !discountTextField.getText().isEmpty() &&
-                            !discountTextField.getStyleClass().contains("warning")) {
-                        billTextField.setText(new BigDecimal(costTextField.getText()).subtract( new BigDecimal (
-                                new BigDecimal(costTextField.getText()).
-                                        multiply(new BigDecimal(discountTextField.getText())).toString()
-                        ).divide(new BigDecimal(100))).toString());
+                    if (new BigDecimal(costTextField.getText()).compareTo(new BigDecimal(0)) == -1) {
+                        if (!costTextField.getStyleClass().contains("warning")) {
+                            costTextField.getStyleClass().add("warning");
+                        }
+                        billTextField.setText("");
+                    } else {
+                        if (!costTextField.getText().isEmpty() &&
+                                (discountTextField.getText().isEmpty() || discountTextField.getStyleClass().contains("warning"))) {
+                            billTextField.setText(costTextField.getText());
+                        } else if (!costTextField.getText().isEmpty() && !discountTextField.getText().isEmpty() &&
+                                !discountTextField.getStyleClass().contains("warning")) {
+                            billTextField.setText(new BigDecimal(costTextField.getText()).subtract( new BigDecimal (
+                                    new BigDecimal(costTextField.getText()).
+                                            multiply(new BigDecimal(discountTextField.getText())).toString()
+                            ).divide(new BigDecimal(100))).toString());
+                        }
                     }
                 } catch (java.lang.NumberFormatException e) {
                     LOGGER.debug("NumberFormatException");
@@ -273,8 +285,6 @@ public class OrderWindowController<T extends DtoOrder> {
             if (!newValue) {
                 discountTextField.getStyleClass().remove("warning");
                 try {
-//                    new BigDecimal(discountTextField.getText());
-
                     if (new BigDecimal(discountTextField.getText()).compareTo(new BigDecimal(100)) == 1 ||
                             new BigDecimal(discountTextField.getText()).compareTo(new BigDecimal(0)) == -1) {
                         if (!discountTextField.getStyleClass().contains("warning")) {
@@ -316,7 +326,11 @@ public class OrderWindowController<T extends DtoOrder> {
             if (!newValue) {
                 paidTextField.getStyleClass().remove("warning");
                 try {
-                    new BigDecimal(paidTextField.getText());
+                    if (new BigDecimal(paidTextField.getText()).compareTo(new BigDecimal(0)) == -1) {
+                        if (!paidTextField.getStyleClass().contains("warning")) {
+                            paidTextField.getStyleClass().add("warning");
+                        }
+                    }
                 } catch (java.lang.NumberFormatException e) {
                     LOGGER.debug("NumberFormatException");
                     if (!paidTextField.getStyleClass().contains("warning") && !paidTextField.getText().isEmpty()) {
