@@ -15,6 +15,7 @@ import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import java.io.*;
 import java.net.Socket;
 import java.util.List;
+import java.util.Locale;
 
 public class Client extends Application {
 
@@ -40,6 +41,7 @@ public class Client extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        Locale.setDefault(new Locale("uk"));
         initSocket(ostryzhniuk.andriy.catering.client.Socket.getSocket());
 
         ClassLoader classLoader = getClass().getClassLoader();

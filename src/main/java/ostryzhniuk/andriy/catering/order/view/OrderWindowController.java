@@ -174,6 +174,9 @@ public class OrderWindowController<T extends DtoOrder> {
         Integer clientId = null;
         try {
             clientId = (Integer) sendARequestToTheServer(ClientCommandTypes.SELECT_CLIENT_ID, clientNameList).get(0);
+            if (clientComboBox.getStyleClass().contains("warning")) {
+                isWarning = true;
+            }
         } catch (IndexOutOfBoundsException e) {
             isWarning = true;
             if (!clientComboBox.getStyleClass().contains("warning")) {
