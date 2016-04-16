@@ -1,8 +1,10 @@
 package ostryzhniuk.andriy.catering.commands;
 
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
-import ostryzhniuk.andriy.catering.server.mysql.ODBC_PubsBD;
+import ostryzhniuk.andriy.catering.server.order.view.ODBC_PubsBD;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -37,11 +39,14 @@ public class ClientCommand implements Serializable {
     public Object processCommand() {
         if (clientCommandType == ClientCommandTypes.SELECT_ORDER) {
             return selectOrders();
-        } else if (clientCommandType == ClientCommandTypes.SELECT_CLIENT_NAMES){
+        } else if (clientCommandType == ClientCommandTypes.SELECT_CLIENT_NAMES) {
             return ODBC_PubsBD.selectClientNames();
-        } else if (clientCommandType == ClientCommandTypes.READ_LAST_ORDERS){
-            return null;
-         } else {
+        } else if (clientCommandType == ClientCommandTypes.INSERT_ORDER) {
+            insertOrder();
+            return new LinkedList<>();
+        } else if (clientCommandType == ClientCommandTypes.SELECT_CLIENT_ID) {
+            return ODBC_PubsBD.selectClientId((String)objectList.get(0));
+        } else {
             throw new IllegalArgumentException("NO SUCH COMMAND");
         }
     }
@@ -54,6 +59,11 @@ public class ClientCommand implements Serializable {
             item.calculationBill();
         });
         return dtoOrdersList;
+    }
+
+    public void insertOrder(){
+        ODBC_PubsBD.insertOrder((String)objectList.get(0), (Integer)objectList.get(1), (BigDecimal)objectList.get(2),
+                (BigDecimal)objectList.get(2), (BigDecimal)objectList.get(2));
     }
 
 }

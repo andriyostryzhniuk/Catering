@@ -1,0 +1,19 @@
+.table-view .column-header.disable .label{
+    -fx-opacity : 0.2 ;
+}
+
+.table-view .table-cell.disable {
+    -fx-opacity : 0.3 ;
+}
+
+.table-view .table-column {
+   -fx-padding: 0 0 0 -1;
+ }
+
+.table-view:focused {
+    -fx-background-color: transparent ,-fx-box-border,-fx-control-inner-background;
+}
+
+.table-view {
+    -fx-accent: derive(-fx-control-inner-background, -20%); -fx-control-inner-background, -80%;
+}

@@ -1,4 +1,4 @@
-package ostryzhniuk.andriy.catering.server.mysql;
+package ostryzhniuk.andriy.catering.server.order.view;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import static ostryzhniuk.andriy.catering.server.mysql.DB_Connector.getJdbcTemplate;
@@ -34,18 +35,21 @@ public class ODBC_PubsBD {
         return list;
     }
 
-//    public static Integer selectObjectEmployeesId(String date, int employeesId) {
-//        SqlRowSet rs = getJdbcTemplate().queryForRowSet("select object_employees.id " +
-//                "from object_employees " +
-//                "where object_employees.employees_id = '" + employeesId + "' and " +
-//                "((object_employees.startDate <= convert('" + date + "', DATE) and " +
-//                "object_employees.finishDate is null) or " +
-//                "convert('" + date + "', DATE) between object_employees.startDate and object_employees.finishDate)");
-//        Integer objectEmployeesId = null;
-//        while (rs.next()) {
-//            objectEmployeesId = new Integer(rs.getInt(1));
-//        }
-//        return objectEmployeesId;
-//    }
+    public static void insertOrder(String date, Integer clientId, BigDecimal cost, BigDecimal discount, BigDecimal paid){
+        System.out.println(date);
+        getJdbcTemplate().update("INSERT INTO ordering (id, date, client_id, cost, discount, paid) " +
+                "VALUES (null, convert('" + date + "', DATE), " + clientId + ", " + cost + ", " + discount + ", " + paid + ")");
+    }
+
+    public static List<Integer> selectClientId(String clientName){
+        SqlRowSet rs = getJdbcTemplate().queryForRowSet("select client.id " +
+                "from client " +
+                "where client.name = '" + clientName + "'");
+        List<Integer> clientIdList = new LinkedList<>();
+        while (rs.next()) {
+            clientIdList.add(rs.getInt(1));
+        }
+        return clientIdList;
+    }
 
 }

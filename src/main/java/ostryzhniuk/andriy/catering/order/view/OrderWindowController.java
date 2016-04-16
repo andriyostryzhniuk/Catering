@@ -4,6 +4,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -23,7 +24,10 @@ import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableCol
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
 
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
 
@@ -42,7 +46,7 @@ public class OrderWindowController<T extends DtoOrder> {
     public TextField discountTextField;
     public TextField billTextField;
     public TextField paidTextField;
-    public Button acceptButton;
+    public Button saveButton;
     public Button escapeButton;
 
     @FXML
@@ -63,6 +67,7 @@ public class OrderWindowController<T extends DtoOrder> {
         fillTableView();
         stackPane.getChildren().add(tableView);
         initTableView();
+        tableView.getTableView().getStylesheets().add(getClass().getResource("/order/view/TableViewStyle.css").toExternalForm());
 
         clientComboBox = initClientComboBox();
         controlsGridPane.add(clientComboBox, 2, 1);
@@ -146,10 +151,28 @@ public class OrderWindowController<T extends DtoOrder> {
                 if (newValue != null) {
                     comboBox.getStyleClass().remove("warning");
 //                    searchInListView();
-                    comboBoxListener.setValue(null);
+//                    comboBoxListener.setValue(null);
                 }
             }
         });
         return comboBox;
+    }
+
+    public void saveToDB(ActionEvent actionEvent) {
+        List<Object> objectList = new LinkedList<>();
+
+        System.out.println(Date.valueOf(datePicker.getValue()).toString());
+        objectList.add(Date.valueOf(datePicker.getValue()).toString());
+
+        List<Object> clientNameList = new LinkedList<>();
+        clientNameList.add(comboBoxListener.getValue());
+        Integer clientId = (Integer) sendARequestToTheServer(ClientCommandTypes.SELECT_CLIENT_ID, clientNameList).get(0);
+        objectList.add(clientId);
+
+        objectList.add(new BigDecimal(costTextField.getText()));
+        objectList.add(new BigDecimal(discountTextField.getText()));
+        objectList.add(new BigDecimal(paidTextField.getText()));
+
+        sendARequestToTheServer(ClientCommandTypes.INSERT_ORDER, objectList);
     }
 }

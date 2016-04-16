@@ -8,6 +8,7 @@ import ostryzhniuk.andriy.catering.server.mysql.DB_Connector;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.time.LocalDateTime;
 
 
@@ -57,7 +58,6 @@ public class Server implements Runnable {
         this.objectOsSocket = new ObjectOutputStream(this.socketOutputStream);
         LOGGER.info("Server {} for Client has been created", this.startDateTime);
     }
-
 
     @Override
     public void run() {
