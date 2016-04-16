@@ -22,10 +22,8 @@ import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.overridden.elements.combo.box.AutoCompleteComboBoxListener;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
-
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -72,6 +70,12 @@ public class OrderWindowController<T extends DtoOrder> {
         clientComboBox = initClientComboBox();
         controlsGridPane.add(clientComboBox, 2, 1);
         controlsGridPane.setMargin(clientComboBox, new Insets(0, 20, 0, 0));
+
+        setDataPickerListener();
+        setCostTextFieldListener();
+        setDiscountTextFieldListener();
+        billTextField.setEditable(false);
+        setPaidTextFieldListener();
     }
 
     public void initTableView(){
@@ -144,35 +148,187 @@ public class OrderWindowController<T extends DtoOrder> {
             }
         });
 
-        comboBoxListener.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue observableValue, String oldValue, String newValue) {
-//                change detected
-                if (newValue != null) {
-                    comboBox.getStyleClass().remove("warning");
-//                    searchInListView();
-//                    comboBoxListener.setValue(null);
-                }
+        comboBoxListener.valueProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (newValue != null) {
+                comboBox.getStyleClass().remove("warning");
             }
         });
         return comboBox;
     }
 
     public void saveToDB(ActionEvent actionEvent) {
+        boolean isWarning = false;
         List<Object> objectList = new LinkedList<>();
 
-        System.out.println(Date.valueOf(datePicker.getValue()).toString());
-        objectList.add(Date.valueOf(datePicker.getValue()).toString());
+        try {
+            objectList.add(Date.valueOf(datePicker.getValue()).toString());
+        } catch (NullPointerException e) {
+            isWarning = true;
+            if (!datePicker.getStyleClass().contains("warning")) {
+                datePicker.getStyleClass().add("warning");
+            }
+        }
 
         List<Object> clientNameList = new LinkedList<>();
         clientNameList.add(comboBoxListener.getValue());
-        Integer clientId = (Integer) sendARequestToTheServer(ClientCommandTypes.SELECT_CLIENT_ID, clientNameList).get(0);
+        Integer clientId = null;
+        try {
+            clientId = (Integer) sendARequestToTheServer(ClientCommandTypes.SELECT_CLIENT_ID, clientNameList).get(0);
+        } catch (IndexOutOfBoundsException e) {
+            isWarning = true;
+            if (!clientComboBox.getStyleClass().contains("warning")) {
+                clientComboBox.getStyleClass().add("warning");
+            }
+        }
         objectList.add(clientId);
 
-        objectList.add(new BigDecimal(costTextField.getText()));
-        objectList.add(new BigDecimal(discountTextField.getText()));
-        objectList.add(new BigDecimal(paidTextField.getText()));
+        try {
+            objectList.add(new BigDecimal(costTextField.getText()));
+        } catch (NumberFormatException e) {
+            isWarning = true;
+            if (!costTextField.getStyleClass().contains("warning")) {
+                costTextField.getStyleClass().add("warning");
+            }
+        }
 
-        sendARequestToTheServer(ClientCommandTypes.INSERT_ORDER, objectList);
+        try {
+            objectList.add(new BigDecimal(discountTextField.getText()));
+            if (new BigDecimal(discountTextField.getText()).compareTo(new BigDecimal(1)) == 1) {
+                isWarning = true;
+            }
+        } catch (NumberFormatException e) {
+            if (discountTextField.getText().isEmpty()) {
+                objectList.add(new BigDecimal(0));
+            } else {
+                isWarning = true;
+                if (!discountTextField.getStyleClass().contains("warning")) {
+                    discountTextField.getStyleClass().add("warning");
+                }
+            }
+        }
+
+        try {
+            objectList.add(new BigDecimal(paidTextField.getText()));
+        } catch (NumberFormatException e) {
+            if (paidTextField.getText().isEmpty()) {
+                objectList.add(new BigDecimal(0));
+            } else {
+                isWarning = true;
+                if (!paidTextField.getStyleClass().contains("warning")) {
+                    paidTextField.getStyleClass().add("warning");
+                }
+            }
+        }
+
+        if (!isWarning) {
+            sendARequestToTheServer(ClientCommandTypes.INSERT_ORDER, objectList);
+        }
     }
+
+    public void setDataPickerListener(){
+        datePicker.getStylesheets().add(getClass().getResource("/order/view/DatePickerStyle.css").toExternalForm());
+        datePicker.setEditable(false);
+        datePicker.valueProperty().addListener((obs, oldDate, newDate) -> {
+            datePicker.getStyleClass().remove("warning");
+        });
+    }
+
+    public void setCostTextFieldListener() {
+        costTextField.getStylesheets().add(getClass().getResource("/order/view/TextFieldStyle.css").toExternalForm());
+
+        costTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                costTextField.getStyleClass().remove("warning");
+                try {
+                    new BigDecimal(costTextField.getText());
+                    if (!costTextField.getText().isEmpty() &&
+                            (discountTextField.getText().isEmpty() || discountTextField.getStyleClass().contains("warning"))) {
+                        billTextField.setText(costTextField.getText());
+                    } else if (!costTextField.getText().isEmpty() && !discountTextField.getText().isEmpty() &&
+                            !discountTextField.getStyleClass().contains("warning")) {
+                        billTextField.setText(new BigDecimal(costTextField.getText()).subtract( new BigDecimal (
+                                new BigDecimal(costTextField.getText()).
+                                        multiply(new BigDecimal(discountTextField.getText())).toString()
+                        ).divide(new BigDecimal(100))).toString());
+                    }
+                } catch (java.lang.NumberFormatException e) {
+                    LOGGER.debug("NumberFormatException");
+                    billTextField.setText("");
+                    if (!costTextField.getStyleClass().contains("warning") && !costTextField.getText().isEmpty()) {
+                        costTextField.getStyleClass().add("warning");
+                    }
+                }
+            }
+        });
+
+        costTextField.setOnMouseClicked((MouseEvent event) -> {
+            costTextField.getStyleClass().remove("warning");
+        });
+    }
+
+    public void setDiscountTextFieldListener() {
+        discountTextField.getStylesheets().add(getClass().getResource("/order/view/TextFieldStyle.css").toExternalForm());
+
+        discountTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                discountTextField.getStyleClass().remove("warning");
+                try {
+//                    new BigDecimal(discountTextField.getText());
+
+                    if (new BigDecimal(discountTextField.getText()).compareTo(new BigDecimal(100)) == 1 ||
+                            new BigDecimal(discountTextField.getText()).compareTo(new BigDecimal(0)) == -1) {
+                        if (!discountTextField.getStyleClass().contains("warning")) {
+                            discountTextField.getStyleClass().add("warning");
+                            billTextField.setText(costTextField.getText());
+                        }
+                    } else {
+                        if (!costTextField.getText().isEmpty() && !costTextField.getStyleClass().contains("warning")
+                                && discountTextField.getText().isEmpty()) {
+                            billTextField.setText(costTextField.getText());
+                        } else if (!costTextField.getText().isEmpty() && !discountTextField.getText().isEmpty()) {
+                            billTextField.setText(new BigDecimal(costTextField.getText()).subtract( new BigDecimal (
+                                    new BigDecimal(costTextField.getText()).
+                                            multiply(new BigDecimal(discountTextField.getText())).toString()
+                            ).divide(new BigDecimal(100))).toString());
+                        }
+                    }
+                } catch (java.lang.NumberFormatException e) {
+                    LOGGER.debug("NumberFormatException");
+                    if (!costTextField.getStyleClass().contains("warning")) {
+                        billTextField.setText(costTextField.getText());
+                    }
+                    if (!discountTextField.getStyleClass().contains("warning") && !discountTextField.getText().isEmpty()) {
+                        discountTextField.getStyleClass().add("warning");
+                    }
+                }
+            }
+        });
+
+        discountTextField.setOnMouseClicked((MouseEvent event) -> {
+            discountTextField.getStyleClass().remove("warning");
+        });
+    }
+
+    public void setPaidTextFieldListener() {
+        paidTextField.getStylesheets().add(getClass().getResource("/order/view/TextFieldStyle.css").toExternalForm());
+
+        paidTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                paidTextField.getStyleClass().remove("warning");
+                try {
+                    new BigDecimal(paidTextField.getText());
+                } catch (java.lang.NumberFormatException e) {
+                    LOGGER.debug("NumberFormatException");
+                    if (!paidTextField.getStyleClass().contains("warning") && !paidTextField.getText().isEmpty()) {
+                        paidTextField.getStyleClass().add("warning");
+                    }
+                }
+            }
+        });
+
+        paidTextField.setOnMouseClicked((MouseEvent event) -> {
+            paidTextField.getStyleClass().remove("warning");
+        });
+    }
+
 }

@@ -63,7 +63,7 @@ public class ClientCommand implements Serializable {
 
     public void insertOrder(){
         ODBC_PubsBD.insertOrder((String)objectList.get(0), (Integer)objectList.get(1), (BigDecimal)objectList.get(2),
-                (BigDecimal)objectList.get(2), (BigDecimal)objectList.get(2));
+                (BigDecimal)objectList.get(3), (BigDecimal)objectList.get(4));
     }
 
 }

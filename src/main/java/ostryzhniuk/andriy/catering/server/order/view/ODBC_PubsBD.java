@@ -36,7 +36,6 @@ public class ODBC_PubsBD {
     }
 
     public static void insertOrder(String date, Integer clientId, BigDecimal cost, BigDecimal discount, BigDecimal paid){
-        System.out.println(date);
         getJdbcTemplate().update("INSERT INTO ordering (id, date, client_id, cost, discount, paid) " +
                 "VALUES (null, convert('" + date + "', DATE), " + clientId + ", " + cost + ", " + discount + ", " + paid + ")");
     }
