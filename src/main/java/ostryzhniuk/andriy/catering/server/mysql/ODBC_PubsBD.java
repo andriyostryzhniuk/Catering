@@ -3,8 +3,10 @@ package ostryzhniuk.andriy.catering.server.mysql;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import ostryzhniuk.andriy.catering.dto.DtoOrder;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 
+import java.util.LinkedList;
 import java.util.List;
 import static ostryzhniuk.andriy.catering.server.mysql.DB_Connector.getJdbcTemplate;
 
@@ -14,11 +16,22 @@ public class ODBC_PubsBD {
 
     public static List<DtoOrder> selectOrders() {
         List<DtoOrder> dtoOrderings = getJdbcTemplate().query("select ordering.id, ordering.date, " +
-                "client.name, ordering.cost, ordering.discount, ordering.paid " +
+                "client.name as client, ordering.cost, ordering.discount, ordering.paid " +
                 "from ordering, client " +
                 "where ordering.client_id = client.id " +
                 "order by ordering.date asc", BeanPropertyRowMapper.newInstance(DtoOrder.class));
         return dtoOrderings;
+    }
+
+    public static List<String> selectClientNames() {
+        SqlRowSet rs = getJdbcTemplate().queryForRowSet("select client.name " +
+                "from client " +
+                "order by client.name asc");
+        List<String> list = new LinkedList<>();
+        while (rs.next()) {
+            list.add(rs.getString(1));
+        }
+        return list;
     }
 
 //    public static Integer selectObjectEmployeesId(String date, int employeesId) {

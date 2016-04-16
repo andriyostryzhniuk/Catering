@@ -1,7 +1,7 @@
 package ostryzhniuk.andriy.catering.commands;
-import ostryzhniuk.andriy.catering.dto.DtoOrder;
-import ostryzhniuk.andriy.catering.server.mysql.ODBC_PubsBD;
 
+import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
+import ostryzhniuk.andriy.catering.server.mysql.ODBC_PubsBD;
 import java.io.Serializable;
 import java.util.List;
 
@@ -36,9 +36,9 @@ public class ClientCommand implements Serializable {
 
     public Object processCommand() {
         if (clientCommandType == ClientCommandTypes.SELECT_ORDER) {
-//            List<DtoOrder> orderList = (List<DtoOrder>) object;
-//            orderList.addAll(ODBC_PubsBD.selectOrders());
             return selectOrders();
+        } else if (clientCommandType == ClientCommandTypes.SELECT_CLIENT_NAMES){
+            return ODBC_PubsBD.selectClientNames();
         } else if (clientCommandType == ClientCommandTypes.READ_LAST_ORDERS){
             return null;
          } else {
@@ -47,7 +47,13 @@ public class ClientCommand implements Serializable {
     }
 
     public List<DtoOrder> selectOrders(){
-        return ODBC_PubsBD.selectOrders();
+        List<DtoOrder> dtoOrdersList = ODBC_PubsBD.selectOrders();
+        dtoOrdersList.forEach(item -> {
+            item.formattingDate();
+            item.calculationDiscount();
+            item.calculationBill();
+        });
+        return dtoOrdersList;
     }
 
 }

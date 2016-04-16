@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -13,13 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.commands.ClientCommand;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
-import ostryzhniuk.andriy.catering.main.window.MainWindowController;
-
 import java.io.*;
 import java.net.Socket;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Client extends Application {
@@ -49,7 +43,7 @@ public class Client extends Application {
         initSocket(ostryzhniuk.andriy.catering.client.Socket.getSocket());
 
         ClassLoader classLoader = getClass().getClassLoader();
-        Parent root = FXMLLoader.load(classLoader.getResource("main/MainWindow.fxml"));
+        Parent root = FXMLLoader.load(classLoader.getResource("main/window/MainWindow.fxml"));
         primaryStage.setTitle("Catering Company");
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);

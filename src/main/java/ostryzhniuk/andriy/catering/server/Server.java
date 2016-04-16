@@ -62,21 +62,16 @@ public class Server implements Runnable {
     @Override
     public void run() {
         try {
+            Object inputObject;
             LOGGER.info(this.startDateTime + " run");
-//            String inputLine;
-            ClientCommand clientCommand = (ClientCommand) this.objectIsSocket.readObject();
-            Object responseObject = clientCommand.processCommand();
-            this.objectOsSocket.writeObject(responseObject);
+            ClientCommand clientCommand;
+            Object responseObject;
 
-//            try {
-//                while ((inputLine = bufferedReaderSocket.readLine()) != null) {
-//                    printWriterSocket.println("got from client stream: " + inputLine);
-//                    LOGGER.info(this.startDateTime + " got from client " + inputLine);
-////                    break;
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            while ((inputObject = objectIsSocket.readObject()) != null) {
+                clientCommand = (ClientCommand) inputObject;
+                responseObject = clientCommand.processCommand();
+                this.objectOsSocket.writeObject(responseObject);
+            }
         } catch (Throwable t) {
             LOGGER.error(this.startDateTime + " Thread is dead", t);
         }

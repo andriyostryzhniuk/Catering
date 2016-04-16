@@ -55,7 +55,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button mnemonicParsing="false" onAction="#initEmployeesWorkTracking" prefHeight="25.0" prefWidth="130.0" text="Замовлення" >
+                        <Button mnemonicParsing="false" onAction="#initOrderView" prefHeight="25.0" prefWidth="130.0" text="Замовлення" >
                            <GridPane.margin>
                               <Insets left="10.0" />
                            </GridPane.margin>
