@@ -12,6 +12,7 @@ import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.overridden.elements.combo.box.AutoCompleteComboBoxListener;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.LinkedList;
 
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
@@ -101,32 +102,7 @@ public class ControlsElements {
         costTextField.setTooltip(new Tooltip("Вартість замовлення"));
         costTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
-                costTextField.getStyleClass().remove("warning");
-                try {
-                    if (new BigDecimal(costTextField.getText()).compareTo(new BigDecimal(0)) == -1) {
-                        if (!costTextField.getStyleClass().contains("warning")) {
-                            costTextField.getStyleClass().add("warning");
-                        }
-                        billTextField.setText("");
-                    } else {
-                        if (!costTextField.getText().isEmpty() &&
-                                (discountTextField.getText().isEmpty() || discountTextField.getStyleClass().contains("warning"))) {
-                            billTextField.setText(costTextField.getText());
-                        } else if (!costTextField.getText().isEmpty() && !discountTextField.getText().isEmpty() &&
-                                !discountTextField.getStyleClass().contains("warning")) {
-                            billTextField.setText(new BigDecimal(costTextField.getText()).subtract( new BigDecimal (
-                                    new BigDecimal(costTextField.getText()).
-                                            multiply(new BigDecimal(discountTextField.getText())).toString()
-                            ).divide(new BigDecimal(100))).toString());
-                        }
-                    }
-                } catch (java.lang.NumberFormatException e) {
-                    LOGGER.debug("NumberFormatException");
-                    billTextField.setText("");
-                    if (!costTextField.getStyleClass().contains("warning") && !costTextField.getText().isEmpty()) {
-                        costTextField.getStyleClass().add("warning");
-                    }
-                }
+                costTextFieldValidation();
             }
         });
 
@@ -135,39 +111,42 @@ public class ControlsElements {
         });
     }
 
+    public void costTextFieldValidation(){
+        costTextField.getStyleClass().remove("warning");
+        try {
+            if (new BigDecimal(costTextField.getText()).compareTo(new BigDecimal(0)) == -1) {
+                if (!costTextField.getStyleClass().contains("warning")) {
+                    costTextField.getStyleClass().add("warning");
+                }
+                billTextField.setText("");
+            } else {
+                if (!costTextField.getText().isEmpty() &&
+                        (discountTextField.getText().isEmpty() || discountTextField.getStyleClass().contains("warning"))) {
+                    billTextField.setText(costTextField.getText());
+                } else if (!costTextField.getText().isEmpty() && !discountTextField.getText().isEmpty() &&
+                        !discountTextField.getStyleClass().contains("warning")) {
+                    billTextField.setText(new BigDecimal(
+                            new BigDecimal(costTextField.getText()).subtract( new BigDecimal (
+                            new BigDecimal(costTextField.getText()).
+                                    multiply(new BigDecimal(discountTextField.getText())).toString()
+                    ).divide(new BigDecimal(100))).toString()).setScale(2, RoundingMode.CEILING).toString());
+                }
+            }
+        } catch (java.lang.NumberFormatException e) {
+            LOGGER.debug("NumberFormatException");
+            billTextField.setText("");
+            if (!costTextField.getStyleClass().contains("warning") && !costTextField.getText().isEmpty()) {
+                costTextField.getStyleClass().add("warning");
+            }
+        }
+    }
+
     public void setDiscountTextFieldListener() {
         discountTextField.getStylesheets().add(getClass().getResource("/order/view/TextFieldStyle.css").toExternalForm());
-        discountTextField.setTooltip(new Tooltip("Знижка для клієнта"));
+        discountTextField.setTooltip(new Tooltip("Знижка для клієнта (у відсотках)"));
         discountTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
-                discountTextField.getStyleClass().remove("warning");
-                try {
-                    if (new BigDecimal(discountTextField.getText()).compareTo(new BigDecimal(100)) == 1 ||
-                            new BigDecimal(discountTextField.getText()).compareTo(new BigDecimal(0)) == -1) {
-                        if (!discountTextField.getStyleClass().contains("warning")) {
-                            discountTextField.getStyleClass().add("warning");
-                            billTextField.setText(costTextField.getText());
-                        }
-                    } else {
-                        if (!costTextField.getText().isEmpty() && !costTextField.getStyleClass().contains("warning")
-                                && discountTextField.getText().isEmpty()) {
-                            billTextField.setText(costTextField.getText());
-                        } else if (!costTextField.getText().isEmpty() && !discountTextField.getText().isEmpty()) {
-                            billTextField.setText(new BigDecimal(costTextField.getText()).subtract( new BigDecimal (
-                                    new BigDecimal(costTextField.getText()).
-                                            multiply(new BigDecimal(discountTextField.getText())).toString()
-                            ).divide(new BigDecimal(100))).toString());
-                        }
-                    }
-                } catch (java.lang.NumberFormatException e) {
-                    LOGGER.debug("NumberFormatException");
-                    if (!costTextField.getStyleClass().contains("warning")) {
-                        billTextField.setText(costTextField.getText());
-                    }
-                    if (!discountTextField.getStyleClass().contains("warning") && !discountTextField.getText().isEmpty()) {
-                        discountTextField.getStyleClass().add("warning");
-                    }
-                }
+                discountTextFieldValidation();
             }
         });
 
@@ -176,29 +155,65 @@ public class ControlsElements {
         });
     }
 
+    public void discountTextFieldValidation(){
+        discountTextField.getStyleClass().remove("warning");
+        try {
+            if (new BigDecimal(discountTextField.getText()).compareTo(new BigDecimal(100)) == 1 ||
+                    new BigDecimal(discountTextField.getText()).compareTo(new BigDecimal(0)) == -1) {
+                if (!discountTextField.getStyleClass().contains("warning")) {
+                    discountTextField.getStyleClass().add("warning");
+                    billTextField.setText(costTextField.getText());
+                }
+            } else {
+                if (!costTextField.getText().isEmpty() && !costTextField.getStyleClass().contains("warning")
+                        && discountTextField.getText().isEmpty()) {
+                    billTextField.setText(costTextField.getText());
+                } else if (!costTextField.getText().isEmpty() && !discountTextField.getText().isEmpty()) {
+                    billTextField.setText(new BigDecimal(
+                            new BigDecimal(costTextField.getText()).subtract( new BigDecimal (
+                            new BigDecimal(costTextField.getText()).
+                                    multiply(new BigDecimal(discountTextField.getText())).toString()
+                    ).divide(new BigDecimal(100))).toString()).setScale(2, RoundingMode.CEILING).toString());
+                }
+            }
+        } catch (java.lang.NumberFormatException e) {
+            LOGGER.debug("NumberFormatException");
+            if (!costTextField.getStyleClass().contains("warning")) {
+                billTextField.setText(costTextField.getText());
+            }
+            if (!discountTextField.getStyleClass().contains("warning") && !discountTextField.getText().isEmpty()) {
+                discountTextField.getStyleClass().add("warning");
+            }
+        }
+    }
+
     public void setPaidTextFieldListener() {
         paidTextField.getStylesheets().add(getClass().getResource("/order/view/TextFieldStyle.css").toExternalForm());
         paidTextField.setTooltip(new Tooltip("Сплачено"));
         paidTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
-                paidTextField.getStyleClass().remove("warning");
-                try {
-                    if (new BigDecimal(paidTextField.getText()).compareTo(new BigDecimal(0)) == -1) {
-                        if (!paidTextField.getStyleClass().contains("warning")) {
-                            paidTextField.getStyleClass().add("warning");
-                        }
-                    }
-                } catch (java.lang.NumberFormatException e) {
-                    LOGGER.debug("NumberFormatException");
-                    if (!paidTextField.getStyleClass().contains("warning") && !paidTextField.getText().isEmpty()) {
-                        paidTextField.getStyleClass().add("warning");
-                    }
-                }
+                paidTextFieldValidation();
             }
         });
 
         paidTextField.setOnMouseClicked((MouseEvent event) -> {
             paidTextField.getStyleClass().remove("warning");
         });
+    }
+
+    public void paidTextFieldValidation(){
+        paidTextField.getStyleClass().remove("warning");
+        try {
+            if (new BigDecimal(paidTextField.getText()).compareTo(new BigDecimal(0)) == -1) {
+                if (!paidTextField.getStyleClass().contains("warning")) {
+                    paidTextField.getStyleClass().add("warning");
+                }
+            }
+        } catch (java.lang.NumberFormatException e) {
+            LOGGER.debug("NumberFormatException");
+            if (!paidTextField.getStyleClass().contains("warning") && !paidTextField.getText().isEmpty()) {
+                paidTextField.getStyleClass().add("warning");
+            }
+        }
     }
 }

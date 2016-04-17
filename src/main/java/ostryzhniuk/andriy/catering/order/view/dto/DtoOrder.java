@@ -32,12 +32,8 @@ public class DtoOrder implements Serializable {
         this.paid = paid;
     }
 
-    public void calculationDiscount(){
-        this.discount = this.cost.multiply(this.discount).setScale(2, RoundingMode.CEILING);
-    }
-
     public void calculationBill(){
-        this.bill = cost.subtract(discount);
+        this.bill = cost.subtract(cost.multiply(discount)).setScale(2, RoundingMode.CEILING);
     }
 
     public void formattingDate(){

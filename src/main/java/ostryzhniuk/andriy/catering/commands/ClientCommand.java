@@ -59,7 +59,6 @@ public class ClientCommand implements Serializable {
         List<DtoOrder> dtoOrdersList = ODBC_PubsBD.selectOrders();
         dtoOrdersList.forEach(item -> {
             item.formattingDate();
-            item.calculationDiscount();
             item.calculationBill();
         });
         return dtoOrdersList;

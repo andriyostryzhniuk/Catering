@@ -1,33 +1,32 @@
 package ostryzhniuk.andriy.catering.order.view;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.util.Callback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
-import ostryzhniuk.andriy.catering.overridden.elements.combo.box.AutoCompleteComboBoxListener;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
+import static ostryzhniuk.andriy.catering.order.view.dto.ContextMenu.initContextMenu;
 
 public class OrderWindowController<T extends DtoOrder> {
 
@@ -52,11 +51,13 @@ public class OrderWindowController<T extends DtoOrder> {
     public CustomTableColumn<T, String> dateCol = new CustomTableColumn<>("Дата");
     public CustomTableColumn<T, String> clientCol = new CustomTableColumn<>("Клієнт");
     public CustomTableColumn<T, BigDecimal> costCol = new CustomTableColumn<>("Вартість");
-    public CustomTableColumn<T, BigDecimal> discountCol = new CustomTableColumn<>("Знижка");
+    public CustomTableColumn<T, BigDecimal> discountCol = new CustomTableColumn<>("Знижка (%)");
     public CustomTableColumn<T, BigDecimal> billCol = new CustomTableColumn<>("До сплати");
     public CustomTableColumn<T, BigDecimal> paidCol = new CustomTableColumn<>("Сплачено");
 
     public ObservableList<T> dtoOrdersList = FXCollections.observableArrayList();
+
+    ControlsElements controlsElements;
 
     @FXML
     public void initialize(){
@@ -65,9 +66,10 @@ public class OrderWindowController<T extends DtoOrder> {
         fillTableView();
         tableView.getTableView().getStylesheets().add(getClass().getResource("/order/view/TableViewStyle.css").toExternalForm());
         stackPane.getChildren().add(tableView);
+        initContextMenu(tableView.getTableView(), this);
         initTableView();
 
-        ControlsElements controlsElements = new ControlsElements(billTextField, comboBoxListener, costTextField,
+        controlsElements = new ControlsElements(billTextField, comboBoxListener, costTextField,
                 datePicker, discountTextField,  paidTextField);
 
         clientComboBox = controlsElements.initClientComboBox();
@@ -201,4 +203,29 @@ public class OrderWindowController<T extends DtoOrder> {
         billTextField.setText("");
         paidTextField.setText("");
     }
+
+    public void editRecord(){
+        LOGGER.info("editRecord");
+        TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
+        int rowIndex = pos.getRow();
+        DtoOrder dtoOrder = tableView.getTableView().getItems().get(rowIndex);
+
+        java.util.Date inputDate = dtoOrder.getDate();
+        LocalDate localDate = inputDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        datePicker.setValue(localDate);
+
+        clientComboBox.setValue(dtoOrder.getClient());
+        comboBoxListener.setValue(dtoOrder.getClient());
+
+        costTextField.setText(dtoOrder.getCost().toString());
+        controlsElements.costTextFieldValidation();
+
+        discountTextField.setText(dtoOrder.getDiscount().toString());
+        controlsElements.discountTextFieldValidation();
+
+        paidTextField.setText(dtoOrder.getPaid().toString());
+        controlsElements.paidTextFieldValidation();
+
+    }
+
 }
