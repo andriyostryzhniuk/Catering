@@ -25,15 +25,18 @@ public class ControlsElements {
     private static final Logger LOGGER = LoggerFactory.getLogger(ControlsElements.class);
 
     private DatePicker datePicker;
+    private ComboBox clientComboBox;
     private ComboBox comboBoxListener;
     private TextField costTextField;
     private TextField discountTextField;
     private TextField billTextField;
     private TextField paidTextField;
 
-    public ControlsElements(TextField billTextField, ComboBox comboBoxListener, TextField costTextField,
-                            DatePicker datePicker, TextField discountTextField, TextField paidTextField) {
+    public ControlsElements(TextField billTextField, ComboBox clientComboBox, ComboBox comboBoxListener,
+                            TextField costTextField, DatePicker datePicker, TextField discountTextField,
+                            TextField paidTextField) {
         this.billTextField = billTextField;
+        this.clientComboBox = clientComboBox;
         this.comboBoxListener = comboBoxListener;
         this.costTextField = costTextField;
         this.datePicker = datePicker;
@@ -41,22 +44,20 @@ public class ControlsElements {
         this.paidTextField = paidTextField;
     }
 
-    public ComboBox initClientComboBox() {
-        ComboBox comboBox = new ComboBox();
-
-        comboBox.getStylesheets().add(getClass().getResource("/order/view/ComboBoxStyle.css").toExternalForm());
-        comboBox.setTooltip(new Tooltip("Вибрати клієнта"));
-        comboBox.setPromptText("Клієнт");
+    public void initClientComboBox() {
+        clientComboBox.getStylesheets().add(getClass().getResource("/order/view/ComboBoxStyle.css").toExternalForm());
+        clientComboBox.setTooltip(new Tooltip("Вибрати клієнта"));
+        clientComboBox.setPromptText("Клієнт");
 
         ObservableList<String> observableList = FXCollections.observableArrayList();
         observableList.addAll(FXCollections.observableArrayList(
                 sendARequestToTheServer(ClientCommandTypes.SELECT_CLIENT_NAMES, new LinkedList<>())));
 
-        comboBox.setItems(observableList);
+        clientComboBox.setItems(observableList);
 
-        new AutoCompleteComboBoxListener<>(comboBox, comboBoxListener);
+        new AutoCompleteComboBoxListener<>(clientComboBox, comboBoxListener);
 
-        comboBox.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+        clientComboBox.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
             @Override
             public ListCell<String> call(ListView<String> param) {
                 final ListCell<String> cell = new ListCell<String>() {
@@ -65,7 +66,7 @@ public class ControlsElements {
                             @Override
                             public void handle(MouseEvent event) {
 //                                mouse pressed
-                                comboBoxListener.setValue(comboBox.getValue());
+                                comboBoxListener.setValue(clientComboBox.getValue());
                             }
                         });
                     }
@@ -82,10 +83,9 @@ public class ControlsElements {
 
         comboBoxListener.valueProperty().addListener((observableValue, oldValue, newValue) -> {
             if (newValue != null) {
-                comboBox.getStyleClass().remove("warning");
+                clientComboBox.getStyleClass().remove("warning");
             }
         });
-        return comboBox;
     }
 
     public void setDataPickerListener(){
@@ -215,5 +215,15 @@ public class ControlsElements {
                 paidTextField.getStyleClass().add("warning");
             }
         }
+    }
+
+    public void clear(){
+        datePicker.setValue(null);
+        clientComboBox.setValue(null);
+        comboBoxListener.setValue(null);
+        costTextField.setText("");
+        discountTextField.setText("");
+        billTextField.setText("");
+        paidTextField.setText("");
     }
 }

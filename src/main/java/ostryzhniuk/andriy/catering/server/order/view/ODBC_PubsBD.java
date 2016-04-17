@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
-
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,6 +48,16 @@ public class ODBC_PubsBD {
             clientIdList.add(rs.getInt(1));
         }
         return clientIdList;
+    }
+
+    public static void updateOrder(int id, String date, int clientId, BigDecimal cost, BigDecimal discount, BigDecimal paid){
+        getJdbcTemplate().update("UPDATE ordering " +
+                "SET date = convert('" + date + "', DATE), " +
+                "client_id = " + clientId + ", " +
+                "cost = " + cost + ", " +
+                "discount = " + discount + ", " +
+                "paid = " + paid + " " +
+                "WHERE id = " + id + "");
     }
 
 }

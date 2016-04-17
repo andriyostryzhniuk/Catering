@@ -43,13 +43,21 @@ public class ClientCommand implements Serializable {
     public Object processCommand() {
         if (clientCommandType == ClientCommandTypes.SELECT_ORDER) {
             return selectOrders();
+
         } else if (clientCommandType == ClientCommandTypes.SELECT_CLIENT_NAMES) {
             return ODBC_PubsBD.selectClientNames();
+
         } else if (clientCommandType == ClientCommandTypes.INSERT_ORDER) {
             insertOrder();
             return new LinkedList<>();
+
         } else if (clientCommandType == ClientCommandTypes.SELECT_CLIENT_ID) {
             return ODBC_PubsBD.selectClientId((String)objectList.get(0));
+
+        } else if (clientCommandType == ClientCommandTypes.UPDATE_ORDER) {
+            updateOrder();
+            return new LinkedList<>();
+
         } else {
             throw new IllegalArgumentException("NO SUCH COMMAND");
         }
@@ -67,6 +75,11 @@ public class ClientCommand implements Serializable {
     public void insertOrder(){
         ODBC_PubsBD.insertOrder((String)objectList.get(0), (Integer)objectList.get(1), (BigDecimal)objectList.get(2),
                 (BigDecimal)objectList.get(3), (BigDecimal)objectList.get(4));
+    }
+
+    public void updateOrder(){
+        ODBC_PubsBD.updateOrder((Integer)objectList.get(5), (String)objectList.get(0), (Integer)objectList.get(1),
+                (BigDecimal)objectList.get(2), (BigDecimal)objectList.get(3), (BigDecimal)objectList.get(4));
     }
 
 }

@@ -18,13 +18,10 @@ import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableCol
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
-
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
 import static ostryzhniuk.andriy.catering.order.view.dto.ContextMenu.initContextMenu;
 
@@ -37,7 +34,7 @@ public class OrderWindowController<T extends DtoOrder> {
 
     public GridPane controlsGridPane;
     public DatePicker datePicker;
-    public ComboBox clientComboBox;
+    public ComboBox clientComboBox = new ComboBox();
     public ComboBox comboBoxListener = new ComboBox();
     public TextField costTextField;
     public TextField discountTextField;
@@ -55,9 +52,9 @@ public class OrderWindowController<T extends DtoOrder> {
     public CustomTableColumn<T, BigDecimal> billCol = new CustomTableColumn<>("До сплати");
     public CustomTableColumn<T, BigDecimal> paidCol = new CustomTableColumn<>("Сплачено");
 
-    public ObservableList<T> dtoOrdersList = FXCollections.observableArrayList();
-
-    ControlsElements controlsElements;
+    private ObservableList<T> dtoOrdersList = FXCollections.observableArrayList();
+    private ControlsElements controlsElements;
+    private Integer orderId = null;
 
     @FXML
     public void initialize(){
@@ -69,10 +66,10 @@ public class OrderWindowController<T extends DtoOrder> {
         initContextMenu(tableView.getTableView(), this);
         initTableView();
 
-        controlsElements = new ControlsElements(billTextField, comboBoxListener, costTextField,
+        controlsElements = new ControlsElements(billTextField, clientComboBox, comboBoxListener, costTextField,
                 datePicker, discountTextField,  paidTextField);
 
-        clientComboBox = controlsElements.initClientComboBox();
+        controlsElements.initClientComboBox();
         controlsGridPane.add(clientComboBox, 2, 1);
         controlsGridPane.setMargin(clientComboBox, new Insets(0, 20, 0, 0));
 
@@ -189,23 +186,24 @@ public class OrderWindowController<T extends DtoOrder> {
         }
 
         if (!isWarning) {
-            sendARequestToTheServer(ClientCommandTypes.INSERT_ORDER, objectList);
+            if (orderId == null) {
+                sendARequestToTheServer(ClientCommandTypes.INSERT_ORDER, objectList);
+            } else {
+                objectList.add(orderId);
+                sendARequestToTheServer(ClientCommandTypes.UPDATE_ORDER, objectList);
+            }
+            orderId = null;
             initTableView();
+            controlsElements.clear();
         }
     }
 
     public void escape(ActionEvent actionEvent) {
-        datePicker.setValue(null);
-        clientComboBox.setValue(null);
-        comboBoxListener.setValue(null);
-        costTextField.setText("");
-        discountTextField.setText("");
-        billTextField.setText("");
-        paidTextField.setText("");
+        orderId = null;
+        controlsElements.clear();
     }
 
     public void editRecord(){
-        LOGGER.info("editRecord");
         TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
         int rowIndex = pos.getRow();
         DtoOrder dtoOrder = tableView.getTableView().getItems().get(rowIndex);
@@ -226,6 +224,7 @@ public class OrderWindowController<T extends DtoOrder> {
         paidTextField.setText(dtoOrder.getPaid().toString());
         controlsElements.paidTextFieldValidation();
 
+        orderId = dtoOrder.getId();
     }
 
 }

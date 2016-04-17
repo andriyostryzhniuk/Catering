@@ -33,7 +33,7 @@ public class DtoOrder implements Serializable {
     }
 
     public void calculationBill(){
-        this.bill = cost.subtract(cost.multiply(discount)).setScale(2, RoundingMode.CEILING);
+        this.bill = cost.subtract(cost.multiply(discount).divide(new BigDecimal(100))).setScale(2, RoundingMode.CEILING);
     }
 
     public void formattingDate(){
