@@ -68,7 +68,7 @@
                         <Insets right="5.0"/>
                     </GridPane.margin>
                 </Button>
-                <Button fx:id="escapeButton" maxHeight="25.0" maxWidth="72.0" minHeight="25.0" minWidth="72.0"
+                <Button fx:id="escapeButton" onAction="#escape" maxHeight="25.0" maxWidth="72.0" minHeight="25.0" minWidth="72.0"
                         mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Скасувати"
                         GridPane.columnIndex="8" GridPane.rowIndex="1"/>
                 <Label text="Дата:" GridPane.columnIndex="1"/>
