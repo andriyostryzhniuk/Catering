@@ -84,10 +84,10 @@ public class OrderWindowController<T extends DtoOrder> {
 
     public void initTableView(){
         dtoOrdersList.clear();
+        tableView.getTableView().getItems().clear();
+
         dtoOrdersList.addAll(FXCollections.observableArrayList(
                 sendARequestToTheServer(ClientCommandTypes.SELECT_ORDER, new LinkedList<>())));
-
-        tableView.getTableView().getItems().clear();
         tableView.getTableView().setItems(dtoOrdersList);
     }
 
@@ -188,6 +188,7 @@ public class OrderWindowController<T extends DtoOrder> {
 
         if (!isWarning) {
             sendARequestToTheServer(ClientCommandTypes.INSERT_ORDER, objectList);
+            initTableView();
         }
     }
 

@@ -16,12 +16,12 @@ public class ODBC_PubsBD {
     private static final Logger LOGGER = LoggerFactory.getLogger(ODBC_PubsBD.class);
 
     public static List<DtoOrder> selectOrders() {
-        List<DtoOrder> dtoOrderings = getJdbcTemplate().query("select ordering.id, ordering.date, " +
+        List<DtoOrder> dtoOrdersList = getJdbcTemplate().query("select ordering.id, ordering.date, " +
                 "client.name as client, ordering.cost, ordering.discount, ordering.paid " +
                 "from ordering, client " +
                 "where ordering.client_id = client.id " +
-                "order by ordering.date asc", BeanPropertyRowMapper.newInstance(DtoOrder.class));
-        return dtoOrderings;
+                "order by ordering.date desc", BeanPropertyRowMapper.newInstance(DtoOrder.class));
+        return dtoOrdersList;
     }
 
     public static List<String> selectClientNames() {

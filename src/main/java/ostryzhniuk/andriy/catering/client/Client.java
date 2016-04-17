@@ -14,6 +14,7 @@ import ostryzhniuk.andriy.catering.commands.ClientCommand;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.List;
 import java.util.Locale;
 
@@ -65,6 +66,8 @@ public class Client extends Application {
         try {
             objectSocketOS.writeObject(clientCommand);
             return (List) objectSocketIS.readObject();
+        } catch (SocketException e) {
+            LOGGER.error("server has been down" + e);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

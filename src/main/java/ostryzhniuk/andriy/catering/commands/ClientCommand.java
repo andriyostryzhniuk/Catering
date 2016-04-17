@@ -1,5 +1,7 @@
 package ostryzhniuk.andriy.catering.commands;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.server.order.view.ODBC_PubsBD;
 import java.io.Serializable;
@@ -11,6 +13,8 @@ import java.util.List;
  * Created by Andriy on 04/10/2016.
  */
 public class ClientCommand implements Serializable {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientCommand.class);
 
     private ClientCommandTypes clientCommandType;
     private List<Object> objectList;
