@@ -34,11 +34,6 @@ public class ODBC_PubsBD {
         return list;
     }
 
-    public static void insertOrder(String date, Integer clientId, BigDecimal cost, BigDecimal discount, BigDecimal paid){
-        getJdbcTemplate().update("INSERT INTO ordering (id, date, client_id, cost, discount, paid) " +
-                "VALUES (null, convert('" + date + "', DATE), " + clientId + ", " + cost + ", " + discount + ", " + paid + ")");
-    }
-
     public static List<Integer> selectClientId(String clientName){
         SqlRowSet rs = getJdbcTemplate().queryForRowSet("select client.id " +
                 "from client " +
@@ -50,6 +45,11 @@ public class ODBC_PubsBD {
         return clientIdList;
     }
 
+    public static void insertOrder(String date, Integer clientId, BigDecimal cost, BigDecimal discount, BigDecimal paid){
+        getJdbcTemplate().update("INSERT INTO ordering (id, date, client_id, cost, discount, paid) " +
+                "VALUES (null, convert('" + date + "', DATE), " + clientId + ", " + cost + ", " + discount + ", " + paid + ")");
+    }
+
     public static void updateOrder(int id, String date, int clientId, BigDecimal cost, BigDecimal discount, BigDecimal paid){
         getJdbcTemplate().update("UPDATE ordering " +
                 "SET date = convert('" + date + "', DATE), " +
@@ -58,6 +58,11 @@ public class ODBC_PubsBD {
                 "discount = " + discount + ", " +
                 "paid = " + paid + " " +
                 "WHERE id = " + id + "");
+    }
+
+    public static void deleteOrder(int orderId){
+        getJdbcTemplate().update("DELETE FROM ordering " +
+                "WHERE id = " + orderId + "");
     }
 
 }

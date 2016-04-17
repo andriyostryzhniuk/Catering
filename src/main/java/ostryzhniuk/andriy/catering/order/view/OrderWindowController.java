@@ -23,7 +23,7 @@ import java.time.ZoneId;
 import java.util.LinkedList;
 import java.util.List;
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
-import static ostryzhniuk.andriy.catering.order.view.dto.ContextMenu.initContextMenu;
+import static ostryzhniuk.andriy.catering.order.view.ContextMenu.initContextMenu;
 
 public class OrderWindowController<T extends DtoOrder> {
 
@@ -225,6 +225,17 @@ public class OrderWindowController<T extends DtoOrder> {
         controlsElements.paidTextFieldValidation();
 
         orderId = dtoOrder.getId();
+    }
+
+    public void removeRecord(){
+        TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
+        int rowIndex = pos.getRow();
+        DtoOrder dtoOrder = tableView.getTableView().getItems().get(rowIndex);
+
+        List<Object> objectList = new LinkedList<>();
+        objectList.add(dtoOrder.getId());
+        sendARequestToTheServer(ClientCommandTypes.DELETE_ORDER, objectList);
+        initTableView();
     }
 
 }

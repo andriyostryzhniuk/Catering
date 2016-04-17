@@ -58,10 +58,15 @@ public class ClientCommand implements Serializable {
             updateOrder();
             return new LinkedList<>();
 
+        } else if (clientCommandType == ClientCommandTypes.DELETE_ORDER) {
+            ODBC_PubsBD.deleteOrder((Integer)objectList.get(0));
+            return new LinkedList<>();
+
         } else {
             throw new IllegalArgumentException("NO SUCH COMMAND");
         }
     }
+
 
     public List<DtoOrder> selectOrders(){
         List<DtoOrder> dtoOrdersList = ODBC_PubsBD.selectOrders();

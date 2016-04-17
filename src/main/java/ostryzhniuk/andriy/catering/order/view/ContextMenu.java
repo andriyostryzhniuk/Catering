@@ -1,4 +1,4 @@
-package ostryzhniuk.andriy.catering.order.view.dto;
+package ostryzhniuk.andriy.catering.order.view;
 
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
@@ -8,6 +8,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 import ostryzhniuk.andriy.catering.order.view.OrderWindowController;
+import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 
 /**
  * Created by Andriy on 04/17/2016.
@@ -31,7 +32,7 @@ public class ContextMenu {
 
                 MenuItem removeItem = new MenuItem("Видалити");
                 removeItem.setOnAction((ActionEvent event) -> {
-//                   removeRecord();
+                    orderWindowController.removeRecord();
                 });
                 rowMenu.getItems().addAll(editItem, removeItem);
                 row.contextMenuProperty().bind(
