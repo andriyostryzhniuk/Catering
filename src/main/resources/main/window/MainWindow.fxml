@@ -60,7 +60,7 @@
                               <Insets left="10.0" />
                            </GridPane.margin>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#initStockTracking" prefHeight="25.0" prefWidth="130.0" GridPane.rowIndex="1" text="Мат база" >
+                        <Button mnemonicParsing="false" onAction="#initClientView" prefHeight="25.0" prefWidth="130.0" GridPane.rowIndex="1" text="Клієнти" >
                              <GridPane.margin>
                                  <Insets left="10.0" />
                              </GridPane.margin>

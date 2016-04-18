@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ostryzhniuk.andriy.catering.clients.view.ClientWindowController;
 import ostryzhniuk.andriy.catering.order.view.OrderWindowController;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -16,6 +17,7 @@ public class MainWindowController {
     public GridPane mainGridPane;
 
     private OrderWindowController orderWindowController;
+    private ClientWindowController clientWindowController;
 
     @FXML
     public void initialize(){
@@ -33,8 +35,15 @@ public class MainWindowController {
         }
     }
 
-    public void initStockTracking(ActionEvent actionEvent) {
-
+    public void initClientView(ActionEvent actionEvent) {
+        removeMainGridPaneChildren();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clients.view/ClientWindow.fxml"));
+        try {
+            mainGridPane.add(fxmlLoader.load(), 1, 1);
+            clientWindowController = fxmlLoader.getController();
+        } catch (IOException exception) {
+            throw new UncheckedIOException(exception);
+        }
     }
 
     public void removeMainGridPaneChildren(){

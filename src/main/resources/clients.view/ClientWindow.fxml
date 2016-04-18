@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="rootBorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ostryzhniuk.andriy.catering.clients.view.ClientWindowController">
+    <center>
+        <StackPane fx:id="stackPane" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8">
+
+        </StackPane>
+    </center>
+</BorderPane>
