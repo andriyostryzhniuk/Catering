@@ -8,9 +8,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
-import static ostryzhniuk.andriy.catering.server.clients.view.ODBC_PubsBD.selectClients;
-import static ostryzhniuk.andriy.catering.server.clients.view.ODBC_PubsBD.insertClient;
-import static ostryzhniuk.andriy.catering.server.clients.view.ODBC_PubsBD.updateClient;
+
+import static ostryzhniuk.andriy.catering.server.clients.view.ODBC_PubsBD.*;
 
 /**
  * Created by Andriy on 04/10/2016.
@@ -66,14 +65,19 @@ public class ClientCommand implements Serializable {
             ODBC_PubsBD.deleteOrder((Integer)objectList.get(0));
             return new LinkedList<>();
 //            for client view
-        } else if (clientCommandType == ClientCommandTypes.SELECT_CLIENTS) {
+        } else if (clientCommandType == ClientCommandTypes.SELECT_CLIENT) {
             return selectClients();
 
         } else if (clientCommandType == ClientCommandTypes.INSERT_CLIENT) {
             insertClients();
             return new LinkedList<>();
+
         } else if (clientCommandType == ClientCommandTypes.UPDATE_CLIENT) {
             updateClients();
+            return new LinkedList<>();
+
+        } else if (clientCommandType == ClientCommandTypes.DELETE_CLIENT) {
+            deleteClient((Integer) objectList.get(0));
             return new LinkedList<>();
 
         } else {

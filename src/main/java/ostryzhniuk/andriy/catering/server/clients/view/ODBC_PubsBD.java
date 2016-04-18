@@ -66,9 +66,9 @@ public class ODBC_PubsBD {
                 "WHERE id = " + id + "");
     }
 
-    public static void deleteOrder(int orderId){
-        getJdbcTemplate().update("DELETE FROM ordering " +
-                "WHERE id = " + orderId + "");
+    public static void deleteClient(int clientId){
+        getJdbcTemplate().update("DELETE FROM client " +
+                "WHERE id = " + clientId + "");
     }
 
 }

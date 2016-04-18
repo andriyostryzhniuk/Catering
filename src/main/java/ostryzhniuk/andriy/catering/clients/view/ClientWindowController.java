@@ -24,10 +24,10 @@ import ostryzhniuk.andriy.catering.clients.view.dto.DtoClient;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.LinkedList;
+import java.util.List;
 
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
 import static ostryzhniuk.andriy.catering.clients.view.ContextMenu.initContextMenu;
@@ -70,7 +70,7 @@ public class ClientWindowController<T extends DtoClient> {
         tableView.getTableView().getItems().clear();
 
         dtoClientsList.addAll(FXCollections.observableArrayList(
-                sendARequestToTheServer(ClientCommandTypes.SELECT_CLIENTS, new LinkedList<>())));
+                sendARequestToTheServer(ClientCommandTypes.SELECT_CLIENT, new LinkedList<>())));
         tableView.getTableView().setItems(dtoClientsList);
     }
 
@@ -101,7 +101,7 @@ public class ClientWindowController<T extends DtoClient> {
         skypeCol.setCellFactory(TextFieldTableCell.forTableColumn());
     }
 
-    public void setColsDateProperties() {
+    private void setColsDateProperties() {
         nameCol.setPercentWidth(170); nameCol.setMinWidth(170);
         addressCol.setPercentWidth(220); addressCol.setMinWidth(220);
         telephoneCol.setPercentWidth(80); telephoneCol.setMinWidth(80);
@@ -112,16 +112,16 @@ public class ClientWindowController<T extends DtoClient> {
         skypeCol.setPercentWidth(100); skypeCol.setMinWidth(100);
     }
 
-    public void fillTableView(){
+    private void fillTableView(){
         tableView.getTableView().getColumns().addAll(nameCol, addressCol, telephoneCol, contactPersonCol,
                 discountCol, emailCol, icqCol, skypeCol);
     }
 
-    public void addNewClient(ActionEvent actionEvent) throws IOException {
-        showAddingNewClientWindow(null);
+    public void addRecord(ActionEvent actionEvent) throws IOException {
+        showEditingRecordWindow(null);
     }
 
-    public void showAddingNewClientWindow(Integer clientIdToUpdate) throws IOException {
+    public void showEditingRecordWindow(Integer clientIdToUpdate) throws IOException {
         Stage primaryStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clients.view/AddingNewClient.fxml"));
         Parent root = fxmlLoader.load();
@@ -150,8 +150,19 @@ public class ClientWindowController<T extends DtoClient> {
         int rowIndex = pos.getRow();
         DtoClient dtoClient = tableView.getTableView().getItems().get(rowIndex);
 
-        showAddingNewClientWindow(dtoClient.getId());
+        showEditingRecordWindow(dtoClient.getId());
 
+    }
+
+    public void removeRecord(){
+        TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
+        int rowIndex = pos.getRow();
+        DtoClient dtoClient = tableView.getTableView().getItems().get(rowIndex);
+
+        List<Object> objectList = new LinkedList<>();
+        objectList.add(dtoClient.getId());
+        sendARequestToTheServer(ClientCommandTypes.DELETE_CLIENT, objectList);
+        initTableView();
     }
 
 }

@@ -88,7 +88,12 @@ public class AddingNewClientController {
         String contactPerson = contactPersonTextField.getText();
         objectList.add(contactPerson);
 
-        BigDecimal discount = new BigDecimal(discountTextField.getText());
+        BigDecimal discount;
+        if (discountTextField.getText().isEmpty()) {
+            discount = new BigDecimal(0);
+        } else {
+            discount = new BigDecimal(discountTextField.getText());
+        }
         objectList.add(discount);
 
         String email = emailTextField.getText();
