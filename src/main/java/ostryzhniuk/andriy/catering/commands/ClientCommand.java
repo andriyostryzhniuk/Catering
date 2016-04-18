@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import static ostryzhniuk.andriy.catering.server.clients.view.ODBC_PubsBD.selectClients;
+import static ostryzhniuk.andriy.catering.server.clients.view.ODBC_PubsBD.insertClient;
 
 /**
  * Created by Andriy on 04/10/2016.
@@ -42,6 +43,7 @@ public class ClientCommand implements Serializable {
     }
 
     public Object processCommand() {
+//        for order view
         if (clientCommandType == ClientCommandTypes.SELECT_ORDER) {
             return selectOrders();
 
@@ -62,10 +64,13 @@ public class ClientCommand implements Serializable {
         } else if (clientCommandType == ClientCommandTypes.DELETE_ORDER) {
             ODBC_PubsBD.deleteOrder((Integer)objectList.get(0));
             return new LinkedList<>();
-
-
+//            for client view
         } else if (clientCommandType == ClientCommandTypes.SELECT_CLIENTS) {
             return selectClients();
+
+        } else if (clientCommandType == ClientCommandTypes.INSERT_CLIENT) {
+            insertClients();
+            return new LinkedList<>();
 
         } else {
             throw new IllegalArgumentException("NO SUCH COMMAND");
@@ -73,7 +78,7 @@ public class ClientCommand implements Serializable {
     }
 
 
-    public List<DtoOrder> selectOrders(){
+    private List<DtoOrder> selectOrders(){
         List<DtoOrder> dtoOrdersList = ODBC_PubsBD.selectOrders();
         dtoOrdersList.forEach(item -> {
             item.formattingDate();
@@ -82,14 +87,20 @@ public class ClientCommand implements Serializable {
         return dtoOrdersList;
     }
 
-    public void insertOrder(){
+    private void insertOrder(){
         ODBC_PubsBD.insertOrder((String)objectList.get(0), (Integer)objectList.get(1), (BigDecimal)objectList.get(2),
                 (BigDecimal)objectList.get(3), (BigDecimal)objectList.get(4));
     }
 
-    public void updateOrder(){
+    private void updateOrder(){
         ODBC_PubsBD.updateOrder((Integer)objectList.get(5), (String)objectList.get(0), (Integer)objectList.get(1),
                 (BigDecimal)objectList.get(2), (BigDecimal)objectList.get(3), (BigDecimal)objectList.get(4));
+    }
+
+    private void insertClients(){
+        insertClient((String) objectList.get(0), (String) objectList.get(1), (String) objectList.get(2),
+                (String) objectList.get(3), (BigDecimal) objectList.get(4), (String) objectList.get(5),
+                (Integer) objectList.get(6), (String) objectList.get(7));
     }
 
 }

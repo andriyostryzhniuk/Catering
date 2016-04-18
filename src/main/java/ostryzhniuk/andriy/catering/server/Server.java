@@ -2,7 +2,6 @@ package ostryzhniuk.andriy.catering.server;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ostryzhniuk.andriy.catering.clients.view.dto.DtoClient;
 import ostryzhniuk.andriy.catering.commands.ClientCommand;
 import ostryzhniuk.andriy.catering.server.mysql.DB_Connector;
 
@@ -10,7 +9,6 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 public class Server implements Runnable {
@@ -71,8 +69,8 @@ public class Server implements Runnable {
             while ((inputObject = objectIsSocket.readObject()) != null) {
                 clientCommand = (ClientCommand) inputObject;
                 responseObject = clientCommand.processCommand();
-                List<DtoClient> dtoClientList = (List<DtoClient>) responseObject;
-                LOGGER.info("dtoClientList.size: " + dtoClientList.size());
+//                List<DtoClient> dtoClientList = (List<DtoClient>) responseObject;
+//                LOGGER.info("dtoClientList.size: " + dtoClientList.size());
                 this.objectOsSocket.writeObject(responseObject);
             }
         } catch (Throwable t) {

@@ -23,12 +23,11 @@ import ostryzhniuk.andriy.catering.clients.view.dto.DtoClient;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.LinkedList;
-
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
+import static ostryzhniuk.andriy.catering.clients.view.ContextMenu.initContextMenu;
 
 public class ClientWindowController<T extends DtoClient> {
 
@@ -58,6 +57,7 @@ public class ClientWindowController<T extends DtoClient> {
         tableView.getTableView().getStylesheets().add(getClass().getResource("/order/view/TableViewStyle.css").toExternalForm());
         tableView.getTableView().setEditable(true);
         stackPane.getChildren().add(tableView);
+        initContextMenu(tableView.getTableView(), this);
         initTableView();
 
     }
@@ -115,6 +115,10 @@ public class ClientWindowController<T extends DtoClient> {
     }
 
     public void addNewClient(ActionEvent actionEvent) throws IOException {
+        showAddingNewClientWindow();
+    }
+
+    public void showAddingNewClientWindow() throws IOException {
         Stage primaryStage = new Stage();
         ClassLoader classLoader = getClass().getClassLoader();
         Parent root = FXMLLoader.load(classLoader.getResource("clients.view/AddingNewClient.fxml"));
@@ -123,6 +127,10 @@ public class ClientWindowController<T extends DtoClient> {
         primaryStage.initModality(Modality.WINDOW_MODAL);
         primaryStage.initOwner(tableView.getTableView().getScene().getWindow());
         primaryStage.showAndWait();
+    }
+
+    public void editRecord(){
+
     }
 
 }

@@ -9,8 +9,15 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
+
+import java.math.BigDecimal;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
 
 /**
  * Created by Andriy on 04/18/2016.
@@ -63,7 +70,33 @@ public class AddingNewClientController {
         stage.close();
     }
 
-    public void save(ActionEvent actionEvent) {
+    public void saveToDB(ActionEvent actionEvent) {
+        List<Object> objectList = new LinkedList<>();
 
+        String name = nameTextField.getText();
+        objectList.add(name);
+
+        String address = addressTextField.getText();
+        objectList.add(address);
+
+        String telephone = telephoneTextField.getText();
+        objectList.add(telephone);
+
+        String contactPerson = contactPersonTextField.getText();
+        objectList.add(contactPerson);
+
+        BigDecimal discount = new BigDecimal(discountTextField.getText());
+        objectList.add(discount);
+
+        String email = emailTextField.getText();
+        objectList.add(email);
+
+        Integer icq = new Integer(icqTextField.getText());
+        objectList.add(icq);
+
+        String skype = skypeTextField.getText();
+        objectList.add(skype);
+
+        sendARequestToTheServer(ClientCommandTypes.INSERT_CLIENT, objectList);
     }
 }

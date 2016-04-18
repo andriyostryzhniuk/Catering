@@ -8,6 +8,8 @@ public enum ClientCommandTypes {
     SELECT_CLIENT_ID(),
     UPDATE_ORDER(),
     DELETE_ORDER(),
-    SELECT_CLIENTS;
+    ///
+    SELECT_CLIENTS,
+    INSERT_CLIENT;
 
 }

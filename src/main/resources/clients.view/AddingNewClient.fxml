@@ -87,7 +87,7 @@
                                         prefWidth="72.0" text="Скасувати" GridPane.columnIndex="2"/>
                                 <Button fx:id="saveButton" maxHeight="25.0" maxWidth="72.0" minHeight="25.0"
                                         minWidth="72.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0"
-                                        text="Зберегти" GridPane.columnIndex="1" onAction="#save" >
+                                        text="Зберегти" GridPane.columnIndex="1" onAction="#saveToDB" >
                                     <GridPane.margin>
                                         <Insets right="5.0"/>
                                     </GridPane.margin>

@@ -44,9 +44,12 @@ public class ODBC_PubsBD {
         return clientIdList;
     }
 
-    public static void insertOrder(String date, Integer clientId, BigDecimal cost, BigDecimal discount, BigDecimal paid){
-        getJdbcTemplate().update("INSERT INTO ordering (id, date, client_id, cost, discount, paid) " +
-                "VALUES (null, convert('" + date + "', DATE), " + clientId + ", " + cost + ", " + discount + ", " + paid + ")");
+    public static void insertClient(String name, String address, String telephoneNumber, String contactPerson,
+                                    BigDecimal discount, String email, Integer icq, String skype){
+        getJdbcTemplate().update("INSERT INTO client (id, name, address, telephoneNumber, contactPerson, " +
+                "discount, email, icq, skype) " +
+                "VALUES (null, '" + name + "', '" + address + "', '" + telephoneNumber + "', '" + contactPerson + "', " +
+                "" + discount + ", '" + email + "', " + icq + ", '" + skype + "')");
     }
 
     public static void updateOrder(int id, String date, int clientId, BigDecimal cost, BigDecimal discount, BigDecimal paid){
