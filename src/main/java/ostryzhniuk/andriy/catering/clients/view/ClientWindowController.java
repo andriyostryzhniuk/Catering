@@ -2,13 +2,19 @@ package ostryzhniuk.andriy.catering.clients.view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.converter.BigDecimalStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import org.slf4j.Logger;
@@ -17,6 +23,8 @@ import ostryzhniuk.andriy.catering.clients.view.dto.DtoClient;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
+
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 
@@ -28,9 +36,6 @@ public class ClientWindowController<T extends DtoClient> {
 
     public BorderPane rootBorderPane;
     public StackPane stackPane;
-
-    public Button saveButton;
-    public Button escapeButton;
 
     @FXML
     private TableViewHolder<T> tableView = new TableViewHolder<>();
@@ -109,48 +114,15 @@ public class ClientWindowController<T extends DtoClient> {
                 discountCol, emailCol, icqCol, skypeCol);
     }
 
-//    public void saveToDB(ActionEvent actionEvent) {
-
-//    }
-//
-//    public void escape(ActionEvent actionEvent) {
-//        orderId = null;
-//        controlsElements.clear();
-//    }
-//
-//    public void editRecord(){
-//        TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
-//        int rowIndex = pos.getRow();
-//        DtoOrder dtoOrder = tableView.getTableView().getItems().get(rowIndex);
-//
-//        java.util.Date inputDate = dtoOrder.getDate();
-//        LocalDate localDate = inputDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//        datePicker.setValue(localDate);
-//
-//        clientComboBox.setValue(dtoOrder.getClient());
-//        comboBoxListener.setValue(dtoOrder.getClient());
-//
-//        costTextField.setText(dtoOrder.getCost().toString());
-//        controlsElements.costTextFieldValidation();
-//
-//        discountTextField.setText(dtoOrder.getDiscount().toString());
-//        controlsElements.discountTextFieldValidation();
-//
-//        paidTextField.setText(dtoOrder.getPaid().toString());
-//        controlsElements.paidTextFieldValidation();
-//
-//        orderId = dtoOrder.getId();
-//    }
-//
-//    public void removeRecord(){
-//        TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
-//        int rowIndex = pos.getRow();
-//        DtoOrder dtoOrder = tableView.getTableView().getItems().get(rowIndex);
-//
-//        List<Object> objectList = new LinkedList<>();
-//        objectList.add(dtoOrder.getId());
-//        sendARequestToTheServer(ClientCommandTypes.DELETE_ORDER, objectList);
-//        initTableView();
-//    }
+    public void addNewClient(ActionEvent actionEvent) throws IOException {
+        Stage primaryStage = new Stage();
+        ClassLoader classLoader = getClass().getClassLoader();
+        Parent root = FXMLLoader.load(classLoader.getResource("clients.view/AddingNewClient.fxml"));
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
+        primaryStage.setScene(new Scene(root, 500, 500, Color.rgb(0, 0, 0, 0)));
+        primaryStage.initModality(Modality.WINDOW_MODAL);
+        primaryStage.initOwner(tableView.getTableView().getScene().getWindow());
+        primaryStage.showAndWait();
+    }
 
 }
