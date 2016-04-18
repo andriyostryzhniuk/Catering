@@ -2,31 +2,22 @@ package ostryzhniuk.andriy.catering.clients.view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
-import ostryzhniuk.andriy.catering.order.view.ControlsElements;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
 
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.LinkedList;
-import java.util.List;
 
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
-import static ostryzhniuk.andriy.catering.order.view.ContextMenu.initContextMenu;
 
 public class ClientWindowController<T extends DtoOrder> {
 

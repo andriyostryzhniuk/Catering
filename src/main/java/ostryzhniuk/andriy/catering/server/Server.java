@@ -3,15 +3,12 @@ package ostryzhniuk.andriy.catering.server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.commands.ClientCommand;
-import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.server.mysql.DB_Connector;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 public class Server implements Runnable {

@@ -7,7 +7,6 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
-import ostryzhniuk.andriy.catering.order.view.OrderWindowController;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 
 /**
