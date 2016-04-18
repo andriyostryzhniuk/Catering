@@ -29,7 +29,7 @@ public class ContextMenu {
                 MenuItem addItem = new MenuItem("Додати");
                 addItem.setOnAction((ActionEvent event) -> {
                     try {
-                        clientWindowController.showAddingNewClientWindow();
+                        clientWindowController.showAddingNewClientWindow(null);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -37,7 +37,11 @@ public class ContextMenu {
 
                 MenuItem editItem = new MenuItem("Редагувати");
                 editItem.setOnAction((ActionEvent event) -> {
-                    clientWindowController.editRecord();
+                    try {
+                        clientWindowController.editRecord();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 });
 
                 MenuItem removeItem = new MenuItem("Видалити");
@@ -53,4 +57,5 @@ public class ContextMenu {
             }
         });
     }
+
 }

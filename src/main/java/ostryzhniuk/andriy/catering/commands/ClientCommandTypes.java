@@ -10,6 +10,7 @@ public enum ClientCommandTypes {
     DELETE_ORDER(),
     ///
     SELECT_CLIENTS,
-    INSERT_CLIENT;
+    INSERT_CLIENT,
+    UPDATE_CLIENT;
 
 }

@@ -35,6 +35,8 @@ public class AddingNewClientController {
     public TextField icqTextField;
     public TextField skypeTextField;
 
+    private Integer clientIdToUpdate;
+    private ClientWindowController clientWindowController;
     private boolean isException = false;
 
     public void showPrompt() {
@@ -67,6 +69,7 @@ public class AddingNewClientController {
 
     public void close(){
         Stage stage = (Stage) rootGroup.getScene().getWindow();
+        clientWindowController.initTableView();
         stage.close();
     }
 
@@ -97,6 +100,34 @@ public class AddingNewClientController {
         String skype = skypeTextField.getText();
         objectList.add(skype);
 
-        sendARequestToTheServer(ClientCommandTypes.INSERT_CLIENT, objectList);
+        if (clientIdToUpdate == null) {
+            sendARequestToTheServer(ClientCommandTypes.INSERT_CLIENT, objectList);
+        } else {
+            objectList.add(clientIdToUpdate);
+            sendARequestToTheServer(ClientCommandTypes.UPDATE_CLIENT, objectList);
+        }
+        close();
     }
+
+    public void setClientIdToUpdate(Integer clientIdToUpdate) {
+        this.clientIdToUpdate = clientIdToUpdate;
+    }
+
+    public void setClientWindowController(ClientWindowController clientWindowController) {
+        this.clientWindowController = clientWindowController;
+    }
+
+    public void setTextToTextFields(String name, String address, String telephoneNumber, String contactPerson,
+                                    BigDecimal discount, String email, Integer icq, String skype){
+        this.nameTextField.setText(name);
+        this.addressTextField.setText(address);
+        this.telephoneTextField.setText(telephoneNumber);
+        this.contactPersonTextField.setText(contactPerson);
+        this.discountTextField.setText(discount.toString());
+        this.emailTextField.setText(email);
+        this.icqTextField.setText(icq.toString());
+        this.skypeTextField.setText(skype);
+    }
+
+
 }

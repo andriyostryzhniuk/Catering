@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import static ostryzhniuk.andriy.catering.server.clients.view.ODBC_PubsBD.selectClients;
 import static ostryzhniuk.andriy.catering.server.clients.view.ODBC_PubsBD.insertClient;
+import static ostryzhniuk.andriy.catering.server.clients.view.ODBC_PubsBD.updateClient;
 
 /**
  * Created by Andriy on 04/10/2016.
@@ -71,6 +72,9 @@ public class ClientCommand implements Serializable {
         } else if (clientCommandType == ClientCommandTypes.INSERT_CLIENT) {
             insertClients();
             return new LinkedList<>();
+        } else if (clientCommandType == ClientCommandTypes.UPDATE_CLIENT) {
+            updateClients();
+            return new LinkedList<>();
 
         } else {
             throw new IllegalArgumentException("NO SUCH COMMAND");
@@ -101,6 +105,12 @@ public class ClientCommand implements Serializable {
         insertClient((String) objectList.get(0), (String) objectList.get(1), (String) objectList.get(2),
                 (String) objectList.get(3), (BigDecimal) objectList.get(4), (String) objectList.get(5),
                 (Integer) objectList.get(6), (String) objectList.get(7));
+    }
+
+    private void updateClients(){
+        updateClient((String) objectList.get(0), (String) objectList.get(1), (String) objectList.get(2),
+                (String) objectList.get(3), (BigDecimal) objectList.get(4), (String) objectList.get(5),
+                (Integer) objectList.get(6), (String) objectList.get(7), (Integer) objectList.get(8));
     }
 
 }

@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
@@ -23,9 +24,11 @@ import ostryzhniuk.andriy.catering.clients.view.dto.DtoClient;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.LinkedList;
+
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
 import static ostryzhniuk.andriy.catering.clients.view.ContextMenu.initContextMenu;
 
@@ -115,13 +118,26 @@ public class ClientWindowController<T extends DtoClient> {
     }
 
     public void addNewClient(ActionEvent actionEvent) throws IOException {
-        showAddingNewClientWindow();
+        showAddingNewClientWindow(null);
     }
 
-    public void showAddingNewClientWindow() throws IOException {
+    public void showAddingNewClientWindow(Integer clientIdToUpdate) throws IOException {
         Stage primaryStage = new Stage();
-        ClassLoader classLoader = getClass().getClassLoader();
-        Parent root = FXMLLoader.load(classLoader.getResource("clients.view/AddingNewClient.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clients.view/AddingNewClient.fxml"));
+        Parent root = fxmlLoader.load();
+
+        AddingNewClientController addingNewClientController = fxmlLoader.getController();
+        addingNewClientController.setClientIdToUpdate(clientIdToUpdate);
+        addingNewClientController.setClientWindowController(this);
+        if (clientIdToUpdate != null) {
+            TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
+            int rowIndex = pos.getRow();
+            DtoClient dtoClient = tableView.getTableView().getItems().get(rowIndex);
+            addingNewClientController.setTextToTextFields(dtoClient.getName(), dtoClient.getAddress(),
+                    dtoClient.getTelephoneNumber(), dtoClient.getContactPerson(), dtoClient.getDiscount(),
+                    dtoClient.getEmail(), dtoClient.getIcq(), dtoClient.getSkype());
+        }
+
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setScene(new Scene(root, 500, 500, Color.rgb(0, 0, 0, 0)));
         primaryStage.initModality(Modality.WINDOW_MODAL);
@@ -129,7 +145,12 @@ public class ClientWindowController<T extends DtoClient> {
         primaryStage.showAndWait();
     }
 
-    public void editRecord(){
+    public void editRecord() throws IOException {
+        TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
+        int rowIndex = pos.getRow();
+        DtoClient dtoClient = tableView.getTableView().getItems().get(rowIndex);
+
+        showAddingNewClientWindow(dtoClient.getId());
 
     }
 

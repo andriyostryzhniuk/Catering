@@ -52,13 +52,17 @@ public class ODBC_PubsBD {
                 "" + discount + ", '" + email + "', " + icq + ", '" + skype + "')");
     }
 
-    public static void updateOrder(int id, String date, int clientId, BigDecimal cost, BigDecimal discount, BigDecimal paid){
-        getJdbcTemplate().update("UPDATE ordering " +
-                "SET date = convert('" + date + "', DATE), " +
-                "client_id = " + clientId + ", " +
-                "cost = " + cost + ", " +
+    public static void updateClient(String name, String address, String telephoneNumber, String contactPerson,
+                                   BigDecimal discount, String email, Integer icq, String skype, int id){
+        getJdbcTemplate().update("UPDATE client " +
+                "SET name = '" + name + "', " +
+                "address = '" + address + "', " +
+                "telephoneNumber = '" + telephoneNumber + "', " +
+                "contactPerson = '" + contactPerson + "', " +
                 "discount = " + discount + ", " +
-                "paid = " + paid + " " +
+                "email = '" + email + "', " +
+                "icq = " + icq + ", " +
+                "skype = '" + skype + "' " +
                 "WHERE id = " + id + "");
     }
 
