@@ -4,8 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
-
+import ostryzhniuk.andriy.catering.clients.view.dto.DtoClient;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,11 +15,11 @@ public class ODBC_PubsBD {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ODBC_PubsBD.class);
 
-    public static List<DtoOrder> selectClients() {
-        List<DtoOrder> dtoOrdersList = getJdbcTemplate().query("select id, name, address, telephoneNumber, " +
+    public static List<DtoClient> selectClients() {
+        List<DtoClient> dtoClientsList = getJdbcTemplate().query("select id, name, address, telephoneNumber, " +
                 "contactPerson, discount, email, icq, skype " +
-                "from client", BeanPropertyRowMapper.newInstance(DtoOrder.class));
-        return dtoOrdersList;
+                "from client", BeanPropertyRowMapper.newInstance(DtoClient.class));
+        return dtoClientsList;
     }
 
     public static List<String> selectClientNames() {

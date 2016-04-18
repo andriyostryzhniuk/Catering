@@ -1,11 +1,12 @@
 package ostryzhniuk.andriy.catering.clients.view.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * Created by Andriy on 04/18/2016.
  */
-public class DtoClient {
+public class DtoClient implements Serializable {
     private int id;
     private String name;
     private String address;
@@ -19,16 +20,33 @@ public class DtoClient {
     public DtoClient() {
     }
 
-    public DtoClient(String address, String contactPerson, BigDecimal discount, String email, Integer icq, int id, String name, String skype, String telephoneNumber) {
+    public DtoClient(int id, String name, String address, String telephoneNumber, String contactPerson,
+                     BigDecimal discount, String email, Integer icq, String skype) {
+        this.id = id;
+        this.name = name;
         this.address = address;
+        this.telephoneNumber = telephoneNumber;
         this.contactPerson = contactPerson;
         this.discount = discount;
         this.email = email;
         this.icq = icq;
-        this.id = id;
-        this.name = name;
         this.skype = skype;
-        this.telephoneNumber = telephoneNumber;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddress() {
@@ -37,6 +55,14 @@ public class DtoClient {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
     }
 
     public String getContactPerson() {
@@ -71,35 +97,11 @@ public class DtoClient {
         this.icq = icq;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getSkype() {
         return skype;
     }
 
     public void setSkype(String skype) {
         this.skype = skype;
-    }
-
-    public String getTelephoneNumber() {
-        return telephoneNumber;
-    }
-
-    public void setTelephoneNumber(String telephoneNumber) {
-        this.telephoneNumber = telephoneNumber;
     }
 }

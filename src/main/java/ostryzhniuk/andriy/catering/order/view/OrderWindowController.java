@@ -7,9 +7,11 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.util.converter.BigDecimalStringConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
@@ -62,6 +64,7 @@ public class OrderWindowController<T extends DtoOrder> {
         setColsDateProperties();
         fillTableView();
         tableView.getTableView().getStylesheets().add(getClass().getResource("/order/view/TableViewStyle.css").toExternalForm());
+        tableView.getTableView().setEditable(true);
         stackPane.getChildren().add(tableView);
         initContextMenu(tableView.getTableView(), this);
         initTableView();
@@ -97,6 +100,13 @@ public class OrderWindowController<T extends DtoOrder> {
         discountCol.setCellValueFactory(new PropertyValueFactory("discount"));
         billCol.setCellValueFactory(new PropertyValueFactory("bill"));
         paidCol.setCellValueFactory(new PropertyValueFactory("paid"));
+
+        dateCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        clientCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        costCol.setCellFactory(TextFieldTableCell.<T, BigDecimal>forTableColumn(new BigDecimalStringConverter()));
+        discountCol.setCellFactory(TextFieldTableCell.<T, BigDecimal>forTableColumn(new BigDecimalStringConverter()));
+        billCol.setCellFactory(TextFieldTableCell.<T, BigDecimal>forTableColumn(new BigDecimalStringConverter()));
+        paidCol.setCellFactory(TextFieldTableCell.<T, BigDecimal>forTableColumn(new BigDecimalStringConverter()));
     }
 
     public void setColsDateProperties() {

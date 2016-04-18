@@ -37,7 +37,7 @@ public class DtoOrder implements Serializable {
     }
 
     public void formattingDate(){
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         this.formatDate = dateFormat.format(this.date);
     }
 

@@ -2,24 +2,27 @@ package ostryzhniuk.andriy.catering.clients.view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.util.converter.BigDecimalStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ostryzhniuk.andriy.catering.clients.view.dto.DtoClient;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
-import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
-
 import java.math.BigDecimal;
 import java.util.LinkedList;
 
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
 
-public class ClientWindowController<T extends DtoOrder> {
+public class ClientWindowController<T extends DtoClient> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientWindowController.class);
 
@@ -31,14 +34,16 @@ public class ClientWindowController<T extends DtoOrder> {
 
     @FXML
     private TableViewHolder<T> tableView = new TableViewHolder<>();
-    public CustomTableColumn<T, String> dateCol = new CustomTableColumn<>("Дата");
-    public CustomTableColumn<T, String> clientCol = new CustomTableColumn<>("Клієнт");
-    public CustomTableColumn<T, BigDecimal> costCol = new CustomTableColumn<>("Вартість");
+    public CustomTableColumn<T, String> nameCol = new CustomTableColumn<>("Назва");
+    public CustomTableColumn<T, String> addressCol = new CustomTableColumn<>("Адреса");
+    public CustomTableColumn<T, String> telephoneCol = new CustomTableColumn<>("Телефон");
+    public CustomTableColumn<T, String> contactPersonCol = new CustomTableColumn<>("Контактна особа");
     public CustomTableColumn<T, BigDecimal> discountCol = new CustomTableColumn<>("Знижка (%)");
-    public CustomTableColumn<T, BigDecimal> billCol = new CustomTableColumn<>("До сплати");
-    public CustomTableColumn<T, BigDecimal> paidCol = new CustomTableColumn<>("Сплачено");
+    public CustomTableColumn<T, String> emailCol = new CustomTableColumn<>("E-mail");
+    public CustomTableColumn<T, Integer> icqCol = new CustomTableColumn<>("ICQ");
+    public CustomTableColumn<T, String> skypeCol = new CustomTableColumn<>("Skype");
 
-    private ObservableList<T> dtoOrdersList = FXCollections.observableArrayList();
+    private ObservableList<T> dtoClientsList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize(){
@@ -46,40 +51,62 @@ public class ClientWindowController<T extends DtoOrder> {
         setColsDateProperties();
         fillTableView();
         tableView.getTableView().getStylesheets().add(getClass().getResource("/order/view/TableViewStyle.css").toExternalForm());
+        tableView.getTableView().setEditable(true);
         stackPane.getChildren().add(tableView);
         initTableView();
 
     }
 
     public void initTableView(){
-        dtoOrdersList.clear();
+        dtoClientsList.clear();
         tableView.getTableView().getItems().clear();
 
-        dtoOrdersList.addAll(FXCollections.observableArrayList(
-                sendARequestToTheServer(ClientCommandTypes.SELECT_ORDER, new LinkedList<>())));
-        tableView.getTableView().setItems(dtoOrdersList);
+        dtoClientsList.addAll(FXCollections.observableArrayList(
+                sendARequestToTheServer(ClientCommandTypes.SELECT_CLIENTS, new LinkedList<>())));
+        tableView.getTableView().setItems(dtoClientsList);
     }
 
     private void fillCols() {
-        dateCol.setCellValueFactory(new PropertyValueFactory("formatDate"));
-        clientCol.setCellValueFactory(new PropertyValueFactory("client"));
-        costCol.setCellValueFactory(new PropertyValueFactory("cost"));
+        nameCol.setCellValueFactory(new PropertyValueFactory("name"));
+//        nameCol.setOnEditCommit(event -> {
+//            final TableColumn.CellEditEvent<T, String> t = (TableColumn.CellEditEvent) event;
+//            ((T) t.getTableView().getItems().get(
+//                    t.getTablePosition().getRow())
+//            ).setName(t.getNewValue());
+//        });
+
+        addressCol.setCellValueFactory(new PropertyValueFactory("address"));
+        telephoneCol.setCellValueFactory(new PropertyValueFactory("telephoneNumber"));
+        contactPersonCol.setCellValueFactory(new PropertyValueFactory("contactPerson"));
         discountCol.setCellValueFactory(new PropertyValueFactory("discount"));
-        billCol.setCellValueFactory(new PropertyValueFactory("bill"));
-        paidCol.setCellValueFactory(new PropertyValueFactory("paid"));
+        emailCol.setCellValueFactory(new PropertyValueFactory("email"));
+        icqCol.setCellValueFactory(new PropertyValueFactory("icq"));
+        skypeCol.setCellValueFactory(new PropertyValueFactory("skype"));
+
+        nameCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        addressCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        telephoneCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        contactPersonCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        discountCol.setCellFactory(TextFieldTableCell.<T, BigDecimal>forTableColumn(new BigDecimalStringConverter()));
+        emailCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        icqCol.setCellFactory(TextFieldTableCell.<T, Integer>forTableColumn(new IntegerStringConverter()));
+        skypeCol.setCellFactory(TextFieldTableCell.forTableColumn());
     }
 
     public void setColsDateProperties() {
-        dateCol.setPercentWidth(80); dateCol.setMinWidth(80);
-        clientCol.setPercentWidth(200); clientCol.setMinWidth(200);
-        costCol.setPercentWidth(100); costCol.setMinWidth(100);
-        discountCol.setPercentWidth(100); discountCol.setMinWidth(100);
-        billCol.setPercentWidth(100); billCol.setMinWidth(100);
-        paidCol.setPercentWidth(100); paidCol.setMinWidth(100);
+        nameCol.setPercentWidth(170); nameCol.setMinWidth(170);
+        addressCol.setPercentWidth(220); addressCol.setMinWidth(220);
+        telephoneCol.setPercentWidth(80); telephoneCol.setMinWidth(80);
+        contactPersonCol.setPercentWidth(170); contactPersonCol.setMinWidth(170);
+        discountCol.setPercentWidth(70); discountCol.setMinWidth(70);
+        emailCol.setPercentWidth(100); emailCol.setMinWidth(100);
+        icqCol.setPercentWidth(70); icqCol.setMinWidth(70);
+        skypeCol.setPercentWidth(100); skypeCol.setMinWidth(100);
     }
 
     public void fillTableView(){
-        tableView.getTableView().getColumns().addAll(dateCol, clientCol, costCol, discountCol, billCol, paidCol);
+        tableView.getTableView().getColumns().addAll(nameCol, addressCol, telephoneCol, contactPersonCol,
+                discountCol, emailCol, icqCol, skypeCol);
     }
 
 //    public void saveToDB(ActionEvent actionEvent) {
