@@ -43,7 +43,7 @@ public class MenuTableView<T extends DtoMenu> {
         fillCols();
         setColsDateProperties();
         fillTableView();
-        tableView.getTableView().getStylesheets().add(getClass().getResource("/order/view/TableViewStyle.css").toExternalForm());
+        tableView.getTableView().getStylesheets().add(getClass().getResource("/styles/TableViewStyle.css").toExternalForm());
         tableView.getTableView().setEditable(true);
         stackPane.getChildren().add(tableView);
 //        initContextMenu(tableView.getTableView(), this);

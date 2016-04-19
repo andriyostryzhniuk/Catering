@@ -2,10 +2,12 @@ package ostryzhniuk.andriy.catering.clients.view;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
 
@@ -34,6 +38,8 @@ public class AddingNewClientController {
     public TextField emailTextField;
     public TextField icqTextField;
     public TextField skypeTextField;
+    public Label exceptionLabel;
+    public Label titleLabel;
 
     private Integer clientIdToUpdate;
     private ClientWindowController clientWindowController;
@@ -61,6 +67,11 @@ public class AddingNewClientController {
                 }, 1000, 5000);
             }
         });
+    }
+
+    @FXML
+    public void initialize(){
+        verifyTextField();
     }
 
     public void escape(ActionEvent actionEvent) {
@@ -116,6 +127,11 @@ public class AddingNewClientController {
 
     public void setClientIdToUpdate(Integer clientIdToUpdate) {
         this.clientIdToUpdate = clientIdToUpdate;
+        if (clientIdToUpdate == null) {
+            titleLabel.setText("Додати клієнта");
+        } else {
+            titleLabel.setText("Редагувати інформацію про клієнта");
+        }
     }
 
     public void setClientWindowController(ClientWindowController clientWindowController) {
@@ -132,6 +148,25 @@ public class AddingNewClientController {
         this.emailTextField.setText(email);
         this.icqTextField.setText(icq.toString());
         this.skypeTextField.setText(skype);
+    }
+
+    public void verifyTextField() {
+        nameTextField.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
+        nameTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-Я& -]");
+            Matcher matcher = pattern.matcher(nameTextField.getText());
+            if (matcher.find()) {
+                if (!nameTextField.getStyleClass().contains("warning")) {
+                    nameTextField.getStyleClass().add("warning");
+                    exceptionLabel.setText("Назва не може містити інших символів крім\nлатинських та кириличних");
+                }
+            }
+        });
+
+        nameTextField.setOnMouseClicked((MouseEvent event) -> {
+            nameTextField.getStyleClass().remove("warning");
+            exceptionLabel.setText("");
+        });
     }
 
 

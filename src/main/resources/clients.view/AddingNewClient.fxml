@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.*?>
 <?import java.lang.*?>
@@ -7,121 +8,118 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Group fx:id="rootGroup" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-       fx:controller="ostryzhniuk.andriy.catering.clients.view.AddingNewClientController">
+<Group fx:id="rootGroup" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ostryzhniuk.andriy.catering.clients.view.AddingNewClientController">
     <children>
-        <Rectangle arcHeight="15.0" arcWidth="15.0" fill="#0000008c" height="500.0" stroke="#ffffffe5"
-                   strokeType="INSIDE" strokeWidth="1.5" width="500.0"/>
+        <Rectangle arcHeight="15.0" arcWidth="15.0" fill="#0000008c" height="500.0" stroke="#ffffffe5" strokeType="INSIDE" strokeWidth="1.5" width="500.0" />
         <GridPane alignment="CENTER" prefHeight="500.0" prefWidth="500.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
                 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
                     <children>
-                        <Label text="Назва:" textFill="WHITE" GridPane.halignment="RIGHT">
+                        <Label text="Назва:" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                             <GridPane.margin>
-                                <Insets right="10.0"/>
+                                <Insets right="10.0" />
                             </GridPane.margin>
                         </Label>
-                        <Label text="Адреса:" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                        <Label text="Адреса:" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                             <GridPane.margin>
-                                <Insets right="10.0"/>
+                                <Insets right="10.0" />
                             </GridPane.margin>
                         </Label>
-                        <Label text="Контактний телефон:" textFill="WHITE" GridPane.halignment="RIGHT"
-                               GridPane.rowIndex="2">
+                        <Label text="Контактний телефон:" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                             <GridPane.margin>
-                                <Insets right="10.0"/>
+                                <Insets right="10.0" />
                             </GridPane.margin>
                         </Label>
-                        <Label text="Контактна особа:" textFill="WHITE" GridPane.halignment="RIGHT"
-                               GridPane.rowIndex="3">
+                        <Label text="Контактна особа:" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                             <GridPane.margin>
-                                <Insets right="10.0"/>
+                                <Insets right="10.0" />
                             </GridPane.margin>
                         </Label>
-                        <Label text="Знижка клієнта: (%)" textFill="WHITE" GridPane.halignment="RIGHT"
-                               GridPane.rowIndex="4">
+                        <Label text="Знижка клієнта: (%)" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                             <GridPane.margin>
-                                <Insets right="10.0"/>
+                                <Insets right="10.0" />
                             </GridPane.margin>
                         </Label>
-                        <Label text="E-mail:" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+                        <Label text="E-mail:" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
                             <GridPane.margin>
-                                <Insets right="10.0"/>
+                                <Insets right="10.0" />
                             </GridPane.margin>
                         </Label>
-                        <Label text="ICQ:" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+                        <Label text="ICQ:" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
                             <GridPane.margin>
-                                <Insets right="10.0"/>
+                                <Insets right="10.0" />
                             </GridPane.margin>
                         </Label>
-                        <Label text="Skype:" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
+                        <Label text="Skype:" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
                             <GridPane.margin>
-                                <Insets right="10.0"/>
+                                <Insets right="10.0" />
                             </GridPane.margin>
                         </Label>
-                        <TextField fx:id="nameTextField" promptText="Назва" GridPane.columnIndex="1"/>
-                        <TextField fx:id="addressTextField" promptText="Адреса" GridPane.columnIndex="1"
-                                   GridPane.rowIndex="1"/>
-                        <TextField fx:id="telephoneTextField" promptText="Контактний телефон" GridPane.columnIndex="1"
-                                   GridPane.rowIndex="2"/>
-                        <TextField fx:id="contactPersonTextField" promptText="Контактна особа" GridPane.columnIndex="1"
-                                   GridPane.rowIndex="3"/>
-                        <TextField fx:id="discountTextField" promptText="Знижка клієнта (%)" GridPane.columnIndex="1"
-                                   GridPane.rowIndex="4"/>
-                        <TextField fx:id="emailTextField" promptText="E-mail" GridPane.columnIndex="1"
-                                   GridPane.rowIndex="5"/>
-                        <TextField fx:id="icqTextField" promptText="ICQ" GridPane.columnIndex="1"
-                                   GridPane.rowIndex="6"/>
-                        <TextField fx:id="skypeTextField" promptText="Skype" GridPane.columnIndex="1"
-                                   GridPane.rowIndex="7"/>
-                        <GridPane GridPane.columnIndex="1" GridPane.rowIndex="8">
+                        <TextField fx:id="nameTextField" promptText="Назва" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="addressTextField" promptText="Адреса" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="telephoneTextField" promptText="Контактний телефон" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="contactPersonTextField" promptText="Контактна особа" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <TextField fx:id="discountTextField" promptText="Знижка клієнта (%)" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <TextField fx:id="emailTextField" promptText="E-mail" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <TextField fx:id="icqTextField" promptText="ICQ" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <TextField fx:id="skypeTextField" promptText="Skype" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        <GridPane GridPane.columnIndex="1" GridPane.rowIndex="9">
                             <children>
-                                <Button fx:id="escapeButton" maxHeight="25.0" maxWidth="72.0" minHeight="25.0"
-                                        minWidth="72.0" mnemonicParsing="false" onAction="#escape" prefHeight="25.0"
-                                        prefWidth="72.0" text="Скасувати" GridPane.columnIndex="2"/>
-                                <Button fx:id="saveButton" maxHeight="25.0" maxWidth="72.0" minHeight="25.0"
-                                        minWidth="72.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0"
-                                        text="Зберегти" GridPane.columnIndex="1" onAction="#saveToDB" >
+                                <Button fx:id="escapeButton" maxHeight="25.0" maxWidth="72.0" minHeight="25.0" minWidth="72.0" mnemonicParsing="false" onAction="#escape" prefHeight="25.0" prefWidth="72.0" text="Скасувати" GridPane.columnIndex="2" />
+                                <Button fx:id="saveButton" maxHeight="25.0" maxWidth="72.0" minHeight="25.0" minWidth="72.0" mnemonicParsing="false" onAction="#saveToDB" prefHeight="25.0" prefWidth="72.0" text="Зберегти" GridPane.columnIndex="1">
                                     <GridPane.margin>
-                                        <Insets right="5.0"/>
+                                        <Insets right="5.0" />
                                     </GridPane.margin>
                                 </Button>
                             </children>
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES"/>
-                                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="77.0" minWidth="77.0"
-                                                   prefWidth="77.0"/>
-                                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="72.0" minWidth="72.0"
-                                                   prefWidth="72.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" />
+                                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="77.0" minWidth="77.0" prefWidth="77.0" />
+                                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="72.0" minWidth="72.0" prefWidth="72.0" />
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES"/>
+                                <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
                             </rowConstraints>
                         </GridPane>
+                  <Label fx:id="exceptionLabel" textFill="#f5e507" GridPane.columnIndex="1">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
                     </children>
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="150.0" prefWidth="150.0"/>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="300.0" prefWidth="300.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES"/>
+                  <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
             </children>
         </GridPane>
+      <Pane prefHeight="40.0" prefWidth="300.0">
+         <children>
+            <Label fx:id="titleLabel" layoutX="53.0" layoutY="14.0" textFill="WHITE">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
     </children>
 </Group>

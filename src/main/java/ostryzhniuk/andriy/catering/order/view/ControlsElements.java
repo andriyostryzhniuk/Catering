@@ -98,7 +98,7 @@ public class ControlsElements {
     }
 
     public void setCostTextFieldListener() {
-        costTextField.getStylesheets().add(getClass().getResource("/order/view/TextFieldStyle.css").toExternalForm());
+        costTextField.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
         costTextField.setTooltip(new Tooltip("Вартість замовлення"));
         costTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
@@ -142,7 +142,7 @@ public class ControlsElements {
     }
 
     public void setDiscountTextFieldListener() {
-        discountTextField.getStylesheets().add(getClass().getResource("/order/view/TextFieldStyle.css").toExternalForm());
+        discountTextField.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
         discountTextField.setTooltip(new Tooltip("Знижка для клієнта (у відсотках)"));
         discountTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
@@ -188,7 +188,7 @@ public class ControlsElements {
     }
 
     public void setPaidTextFieldListener() {
-        paidTextField.getStylesheets().add(getClass().getResource("/order/view/TextFieldStyle.css").toExternalForm());
+        paidTextField.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
         paidTextField.setTooltip(new Tooltip("Сплачено"));
         paidTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
