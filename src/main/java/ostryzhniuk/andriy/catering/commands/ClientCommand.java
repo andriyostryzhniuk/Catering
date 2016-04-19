@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static ostryzhniuk.andriy.catering.server.clients.view.ODBC_PubsBD.*;
+import static ostryzhniuk.andriy.catering.server.menu.view.ODBC_PubsBD.selectMenu;
 
 /**
  * Created by Andriy on 04/10/2016.
@@ -64,7 +65,7 @@ public class ClientCommand implements Serializable {
         } else if (clientCommandType == ClientCommandTypes.DELETE_ORDER) {
             ODBC_PubsBD.deleteOrder((Integer)objectList.get(0));
             return new LinkedList<>();
-//            for client view
+//      for client view
         } else if (clientCommandType == ClientCommandTypes.SELECT_CLIENT) {
             return selectClients();
 
@@ -79,6 +80,9 @@ public class ClientCommand implements Serializable {
         } else if (clientCommandType == ClientCommandTypes.DELETE_CLIENT) {
             deleteClient((Integer) objectList.get(0));
             return new LinkedList<>();
+//      for menu view
+        } else if (clientCommandType == ClientCommandTypes.SELECT_MENU) {
+            return selectMenu();
 
         } else {
             throw new IllegalArgumentException("NO SUCH COMMAND");

@@ -62,7 +62,6 @@ public class ClientWindowController<T extends DtoClient> {
         stackPane.getChildren().add(tableView);
         initContextMenu(tableView.getTableView(), this);
         initTableView();
-
     }
 
     public void initTableView(){

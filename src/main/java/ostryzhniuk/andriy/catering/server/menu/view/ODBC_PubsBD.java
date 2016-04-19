@@ -1,10 +1,11 @@
-package ostryzhniuk.andriy.catering.server.clients.view;
+package ostryzhniuk.andriy.catering.server.menu.view;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import ostryzhniuk.andriy.catering.clients.view.dto.DtoClient;
+import ostryzhniuk.andriy.catering.menu.view.dto.DtoMenu;
+
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,12 +16,13 @@ public class ODBC_PubsBD {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ODBC_PubsBD.class);
 
-    public static List<DtoClient> selectClients() {
-        List<DtoClient> dtoClientsList = getJdbcTemplate().query("select id, name, address, telephoneNumber, " +
-                "contactPerson, discount, email, icq, skype " +
-                "from client " +
-                "order by name", BeanPropertyRowMapper.newInstance(DtoClient.class));
-        return dtoClientsList;
+    public static List<DtoMenu> selectMenu() {
+        List<DtoMenu> dtoMenuList = getJdbcTemplate().query("select menu.id as id,  dishestype.id as dishesTypeId, " +
+                "dishestype.type as dishesTypeName, menu.name, menu.price, menu.mass, menu.ingredients " +
+                "from menu, dishestype " +
+                "where menu.dishesType_id = dishestype.id " +
+                "order by dishestype.type", BeanPropertyRowMapper.newInstance(DtoMenu.class));
+        return dtoMenuList;
     }
 
     public static List<String> selectClientNames() {
