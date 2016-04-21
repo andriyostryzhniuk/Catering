@@ -46,30 +46,6 @@ public class AddingNewClientController {
     private ClientWindowController clientWindowController;
     private boolean isException = false;
 
-    public void showPrompt() {
-
-        Label exceptionLabel = new Label("Значення неприпустиме");
-        exceptionLabel.setStyle("-fx-text-fill: red");
-
-        Button saveButton = new Button("Зберегти");
-        saveButton.setOnAction((ActionEvent event) -> {
-            if (!isException) {
-                close();
-            } else {
-                rootGroup.getChildren().add(exceptionLabel);
-                Timer timer = new Timer();
-                timer.scheduleAtFixedRate(new TimerTask() {
-                    @Override
-                    public void run() {
-                        Platform.runLater(() -> {
-                            rootGroup.getChildren().remove(exceptionLabel);
-                        });
-                    }
-                }, 1000, 5000);
-            }
-        });
-    }
-
     @FXML
     public void initialize(){
         setListenerToNameTextField();
@@ -159,15 +135,10 @@ public class AddingNewClientController {
     }
 
     public void setListenerToNameTextField() {
-        Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ&\\s-]");
         nameTextField.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
+        Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ&\\s-]");
         nameTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            Matcher matcher = pattern.matcher(nameTextField.getText());
-            if (matcher.find()) {
-                if (!nameTextField.getStyleClass().contains("warning")) {
-                    nameTextField.getStyleClass().add("warning");
-                }
-            }
+            textFieldMatcherFind (nameTextField, pattern);
             exceptionLabel.setText("");
         });
 
@@ -191,17 +162,10 @@ public class AddingNewClientController {
     }
 
     public void setListenerToAddressTextField() {
-        Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ'\'.'\','\'/()\\s\\d-]");
         addressTextField.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
+        Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ'\'.'\','\'/()\\s\\d-]");
         addressTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            Matcher matcher = pattern.matcher(addressTextField.getText());
-            boolean bool = matcher.find();
-            LOGGER.info("matcher.find(): " + bool + " in: " + matcher);
-            if (bool) {
-                if (!addressTextField.getStyleClass().contains("warning")) {
-                    addressTextField.getStyleClass().add("warning");
-                }
-            }
+            textFieldMatcherFind(addressTextField, pattern);
             exceptionLabel.setText("");
         });
 
@@ -225,15 +189,10 @@ public class AddingNewClientController {
     }
 
     public void setListenerToTelephoneTextField() {
-        Pattern pattern = Pattern.compile("[^\\d]");
         telephoneTextField.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
+        Pattern pattern = Pattern.compile("[^\\d]");
         telephoneTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            Matcher matcher = pattern.matcher(telephoneTextField.getText());
-            if (matcher.find()) {
-                if (!telephoneTextField.getStyleClass().contains("warning")) {
-                    telephoneTextField.getStyleClass().add("warning");
-                }
-            }
+            textFieldMatcherFind(telephoneTextField, pattern);
             exceptionLabel.setText("");
         });
 
@@ -255,15 +214,10 @@ public class AddingNewClientController {
     }
 
     public void setListenerToContactPersonTextField() {
-        Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ'\'.\\s-]");
         contactPersonTextField.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
+        Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ'\'.\\s-]");
         contactPersonTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            Matcher matcher = pattern.matcher(contactPersonTextField.getText());
-            if (matcher.find()) {
-                if (!contactPersonTextField.getStyleClass().contains("warning")) {
-                    contactPersonTextField.getStyleClass().add("warning");
-                }
-            }
+            textFieldMatcherFind(contactPersonTextField, pattern);
             exceptionLabel.setText("");
         });
 
@@ -312,34 +266,41 @@ public class AddingNewClientController {
         });
     }
 
-    public void discountTextFieldValidation() {
+    public boolean discountTextFieldValidation() {
+        boolean right = true;
+        discountTextField.setText(discountTextField.getText().trim());
         discountTextField.getStyleClass().remove("warning");
         try {
             if (!discountTextField.getText().isEmpty() &&
                     (new BigDecimal(discountTextField.getText()).compareTo(new BigDecimal(100)) == 1 ||
                     new BigDecimal(discountTextField.getText()).compareTo(new BigDecimal(0)) == -1)) {
+                right = false;
                 if (!discountTextField.getStyleClass().contains("warning")) {
                     discountTextField.getStyleClass().add("warning");
                 }
             }
         } catch (java.lang.NumberFormatException e) {
             LOGGER.debug("NumberFormatException");
-            if (!discountTextField.getText().isEmpty() && !discountTextField.getStyleClass().contains("warning")) {
-                discountTextField.getStyleClass().add("warning");
+            if (!discountTextField.getText().isEmpty()) {
+                right = false;
+                if (!discountTextField.getStyleClass().contains("warning")) {
+                    discountTextField.getStyleClass().add("warning");
+                }
             }
         }
+        return right;
     }
 
     public void setListenerToEmailTextField() {
-        Pattern pattern = Pattern.compile("^[_A-Za-z0-9&-]+(\\.[_A-Za-z0-9&-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
         emailTextField.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
+        String regex = "^[_A-Za-z0-9&-]+(\\.[_A-Za-z0-9&-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
         emailTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            Matcher matcher = pattern.matcher(emailTextField.getText());
-            if (!matcher.find()) {
-                if (!emailTextField.getStyleClass().contains("warning")) {
-                    emailTextField.getStyleClass().add("warning");
-                }
-            }
+//            if (!emailTextField.getText().matches(regex)) {
+//                if (!emailTextField.getStyleClass().contains("warning")) {
+//                    emailTextField.getStyleClass().add("warning");
+//                }
+//            }
+            textFieldMatches(emailTextField, regex);
             exceptionLabel.setText("");
         });
 
@@ -351,8 +312,7 @@ public class AddingNewClientController {
         });
 
         emailTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            Matcher matcher = pattern.matcher(newValue);
-            if (!matcher.find()) {
+            if (!emailTextField.getText().matches(regex)) {
                 exceptionLabel.setText("E-mail повиннен відповідати формі, а також\nможе містити лише латинські символи та _- . ");
             } else {
                 exceptionLabel.setText("");
@@ -364,11 +324,12 @@ public class AddingNewClientController {
         String regex = "\\d{5,9}";
         icqTextField.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
         icqTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!icqTextField.getText().matches(regex)) {
-                if (!icqTextField.getStyleClass().contains("warning")) {
-                    icqTextField.getStyleClass().add("warning");
-                }
-            }
+//            if (!icqTextField.getText().matches(regex)) {
+//                if (!icqTextField.getStyleClass().contains("warning")) {
+//                    icqTextField.getStyleClass().add("warning");
+//                }
+//            }
+            textFieldMatches(icqTextField, regex);
             exceptionLabel.setText("");
         });
 
@@ -392,11 +353,12 @@ public class AddingNewClientController {
         String regex = "[a-zA-Z][a-zA-Z0-9\\.\\-_]{5,31}";
         skypeTextField.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
         skypeTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!skypeTextField.getText().matches(regex)) {
-                if (!skypeTextField.getStyleClass().contains("warning")) {
-                    skypeTextField.getStyleClass().add("warning");
-                }
-            }
+//            if (!skypeTextField.getText().matches(regex)) {
+//                if (!skypeTextField.getStyleClass().contains("warning")) {
+//                    skypeTextField.getStyleClass().add("warning");
+//                }
+//            }
+            textFieldMatches(skypeTextField, regex);
             exceptionLabel.setText("");
         });
 
@@ -414,6 +376,31 @@ public class AddingNewClientController {
                 exceptionLabel.setText("");
             }
         });
+    }
+
+    private boolean textFieldMatcherFind(TextField textField, Pattern pattern){
+        boolean right = true;
+        textField.setText(textField.getText().trim());
+        Matcher matcher = pattern.matcher(textField.getText());
+        if (matcher.find()) {
+            right = false;
+            if (!textField.getStyleClass().contains("warning")) {
+                textField.getStyleClass().add("warning");
+            }
+        }
+        return right;
+    }
+
+    private boolean textFieldMatches(TextField textField, String regex){
+        boolean right = true;
+        textField.setText(textField.getText().trim());
+        if (!textField.getText().matches(regex)) {
+            right = false;
+            if (!textField.getStyleClass().contains("warning")) {
+                textField.getStyleClass().add("warning");
+            }
+        }
+        return right;
     }
 
 }
