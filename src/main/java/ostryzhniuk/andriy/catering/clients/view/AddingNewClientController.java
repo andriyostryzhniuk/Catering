@@ -44,7 +44,6 @@ public class AddingNewClientController {
 
     private Integer clientIdToUpdate;
     private ClientWindowController clientWindowController;
-    private boolean isException = false;
 
     @FXML
     public void initialize(){
@@ -56,6 +55,7 @@ public class AddingNewClientController {
         setListenerToEmailTextField();
         setListenerToIcqTextField();
         setListenerToSkypeTextField();
+        setTooltips();
     }
 
     public void escape(ActionEvent actionEvent) {
@@ -71,34 +71,75 @@ public class AddingNewClientController {
     public void saveToDB(ActionEvent actionEvent) {
         List<Object> objectList = new LinkedList<>();
 
-        String name = nameTextField.getText();
-        objectList.add(name);
-
-        String address = addressTextField.getText();
-        objectList.add(address);
-
-        String telephone = telephoneTextField.getText();
-        objectList.add(telephone);
-
-        String contactPerson = contactPersonTextField.getText();
-        objectList.add(contactPerson);
-
-        BigDecimal discount;
-        if (discountTextField.getText().isEmpty()) {
-            discount = new BigDecimal(0);
+        if (!isEmpty(nameTextField) &&
+                textFieldMatcherFind(nameTextField, Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ&\\s-]"))){
+            objectList.add(nameTextField.getText());
         } else {
-            discount = new BigDecimal(discountTextField.getText());
+            return;
         }
-        objectList.add(discount);
 
-        String email = emailTextField.getText();
-        objectList.add(email);
+        if (!isEmpty(addressTextField) &&
+                textFieldMatcherFind(addressTextField, Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ'\'.'\','\'/()\\s\\d-]"))){
+            objectList.add(addressTextField.getText());
+        } else {
+            return;
+        }
 
-        Integer icq = new Integer(icqTextField.getText());
-        objectList.add(icq);
+        if (!isEmpty(telephoneTextField) &&
+                textFieldMatcherFind(telephoneTextField, Pattern.compile("[^\\d]"))){
+            objectList.add(telephoneTextField.getText());
+        } else {
+            return;
+        }
 
-        String skype = skypeTextField.getText();
-        objectList.add(skype);
+        if (!isEmpty(contactPersonTextField) &&
+                textFieldMatcherFind(contactPersonTextField, Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ'\'.\\s-]"))){
+            objectList.add(contactPersonTextField.getText());
+        } else {
+            return;
+        }
+
+
+        if (discountTextField.getText().isEmpty()) {
+            objectList.add(new BigDecimal(0));
+        } else {
+            if (discountTextFieldValidation()){
+                objectList.add(new BigDecimal(discountTextField.getText()));
+            } else {
+                return;
+            }
+        }
+
+        if (emailTextField.getText().isEmpty()) {
+            objectList.add("");
+        } else {
+            String emailsRegex = "^[_A-Za-z0-9&-]+(\\.[_A-Za-z0-9&-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+            if (textFieldMatches(emailTextField, emailsRegex)){
+                objectList.add(emailTextField.getText());
+            } else {
+                return;
+            }
+        }
+
+        if (icqTextField.getText().isEmpty()) {
+            objectList.add(null);
+        } else {
+            if (textFieldMatches(icqTextField, "\\d{5,9}")){
+                objectList.add(new Integer(icqTextField.getText()));
+            } else {
+                return;
+            }
+        }
+
+        if (skypeTextField.getText().isEmpty()) {
+            objectList.add("");
+        } else {
+            if (textFieldMatches(skypeTextField, "[a-zA-Z][a-zA-Z0-9\\.\\-_]{5,31}")){
+                objectList.add(skypeTextField.getText());
+            } else {
+                return;
+            }
+        }
 
         if (clientIdToUpdate == null) {
             sendARequestToTheServer(ClientCommandTypes.INSERT_CLIENT, objectList);
@@ -130,7 +171,9 @@ public class AddingNewClientController {
         this.contactPersonTextField.setText(contactPerson);
         this.discountTextField.setText(discount.toString());
         this.emailTextField.setText(email);
-        this.icqTextField.setText(icq.toString());
+        if (icq != null) {
+            this.icqTextField.setText(icq.toString());
+        }
         this.skypeTextField.setText(skype);
     }
 
@@ -243,7 +286,6 @@ public class AddingNewClientController {
     public void setListenerToDiscountTextField() {
         Pattern pattern = Pattern.compile("[^'\'.\\d]");
         discountTextField.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
-        discountTextField.setTooltip(new Tooltip("Знижка клієнта (у відсотках)"));
         discountTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             discountTextFieldValidation();
             exceptionLabel.setText("");
@@ -295,11 +337,6 @@ public class AddingNewClientController {
         emailTextField.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
         String regex = "^[_A-Za-z0-9&-]+(\\.[_A-Za-z0-9&-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
         emailTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-//            if (!emailTextField.getText().matches(regex)) {
-//                if (!emailTextField.getStyleClass().contains("warning")) {
-//                    emailTextField.getStyleClass().add("warning");
-//                }
-//            }
             textFieldMatches(emailTextField, regex);
             exceptionLabel.setText("");
         });
@@ -324,11 +361,6 @@ public class AddingNewClientController {
         String regex = "\\d{5,9}";
         icqTextField.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
         icqTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-//            if (!icqTextField.getText().matches(regex)) {
-//                if (!icqTextField.getStyleClass().contains("warning")) {
-//                    icqTextField.getStyleClass().add("warning");
-//                }
-//            }
             textFieldMatches(icqTextField, regex);
             exceptionLabel.setText("");
         });
@@ -353,11 +385,6 @@ public class AddingNewClientController {
         String regex = "[a-zA-Z][a-zA-Z0-9\\.\\-_]{5,31}";
         skypeTextField.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
         skypeTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-//            if (!skypeTextField.getText().matches(regex)) {
-//                if (!skypeTextField.getStyleClass().contains("warning")) {
-//                    skypeTextField.getStyleClass().add("warning");
-//                }
-//            }
             textFieldMatches(skypeTextField, regex);
             exceptionLabel.setText("");
         });
@@ -394,13 +421,35 @@ public class AddingNewClientController {
     private boolean textFieldMatches(TextField textField, String regex){
         boolean right = true;
         textField.setText(textField.getText().trim());
-        if (!textField.getText().matches(regex)) {
+        if (!textField.getText().isEmpty() && !textField.getText().matches(regex)) {
             right = false;
             if (!textField.getStyleClass().contains("warning")) {
                 textField.getStyleClass().add("warning");
             }
         }
         return right;
+    }
+
+    private boolean isEmpty(TextField textField){
+        boolean isEmpty = false;
+        if (textField.getText().isEmpty()) {
+            isEmpty = true;
+            if (!textField.getStyleClass().contains("warning")) {
+                textField.getStyleClass().add("warning");
+            }
+        }
+        return isEmpty;
+    }
+
+    private void setTooltips(){
+        nameTextField.setTooltip(new Tooltip("Назва клієнта"));
+        addressTextField.setTooltip(new Tooltip("Адреса клієнта"));
+        telephoneTextField.setTooltip(new Tooltip("Контактний номер телефону"));
+        contactPersonTextField.setTooltip(new Tooltip("Контактна особа"));
+        discountTextField.setTooltip(new Tooltip("Знижка клієнта (у відсотках)"));
+        emailTextField.setTooltip(new Tooltip("Контактний E-mail"));
+        icqTextField.setTooltip(new Tooltip("Номер ICQ"));
+        skypeTextField.setTooltip(new Tooltip("Ім'я Skype"));
     }
 
 }
