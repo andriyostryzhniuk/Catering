@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.converter.BigDecimalStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
@@ -47,6 +48,7 @@ public class OrderWindowController<T extends DtoOrder> {
 
     @FXML
     private TableViewHolder<T> tableView = new TableViewHolder<>();
+    public CustomTableColumn<T, Integer> idCol = new CustomTableColumn<>("Номер");
     public CustomTableColumn<T, String> dateCol = new CustomTableColumn<>("Дата");
     public CustomTableColumn<T, String> clientCol = new CustomTableColumn<>("Клієнт");
     public CustomTableColumn<T, BigDecimal> costCol = new CustomTableColumn<>("Вартість");
@@ -94,6 +96,7 @@ public class OrderWindowController<T extends DtoOrder> {
     }
 
     private void fillCols() {
+        idCol.setCellValueFactory(new PropertyValueFactory("id"));
         dateCol.setCellValueFactory(new PropertyValueFactory("formatDate"));
         clientCol.setCellValueFactory(new PropertyValueFactory("client"));
         costCol.setCellValueFactory(new PropertyValueFactory("cost"));
@@ -101,6 +104,7 @@ public class OrderWindowController<T extends DtoOrder> {
         billCol.setCellValueFactory(new PropertyValueFactory("bill"));
         paidCol.setCellValueFactory(new PropertyValueFactory("paid"));
 
+        idCol.setCellFactory(TextFieldTableCell.<T, Integer>forTableColumn(new IntegerStringConverter()));
         dateCol.setCellFactory(TextFieldTableCell.forTableColumn());
         clientCol.setCellFactory(TextFieldTableCell.forTableColumn());
         costCol.setCellFactory(TextFieldTableCell.<T, BigDecimal>forTableColumn(new BigDecimalStringConverter()));
@@ -110,6 +114,7 @@ public class OrderWindowController<T extends DtoOrder> {
     }
 
     public void setColsDateProperties() {
+        idCol.setPercentWidth(50); idCol.setMinWidth(50);
         dateCol.setPercentWidth(80); dateCol.setMinWidth(80);
         clientCol.setPercentWidth(200); clientCol.setMinWidth(200);
         costCol.setPercentWidth(100); costCol.setMinWidth(100);
@@ -119,7 +124,7 @@ public class OrderWindowController<T extends DtoOrder> {
     }
 
     public void fillTableView(){
-        tableView.getTableView().getColumns().addAll(dateCol, clientCol, costCol, discountCol, billCol, paidCol);
+        tableView.getTableView().getColumns().addAll(idCol, dateCol, clientCol, costCol, discountCol, billCol, paidCol);
     }
 
     public void saveToDB(ActionEvent actionEvent) {
