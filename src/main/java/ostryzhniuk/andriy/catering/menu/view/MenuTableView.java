@@ -19,9 +19,6 @@ import java.math.BigDecimal;
 import java.util.LinkedList;
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
 
-/**
- * Created by Andriy on 04/19/2016.
- */
 public class MenuTableView<T extends DtoMenu> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MenuTableView.class);
@@ -46,7 +43,6 @@ public class MenuTableView<T extends DtoMenu> {
         tableView.getTableView().getStylesheets().add(getClass().getResource("/styles/TableViewStyle.css").toExternalForm());
         tableView.getTableView().setEditable(true);
         stackPane.getChildren().add(tableView);
-//        initContextMenu(tableView.getTableView(), this);
         initTableView();
     }
 

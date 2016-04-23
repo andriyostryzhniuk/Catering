@@ -23,6 +23,7 @@ public class MainWindowController {
 
     @FXML
     public void initialize(){
+        initOrderView(new ActionEvent());
     }
 
     public void initOrderView(ActionEvent actionEvent) {

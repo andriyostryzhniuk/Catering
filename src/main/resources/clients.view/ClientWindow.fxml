@@ -13,7 +13,8 @@
         </StackPane>
     </center>
    <bottom>
-      <Button maxHeight="25.0" maxWidth="72.0" minHeight="25.0" minWidth="72.0" mnemonicParsing="false" onAction="#addRecord" prefHeight="25.0" prefWidth="72.0" text="Додати" BorderPane.alignment="BOTTOM_RIGHT">
+      <Button maxHeight="25.0" maxWidth="72.0" minHeight="25.0" minWidth="72.0" mnemonicParsing="false"
+              onAction="#addRecord" prefHeight="25.0" prefWidth="72.0" text="Додати" BorderPane.alignment="BOTTOM_RIGHT">
          <BorderPane.margin>
             <Insets top="20.0" />
          </BorderPane.margin>
