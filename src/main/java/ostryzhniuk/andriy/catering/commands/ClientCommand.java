@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static ostryzhniuk.andriy.catering.server.clients.view.ODBC_PubsBD.*;
-import static ostryzhniuk.andriy.catering.server.menu.view.ODBC_PubsBD.selectMenu;
+import static ostryzhniuk.andriy.catering.server.menu.view.ODBC_PubsBD.*;
 
 /**
  * Created by Andriy on 04/10/2016.
@@ -83,6 +83,17 @@ public class ClientCommand implements Serializable {
 //      for menu view
         } else if (clientCommandType == ClientCommandTypes.SELECT_MENU) {
             return selectMenu();
+
+        } else if (clientCommandType == ClientCommandTypes.SELECT_DISHES_TYPE_NAME) {
+            return selectDishesTypeNames();
+
+        } else if (clientCommandType == ClientCommandTypes.SELECT_DISHES_TYPE_ID) {
+            return selectDishesTypeId((String)objectList.get(0));
+
+        } else if (clientCommandType == ClientCommandTypes.INSERT_MENU) {
+            insertMenu((Integer) objectList.get(0), (String) objectList.get(1), (BigDecimal) objectList.get(2),
+                    (Double)objectList.get(3), (String) objectList.get(4));
+            return new LinkedList<>();
 
         } else {
             throw new IllegalArgumentException("NO SUCH COMMAND");

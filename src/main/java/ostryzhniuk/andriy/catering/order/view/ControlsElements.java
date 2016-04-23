@@ -2,7 +2,6 @@ package ostryzhniuk.andriy.catering.order.view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
@@ -45,7 +44,7 @@ public class ControlsElements {
     }
 
     public void initClientComboBox() {
-        clientComboBox.getStylesheets().add(getClass().getResource("/order/view/ComboBoxStyle.css").toExternalForm());
+        clientComboBox.getStylesheets().add(getClass().getResource("/styles/ComboBoxStyle.css").toExternalForm());
         clientComboBox.setTooltip(new Tooltip("Вибрати клієнта"));
         clientComboBox.setPromptText("Клієнт");
 
@@ -62,12 +61,9 @@ public class ControlsElements {
             public ListCell<String> call(ListView<String> param) {
                 final ListCell<String> cell = new ListCell<String>() {
                     {
-                        super.setOnMousePressed(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-//                                mouse pressed
-                                comboBoxListener.setValue(clientComboBox.getValue());
-                            }
+                        super.setOnMousePressed((MouseEvent event) -> {
+//                            mouse pressed
+                            comboBoxListener.setValue(clientComboBox.getValue());
                         });
                     }
 

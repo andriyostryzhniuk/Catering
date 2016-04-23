@@ -25,10 +25,10 @@ public class ODBC_PubsBD {
         return dtoMenuList;
     }
 
-    public static List<String> selectClientNames() {
-        SqlRowSet rs = getJdbcTemplate().queryForRowSet("select client.name " +
-                "from client " +
-                "order by client.name asc");
+    public static List<String> selectDishesTypeNames() {
+        SqlRowSet rs = getJdbcTemplate().queryForRowSet("select dishesType.type " +
+                "from dishesType " +
+                "order by dishesType.type asc");
         List<String> list = new LinkedList<>();
         while (rs.next()) {
             list.add(rs.getString(1));
@@ -36,10 +36,10 @@ public class ODBC_PubsBD {
         return list;
     }
 
-    public static List<Integer> selectClientId(String clientName){
-        SqlRowSet rs = getJdbcTemplate().queryForRowSet("select client.id " +
-                "from client " +
-                "where client.name = '" + clientName + "'");
+    public static List<Integer> selectDishesTypeId(String dishesTypeName){
+        SqlRowSet rs = getJdbcTemplate().queryForRowSet("select dishesType.id " +
+                "from dishesType " +
+                "where dishesType.type = '" + dishesTypeName + "'");
         List<Integer> clientIdList = new LinkedList<>();
         while (rs.next()) {
             clientIdList.add(rs.getInt(1));
@@ -47,15 +47,13 @@ public class ODBC_PubsBD {
         return clientIdList;
     }
 
-    public static void insertClient(String name, String address, String telephoneNumber, String contactPerson,
-                                    BigDecimal discount, String email, Integer icq, String skype){
-        getJdbcTemplate().update("INSERT INTO client (id, name, address, telephoneNumber, contactPerson, " +
-                "discount, email, icq, skype) " +
-                "VALUES (null, '" + name + "', '" + address + "', '" + telephoneNumber + "', '" + contactPerson + "', " +
-                "" + discount + ", '" + email + "', " + icq + ", '" + skype + "')");
+    public static void insertMenu(Integer dishesTypeId, String name, BigDecimal price, Double mass, String ingredients){
+        getJdbcTemplate().update("INSERT INTO menu (id, dishesType_id, name, price, mass, ingredients) " +
+                "VALUES (null, '" + dishesTypeId + "', '" + name + "', '" + price + "', '" + mass + "', " +
+                "'" + ingredients + "')");
     }
 
-    public static void updateClient(String name, String address, String telephoneNumber, String contactPerson,
+    public static void updateMenu(String name, String address, String telephoneNumber, String contactPerson,
                                    BigDecimal discount, String email, Integer icq, String skype, int id){
         getJdbcTemplate().update("UPDATE client " +
                 "SET name = '" + name + "', " +
@@ -69,7 +67,7 @@ public class ODBC_PubsBD {
                 "WHERE id = " + id + "");
     }
 
-    public static void deleteClient(int clientId){
+    public static void deleteMenu(int clientId){
         getJdbcTemplate().update("DELETE FROM client " +
                 "WHERE id = " + clientId + "");
     }
