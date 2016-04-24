@@ -53,18 +53,15 @@ public class ODBC_PubsBD {
                 "'" + ingredients + "')");
     }
 
-    public static void updateMenu(String name, String address, String telephoneNumber, String contactPerson,
-                                   BigDecimal discount, String email, Integer icq, String skype, int id){
-        getJdbcTemplate().update("UPDATE client " +
-                "SET name = '" + name + "', " +
-                "address = '" + address + "', " +
-                "telephoneNumber = '" + telephoneNumber + "', " +
-                "contactPerson = '" + contactPerson + "', " +
-                "discount = " + discount + ", " +
-                "email = '" + email + "', " +
-                "icq = " + icq + ", " +
-                "skype = '" + skype + "' " +
-                "WHERE id = " + id + "");
+    public static void updateMenu(Integer dishesTypeId, String name, BigDecimal price, Double mass,
+                                  String ingredients, int id){
+        getJdbcTemplate().update("UPDATE menu " +
+                "SET dishesType_id = '" + dishesTypeId + "', " +
+                "name = '" + name + "', " +
+                "price = '" + price + "', " +
+                "mass = '" + mass + "', " +
+                "ingredients = '" + ingredients + "' " +
+                "WHERE id = '" + id + "'");
     }
 
     public static void deleteMenu(int clientId){

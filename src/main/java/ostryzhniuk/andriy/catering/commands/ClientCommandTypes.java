@@ -18,6 +18,7 @@ public enum ClientCommandTypes {
     SELECT_MENU(),
     SELECT_DISHES_TYPE_NAME(),
     SELECT_DISHES_TYPE_ID(),
-    INSERT_MENU();
+    INSERT_MENU(),
+    UPDATE_MENU();
 
 }

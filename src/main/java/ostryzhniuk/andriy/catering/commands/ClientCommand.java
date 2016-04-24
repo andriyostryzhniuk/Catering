@@ -95,6 +95,11 @@ public class ClientCommand implements Serializable {
                     (Double)objectList.get(3), (String) objectList.get(4));
             return new LinkedList<>();
 
+        } else if (clientCommandType == ClientCommandTypes.UPDATE_MENU) {
+            updateMenu((Integer) objectList.get(0), (String) objectList.get(1), (BigDecimal) objectList.get(2),
+                    (Double)objectList.get(3), (String) objectList.get(4), (Integer)objectList.get(5));
+            return new LinkedList<>();
+
         } else {
             throw new IllegalArgumentException("NO SUCH COMMAND");
         }

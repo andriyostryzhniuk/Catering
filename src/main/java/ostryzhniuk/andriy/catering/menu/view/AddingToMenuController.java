@@ -23,9 +23,6 @@ import java.util.regex.Pattern;
 
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
 
-/**
- * Created by Andriy on 04/18/2016.
- */
 public class AddingToMenuController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AddingToMenuController.class);
@@ -134,7 +131,7 @@ public class AddingToMenuController {
             sendARequestToTheServer(ClientCommandTypes.INSERT_MENU, objectList);
         } else {
             objectList.add(menuIdToUpdate);
-            sendARequestToTheServer(ClientCommandTypes.UPDATE_CLIENT, objectList);
+            sendARequestToTheServer(ClientCommandTypes.UPDATE_MENU, objectList);
         }
         close();
     }
