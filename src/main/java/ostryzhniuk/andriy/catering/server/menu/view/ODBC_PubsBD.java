@@ -16,11 +16,21 @@ public class ODBC_PubsBD {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ODBC_PubsBD.class);
 
-    public static List<DtoMenu> selectMenu() {
+    public static List<DtoMenu> selectAllOfMenu() {
         List<DtoMenu> dtoMenuList = getJdbcTemplate().query("select menu.id as id,  dishestype.id as dishesTypeId, " +
                 "dishestype.type as dishesTypeName, menu.name, menu.price, menu.mass, menu.ingredients " +
                 "from menu, dishestype " +
                 "where menu.dishesType_id = dishestype.id " +
+                "order by dishestype.type", BeanPropertyRowMapper.newInstance(DtoMenu.class));
+        return dtoMenuList;
+    }
+
+    public static List<DtoMenu> selectSomeTypeOfMenu(Integer dishesTypeId) {
+        List<DtoMenu> dtoMenuList = getJdbcTemplate().query("select menu.id as id,  dishestype.id as dishesTypeId, " +
+                "dishestype.type as dishesTypeName, menu.name, menu.price, menu.mass, menu.ingredients " +
+                "from menu, dishestype " +
+                "where menu.dishesType_id = '" +  dishesTypeId + "' and " +
+                "menu.dishesType_id = dishestype.id " +
                 "order by dishestype.type", BeanPropertyRowMapper.newInstance(DtoMenu.class));
         return dtoMenuList;
     }

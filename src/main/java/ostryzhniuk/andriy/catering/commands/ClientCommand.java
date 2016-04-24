@@ -81,8 +81,11 @@ public class ClientCommand implements Serializable {
             deleteClient((Integer) objectList.get(0));
             return new LinkedList<>();
 //      for menu view
-        } else if (clientCommandType == ClientCommandTypes.SELECT_MENU) {
-            return selectMenu();
+        } else if (clientCommandType == ClientCommandTypes.SELECT_ALL_OF_MENU) {
+            return selectAllOfMenu();
+
+        } else if (clientCommandType == ClientCommandTypes.SELECT_SOME_TYPE_OF_MENU) {
+            return selectSomeTypeOfMenu((Integer)objectList.get(0));
 
         } else if (clientCommandType == ClientCommandTypes.SELECT_DISHES_TYPE_NAME) {
             return selectDishesTypeNames();

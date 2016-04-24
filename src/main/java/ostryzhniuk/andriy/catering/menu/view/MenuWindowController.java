@@ -32,7 +32,7 @@ public class MenuWindowController extends MenuTableView {
     public void initialize(){
         menuTableView.initialize();
         tableView = menuTableView.getMenuTableView();
-        rootBorderPane.setCenter(menuTableView.getTableViewsStackPane());
+        rootBorderPane.setCenter(menuTableView.getBorderPane());
         initContextMenu(tableView, this);
     }
 

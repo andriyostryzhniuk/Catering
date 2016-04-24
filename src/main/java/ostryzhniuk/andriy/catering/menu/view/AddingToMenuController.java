@@ -312,7 +312,7 @@ public class AddingToMenuController {
 
     private boolean ingredientsTextAreaMatcherFind(){
         boolean right = true;
-        Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ()'\','\'%''\'.\\s\\d-]");
+        Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ()'\','\'%''\'.\\s\\d\\n-]");
         ingredientsTextArea.setText(ingredientsTextArea.getText().trim());
         Matcher matcher = pattern.matcher(ingredientsTextArea.getText());
         if (matcher.find()) {
@@ -344,8 +344,8 @@ public class AddingToMenuController {
 
     public void initDishesTypeComboBox() {
         dishesTypeComboBox.getStylesheets().add(getClass().getResource("/styles/ComboBoxStyle.css").toExternalForm());
-        dishesTypeComboBox.setTooltip(new Tooltip("Тип Страви"));
-        dishesTypeComboBox.setPromptText("Тип Страви");
+        dishesTypeComboBox.setTooltip(new Tooltip("Тип страви"));
+        dishesTypeComboBox.setPromptText("Тип страви");
 
         ObservableList<String> observableList = FXCollections.observableArrayList();
         observableList.addAll(FXCollections.observableArrayList(

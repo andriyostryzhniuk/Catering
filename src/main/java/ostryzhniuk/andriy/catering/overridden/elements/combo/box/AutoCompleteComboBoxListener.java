@@ -32,43 +32,29 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 
     @Override
     public void handle(KeyEvent event) {
-        if(event.getCode() == KeyCode.UP) {
+        if (event.getCode() == KeyCode.UP) {
             caretPos = -1;
             moveCaret(comboBox.getEditor().getText().length());
             return;
-        } else if(event.getCode() == KeyCode.DOWN) {
-            if(!comboBox.isShowing()) {
+        } else if (event.getCode() == KeyCode.DOWN) {
+            if (!comboBox.isShowing()) {
                 comboBox.show();
             }
             caretPos = -1;
             moveCaret(comboBox.getEditor().getText().length());
             return;
-        } else if(event.getCode() == KeyCode.BACK_SPACE) {
+        } else if (event.getCode() == KeyCode.BACK_SPACE) {
             moveCaretToPos = true;
             caretPos = comboBox.getEditor().getCaretPosition();
-        } else if(event.getCode() == KeyCode.DELETE) {
+        } else if (event.getCode() == KeyCode.DELETE) {
             moveCaretToPos = true;
             caretPos = comboBox.getEditor().getCaretPosition();
         } else if (event.getCode() == KeyCode.ENTER) {
 //            enter pressed
-            boolean isWarning = true;
-            for (Object item : comboBox.getItems()) {
-                if (comboBox.getValue().equals(item)) {
-                    isWarning = false;
-                }
-            }
-            if (isWarning) {
-                boolean isWarningStyleClass = false;
-                for (String styleClass : comboBox.getStyleClass()) {
-                    if (styleClass.equals("warning")) {
-                        isWarningStyleClass = true;
-                    }
-                }
-                if (!isWarningStyleClass) {
-                    comboBox.getStyleClass().add("warning");
-                }
-            } else {
+            if (comboBox.getItems().contains(comboBox.getValue())) {
                 comboBoxListener.setValue(comboBox.getValue());
+            } else {
+                setWarningStyle();
             }
             return;
         }
@@ -80,9 +66,9 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
         }
 
         ObservableList list = FXCollections.observableArrayList();
-        for (int i=0; i<data.size(); i++) {
-            if(data.get(i).toString().toLowerCase().
-                            indexOf(AutoCompleteComboBoxListener.this.comboBox.getEditor().getText().toLowerCase()) != -1) {
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).toString().toLowerCase().
+                    indexOf(AutoCompleteComboBoxListener.this.comboBox.getEditor().getText().toLowerCase()) != -1) {
                 list.add(data.get(i));
             }
         }
@@ -91,34 +77,32 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 
         comboBox.setItems(list);
         comboBox.getEditor().setText(t);
-        if(!moveCaretToPos) {
+        if (!moveCaretToPos) {
             caretPos = -1;
         }
         moveCaret(t.length());
 
-        boolean isWarningStyleClass = false;
-        if(!list.isEmpty()) {
+        if (!list.isEmpty()) {
             comboBox.show();
             comboBox.getStyleClass().remove("warning");
         } else {
-            for (String styleClass : comboBox.getStyleClass()) {
-                if(styleClass.equals("warning")) {
-                    isWarningStyleClass = true;
-                }
-            }
-            if (!isWarningStyleClass) {
-                comboBox.getStyleClass().add("warning");
-            }
+            setWarningStyle();
         }
     }
 
     private void moveCaret(int textLength) {
-        if(caretPos == -1) {
+        if (caretPos == -1) {
             comboBox.getEditor().positionCaret(textLength);
         } else {
             comboBox.getEditor().positionCaret(caretPos);
         }
         moveCaretToPos = false;
+    }
+
+    private void setWarningStyle(){
+        if (!comboBox.getStyleClass().contains("warning")) {
+            comboBox.getStyleClass().add("warning");
+        }
     }
 
 }

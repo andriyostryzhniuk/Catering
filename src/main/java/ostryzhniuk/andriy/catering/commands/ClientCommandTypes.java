@@ -15,7 +15,8 @@ public enum ClientCommandTypes {
     UPDATE_CLIENT(),
     DELETE_CLIENT(),
     //for menu view
-    SELECT_MENU(),
+    SELECT_ALL_OF_MENU(),
+    SELECT_SOME_TYPE_OF_MENU(),
     SELECT_DISHES_TYPE_NAME(),
     SELECT_DISHES_TYPE_ID(),
     INSERT_MENU(),
