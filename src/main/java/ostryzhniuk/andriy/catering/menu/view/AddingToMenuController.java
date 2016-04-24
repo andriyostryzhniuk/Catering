@@ -55,6 +55,8 @@ public class AddingToMenuController {
     }
 
     public void setTextToTextFields(String dishesType, String name, BigDecimal price, Double mass, String ingredients){
+        this.dishesTypeComboBox.setValue(dishesType);
+        this.comboBoxListener.setValue(dishesType);
         this.nameTextField.setText(name);
         this.priceTextField.setText(price.toString());
         this.massTextField.setText(mass.toString());
@@ -92,24 +94,40 @@ public class AddingToMenuController {
         objectList.add(dishesTypeId);
 
         if (!isEmpty(nameTextField) &&
-                textFieldMatcherFind(nameTextField, Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ&\\s-]"))){
+                textFieldMatcherFind(nameTextField, Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ&()\\s-]"))){
             objectList.add(nameTextField.getText());
         } else {
             return;
         }
 
-        if (!isEmpty(priceTextField) &&
-                textFieldMatcherFind(priceTextField, Pattern.compile("[^\\d]"))){
-            objectList.add(priceTextField.getText());
+        if (priceTextField.getText().isEmpty()) {
+            objectList.add(new BigDecimal(0));
         } else {
-            return;
+            if (priceTextFieldValidation()){
+                objectList.add(new BigDecimal(priceTextField.getText()));
+            } else {
+                return;
+            }
         }
 
-        if (!isEmpty(massTextField) &&
-                textFieldMatcherFind(massTextField, Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ'\'.\\s-]"))){
-            objectList.add(massTextField.getText());
+        if (massTextField.getText().isEmpty()) {
+            objectList.add(new Double(0));
         } else {
-            return;
+            if (massTextFieldValidation()){
+                objectList.add(new Double(massTextField.getText()));
+            } else {
+                return;
+            }
+        }
+
+        if (ingredientsTextArea.getText().isEmpty()) {
+            objectList.add("");
+        } else {
+            if (ingredientsTextAreaMatcherFind()){
+                objectList.add(ingredientsTextArea.getText());
+            } else {
+                return;
+            }
         }
 
         if (menuIdToUpdate == null) {
@@ -240,14 +258,13 @@ public class AddingToMenuController {
         massTextField.setText(massTextField.getText().trim());
         massTextField.getStyleClass().remove("warning");
         try {
-            if (!massTextField.getText().isEmpty() && Double.parseDouble(massTextField.getText()) < 0) {
+            if (!massTextField.getText().isEmpty() && new Double(massTextField.getText()) < 0) {
                 right = false;
                 if (!massTextField.getStyleClass().contains("warning")) {
                     massTextField.getStyleClass().add("warning");
                 }
             }
         } catch (NumberFormatException e) {
-            LOGGER.info("NumberFormatException for Double");
             if (!massTextField.getText().isEmpty()) {
                 right = false;
                 if (!massTextField.getStyleClass().contains("warning")) {
