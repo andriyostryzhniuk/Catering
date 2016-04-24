@@ -11,11 +11,15 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.menu.view.dto.DtoMenu;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.LinkedList;
+import java.util.List;
 
+import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
 import static ostryzhniuk.andriy.catering.menu.view.ContextMenu.initContextMenu;
 
 public class MenuWindowController extends MenuTableView {
@@ -39,6 +43,17 @@ public class MenuWindowController extends MenuTableView {
 
         showEditingRecordWindow(dtoClient.getId());
 
+    }
+
+    public void removeRecord(){
+        TablePosition pos = tableView.getSelectionModel().getSelectedCells().get(0);
+        int rowIndex = pos.getRow();
+        DtoMenu dtoMenu = tableView.getItems().get(rowIndex);
+
+        List<Object> objectList = new LinkedList<>();
+        objectList.add(dtoMenu.getId());
+        sendARequestToTheServer(ClientCommandTypes.DELETE_MENU, objectList);
+        menuTableView.initTableView();
     }
 
     public void showEditingRecordWindow(Integer menuIdToUpdate) throws IOException {

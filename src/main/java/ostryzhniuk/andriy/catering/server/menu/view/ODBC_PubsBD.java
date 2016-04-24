@@ -64,9 +64,9 @@ public class ODBC_PubsBD {
                 "WHERE id = '" + id + "'");
     }
 
-    public static void deleteMenu(int clientId){
-        getJdbcTemplate().update("DELETE FROM client " +
-                "WHERE id = " + clientId + "");
+    public static void deleteMenu(int menuId){
+        getJdbcTemplate().update("DELETE FROM menu " +
+                "WHERE id = " + menuId + "");
     }
 
 }

@@ -120,6 +120,26 @@ public class ClientWindowController<T extends DtoClient> {
         showEditingRecordWindow(null);
     }
 
+    public void editRecord() throws IOException {
+        TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
+        int rowIndex = pos.getRow();
+        DtoClient dtoClient = tableView.getTableView().getItems().get(rowIndex);
+
+        showEditingRecordWindow(dtoClient.getId());
+
+    }
+
+    public void removeRecord(){
+        TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
+        int rowIndex = pos.getRow();
+        DtoClient dtoClient = tableView.getTableView().getItems().get(rowIndex);
+
+        List<Object> objectList = new LinkedList<>();
+        objectList.add(dtoClient.getId());
+        sendARequestToTheServer(ClientCommandTypes.DELETE_CLIENT, objectList);
+        initTableView();
+    }
+
     public void showEditingRecordWindow(Integer clientIdToUpdate) throws IOException {
         Stage primaryStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clients.view/AddingNewClient.fxml"));
@@ -142,26 +162,6 @@ public class ClientWindowController<T extends DtoClient> {
         primaryStage.initModality(Modality.WINDOW_MODAL);
         primaryStage.initOwner(tableView.getTableView().getScene().getWindow());
         primaryStage.showAndWait();
-    }
-
-    public void editRecord() throws IOException {
-        TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
-        int rowIndex = pos.getRow();
-        DtoClient dtoClient = tableView.getTableView().getItems().get(rowIndex);
-
-        showEditingRecordWindow(dtoClient.getId());
-
-    }
-
-    public void removeRecord(){
-        TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
-        int rowIndex = pos.getRow();
-        DtoClient dtoClient = tableView.getTableView().getItems().get(rowIndex);
-
-        List<Object> objectList = new LinkedList<>();
-        objectList.add(dtoClient.getId());
-        sendARequestToTheServer(ClientCommandTypes.DELETE_CLIENT, objectList);
-        initTableView();
     }
 
 }

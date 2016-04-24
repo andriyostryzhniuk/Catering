@@ -100,6 +100,10 @@ public class ClientCommand implements Serializable {
                     (Double)objectList.get(3), (String) objectList.get(4), (Integer)objectList.get(5));
             return new LinkedList<>();
 
+        } else if (clientCommandType == ClientCommandTypes.DELETE_MENU) {
+            deleteMenu((Integer) objectList.get(0));
+            return new LinkedList<>();
+
         } else {
             throw new IllegalArgumentException("NO SUCH COMMAND");
         }
