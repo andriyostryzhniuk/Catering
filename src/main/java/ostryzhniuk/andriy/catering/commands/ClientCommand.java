@@ -107,6 +107,9 @@ public class ClientCommand implements Serializable {
             deleteMenu((Integer) objectList.get(0));
             return new LinkedList<>();
 
+        } else if (clientCommandType == ClientCommandTypes.SELECT_OF_LIKE_NAMES_MENU) {
+            return selectOfLikeNamesMenu((String) objectList.get(0), (String) objectList.get(1));
+
         } else {
             throw new IllegalArgumentException("NO SUCH COMMAND");
         }

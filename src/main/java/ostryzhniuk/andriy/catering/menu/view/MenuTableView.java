@@ -37,6 +37,8 @@ public class MenuTableView<T extends DtoMenu> {
     private GridPane topGridPane = new GridPane();
     private ComboBox dishesTypeComboBox = new ComboBox();
     private ComboBox dishesTypeComboBoxListener = new ComboBox();
+    private ComboBox dishesNameComboBox = new ComboBox();
+    private ComboBox dishesNameComboBoxListener = new ComboBox();
 
     @FXML
     private TableViewHolder<T> tableView = new TableViewHolder<>();
@@ -65,9 +67,16 @@ public class MenuTableView<T extends DtoMenu> {
         dtoMenuList.clear();
         tableView.getTableView().getItems().clear();
 
-        if (dishesTypeComboBoxListener.getValue().equals("Всі категорії")) {
+        if (dishesTypeComboBoxListener.getValue().equals("Всі категорії") && dishesNameComboBoxListener.getValue() == null) {
             dtoMenuList.addAll(FXCollections.observableArrayList(
                     sendARequestToTheServer(ClientCommandTypes.SELECT_ALL_OF_MENU, new LinkedList<>())));
+            setDishesNameComboBoxItems();
+        } else if (dishesNameComboBoxListener.getValue() != null) {
+            List<Object> objectList = new LinkedList<>();
+            objectList.add(dishesNameComboBoxListener.getValue());
+            objectList.add(dishesTypeComboBoxListener.getValue());
+            dtoMenuList.addAll(FXCollections.observableArrayList(
+                    sendARequestToTheServer(ClientCommandTypes.SELECT_OF_LIKE_NAMES_MENU, objectList)));
         } else {
             List<Object> dishesTypeNameList = new LinkedList<>();
             dishesTypeNameList.add(dishesTypeComboBoxListener.getValue());
@@ -77,6 +86,7 @@ public class MenuTableView<T extends DtoMenu> {
             objectList.add(dishesTypeId);
             dtoMenuList.addAll(FXCollections.observableArrayList(
                     sendARequestToTheServer(ClientCommandTypes.SELECT_SOME_TYPE_OF_MENU, objectList)));
+            setDishesNameComboBoxItems();
         }
 
         tableView.getTableView().setItems(dtoMenuList);
@@ -109,15 +119,27 @@ public class MenuTableView<T extends DtoMenu> {
     }
 
     private void initTopBorderPane(){
+        Label dishesTypeLabel = new Label("Класифікація:");
+        topGridPane.add(dishesTypeLabel, 0, 0);
+        topGridPane.setMargin(dishesTypeLabel, new Insets(0, 10, 0, 0));
+
         initDishesTypeComboBox();
-        topGridPane.add(dishesTypeComboBox, 0, 0);
+        topGridPane.add(dishesTypeComboBox, 1, 0);
+
+        Label dishesNameLabel = new Label("Пошук за назвою:");
+        topGridPane.add(dishesNameLabel, 2, 0);
+        topGridPane.setMargin(dishesNameLabel, new Insets(0, 10, 0, 80));
+
+        initDishesNameComboBox();
+        topGridPane.add(dishesNameComboBox, 3, 0);
+
         borderPane.setTop(topGridPane);
         borderPane.setAlignment(topGridPane, Pos.TOP_LEFT);
         borderPane.setMargin(topGridPane, new Insets(0.0, 0.0, 20.0, 0.0));
 
     }
 
-    public void initDishesTypeComboBox() {
+    private void initDishesTypeComboBox() {
         dishesTypeComboBox.getStylesheets().add(getClass().getResource("/styles/ComboBoxStyle.css").toExternalForm());
         dishesTypeComboBox.setTooltip(new Tooltip("Тип страви"));
         dishesTypeComboBox.setPromptText("Тип страви");
@@ -130,7 +152,6 @@ public class MenuTableView<T extends DtoMenu> {
         dishesTypeComboBox.getItems().addAll(observableList);
 
         new AutoCompleteComboBoxListener<>(dishesTypeComboBox, dishesTypeComboBoxListener);
-//        new AutoCompleteComboBoxSearch(dishesTypeComboBox, dishesTypeComboBoxListener);
 
         dishesTypeComboBox.setValue("Всі категорії");
         dishesTypeComboBoxListener.setValue("Всі категорії");
@@ -140,9 +161,25 @@ public class MenuTableView<T extends DtoMenu> {
         dishesTypeComboBoxListener.valueProperty().addListener((observableValue, oldValue, newValue) -> {
             if (newValue != null) {
                 dishesTypeComboBox.getStyleClass().remove("warning");
+                dishesNameComboBox.setValue(null);
+                dishesNameComboBoxListener.setValue(null);
                 initTableView();
-                dishesTypeComboBoxListener.setValue(null);
             }
+        });
+    }
+
+    private void initDishesNameComboBox() {
+        dishesNameComboBox.getStylesheets().add(getClass().getResource("/menu.view/ComboBoxStyle.css").toExternalForm());
+        dishesNameComboBox.setTooltip(new Tooltip("Пошук за назвою страви"));
+        dishesNameComboBox.setPromptText("Пошук за назвою");
+
+        new AutoCompleteComboBoxSearch(dishesNameComboBox, dishesNameComboBoxListener);
+
+        setComboBoxCellFactory(dishesNameComboBox, dishesNameComboBoxListener);
+
+        dishesNameComboBoxListener.valueProperty().addListener((observableValue, oldValue, newValue) -> {
+            dishesNameComboBox.getStyleClass().remove("warning");
+            initTableView();
         });
     }
 
@@ -175,5 +212,12 @@ public class MenuTableView<T extends DtoMenu> {
                 return cell;
             }
         });
+    }
+
+    private void setDishesNameComboBoxItems(){
+        dishesNameComboBox.getItems().clear();
+        dtoMenuList.forEach(item -> dishesNameComboBox.getItems().add(item.getName()));
+        new AutoCompleteComboBoxSearch(dishesNameComboBox, dishesNameComboBoxListener);
+
     }
 }
