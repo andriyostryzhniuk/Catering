@@ -48,7 +48,7 @@ public class MenuWindowController extends MenuTableView {
 
         AddingToMenuController addingToMenuController = fxmlLoader.getController();
         addingToMenuController.setMenuIdToUpdate(menuIdToUpdate);
-        addingToMenuController.setMenuWindowController(this);
+        addingToMenuController.setMenuTableView(menuTableView);
         if (menuIdToUpdate != null) {
             TablePosition pos = tableView.getSelectionModel().getSelectedCells().get(0);
             int rowIndex = pos.getRow();

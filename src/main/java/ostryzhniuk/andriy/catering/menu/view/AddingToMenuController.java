@@ -38,7 +38,7 @@ public class AddingToMenuController {
     public Label titleLabel;
 
     private Integer menuIdToUpdate;
-    private MenuWindowController menuWindowController;
+    private MenuTableView menuTableView;
 
     @FXML
     public void initialize(){
@@ -66,7 +66,7 @@ public class AddingToMenuController {
 
     public void close(){
         Stage stage = (Stage) rootGroup.getScene().getWindow();
-        menuWindowController.initTableView();
+        menuTableView.initTableView();
         stage.close();
     }
 
@@ -145,8 +145,8 @@ public class AddingToMenuController {
         }
     }
 
-    public void setMenuWindowController(MenuWindowController menuWindowController) {
-        this.menuWindowController = menuWindowController;
+    public void setMenuTableView(MenuTableView menuTableView) {
+        this.menuTableView = menuTableView;
     }
 
     public void setListenerToNameTextField() {
