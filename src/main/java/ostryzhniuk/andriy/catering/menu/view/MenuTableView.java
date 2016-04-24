@@ -130,30 +130,12 @@ public class MenuTableView<T extends DtoMenu> {
         dishesTypeComboBox.getItems().addAll(observableList);
 
         new AutoCompleteComboBoxListener<>(dishesTypeComboBox, dishesTypeComboBoxListener);
+//        new AutoCompleteComboBoxSearch(dishesTypeComboBox, dishesTypeComboBoxListener);
 
         dishesTypeComboBox.setValue("Всі категорії");
         dishesTypeComboBoxListener.setValue("Всі категорії");
 
-        dishesTypeComboBox.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
-            @Override
-            public ListCell<String> call(ListView<String> param) {
-                final ListCell<String> cell = new ListCell<String>() {
-                    {
-                        super.setOnMousePressed((MouseEvent event) -> {
-//                            mouse pressed
-                            dishesTypeComboBoxListener.setValue(dishesTypeComboBox.getValue());
-                        });
-                    }
-
-                    @Override
-                    public void updateItem(String item, boolean empty) {
-                        super.updateItem(item, empty);
-                        setText(item);
-                    }
-                };
-                return cell;
-            }
-        });
+        setComboBoxCellFactory(dishesTypeComboBox, dishesTypeComboBoxListener);
 
         dishesTypeComboBoxListener.valueProperty().addListener((observableValue, oldValue, newValue) -> {
             if (newValue != null) {
@@ -170,5 +152,28 @@ public class MenuTableView<T extends DtoMenu> {
 
     public BorderPane getBorderPane() {
         return borderPane;
+    }
+
+    private void setComboBoxCellFactory(ComboBox comboBox, ComboBox comboBoxListener) {
+        comboBox.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+            @Override
+            public ListCell<String> call(ListView<String> param) {
+                final ListCell<String> cell = new ListCell<String>() {
+                    {
+                        super.setOnMousePressed((MouseEvent event) -> {
+//                            mouse pressed
+                            comboBoxListener.setValue(comboBox.getValue());
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setText(item);
+                    }
+                };
+                return cell;
+            }
+        });
     }
 }
