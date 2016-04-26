@@ -9,6 +9,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 public class Server implements Runnable {
@@ -69,8 +70,8 @@ public class Server implements Runnable {
             while ((inputObject = objectIsSocket.readObject()) != null) {
                 clientCommand = (ClientCommand) inputObject;
                 responseObject = clientCommand.processCommand();
-//                List<DtoClient> dtoClientList = (List<DtoClient>) responseObject;
-//                LOGGER.info("dtoClientList.size: " + dtoClientList.size());
+//                List list = (List) responseObject;
+//                LOGGER.info("list size: " + list.size());
                 this.objectOsSocket.writeObject(responseObject);
             }
         } catch (Throwable t) {

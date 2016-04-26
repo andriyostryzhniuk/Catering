@@ -13,9 +13,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.menu.view.dto.DtoMenu;
-
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 

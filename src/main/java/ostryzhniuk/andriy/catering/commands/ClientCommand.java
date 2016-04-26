@@ -109,6 +109,9 @@ public class ClientCommand implements Serializable {
 
         } else if (clientCommandType == ClientCommandTypes.SELECT_OF_LIKE_NAMES_MENU) {
             return selectOfLikeNamesMenu((String) objectList.get(0), (String) objectList.get(1));
+//      for dishes type view
+        } else if (clientCommandType == ClientCommandTypes.SELECT_DISHES_TYPE) {
+            return selectDishesType();
 
         } else {
             throw new IllegalArgumentException("NO SUCH COMMAND");

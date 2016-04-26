@@ -22,6 +22,6 @@ public enum ClientCommandTypes {
     INSERT_MENU(),
     UPDATE_MENU(),
     DELETE_MENU(),
-    SELECT_OF_LIKE_NAMES_MENU();
-
+    SELECT_OF_LIKE_NAMES_MENU(),
+    SELECT_DISHES_TYPE();
 }

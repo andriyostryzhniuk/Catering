@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import ostryzhniuk.andriy.catering.menu.view.dto.DtoDishesType;
 import ostryzhniuk.andriy.catering.menu.view.dto.DtoMenu;
 
 import java.math.BigDecimal;
@@ -98,6 +99,12 @@ public class ODBC_PubsBD {
     public static void deleteMenu(int menuId){
         getJdbcTemplate().update("DELETE FROM menu " +
                 "WHERE id = " + menuId + "");
+    }
+
+    public static List<DtoDishesType> selectDishesType(){
+        return getJdbcTemplate().query("select id, type " +
+                "from dishesType " +
+                "order by type asc", BeanPropertyRowMapper.newInstance(DtoDishesType.class));
     }
 
 }

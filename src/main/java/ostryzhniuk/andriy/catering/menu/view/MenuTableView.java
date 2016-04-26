@@ -3,15 +3,23 @@ package ostryzhniuk.andriy.catering.menu.view;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import javafx.util.converter.BigDecimalStringConverter;
 import javafx.util.converter.DoubleStringConverter;
@@ -22,6 +30,9 @@ import ostryzhniuk.andriy.catering.menu.view.dto.DtoMenu;
 import ostryzhniuk.andriy.catering.overridden.elements.combo.box.AutoCompleteComboBoxListener;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
+
+import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,7 +45,6 @@ public class MenuTableView<T extends DtoMenu> {
 
     private StackPane stackPane = new StackPane();
     private BorderPane borderPane = new BorderPane();
-    private GridPane topGridPane = new GridPane();
     private ComboBox dishesTypeComboBox = new ComboBox();
     private ComboBox dishesTypeComboBoxListener = new ComboBox();
     private ComboBox dishesNameComboBox = new ComboBox();
@@ -119,6 +129,8 @@ public class MenuTableView<T extends DtoMenu> {
     }
 
     private void initTopBorderPane(){
+        GridPane topGridPane = new GridPane();
+
         Label dishesTypeLabel = new Label("Класифікація:");
         topGridPane.add(dishesTypeLabel, 0, 0);
         topGridPane.setMargin(dishesTypeLabel, new Insets(0, 10, 0, 0));
@@ -126,12 +138,17 @@ public class MenuTableView<T extends DtoMenu> {
         initDishesTypeComboBox();
         topGridPane.add(dishesTypeComboBox, 1, 0);
 
+        Button dishesTypeButton = initDishesTypeButton();
+        topGridPane.add(dishesTypeButton, 2, 0);
+        topGridPane.setHalignment(dishesTypeButton, HPos.RIGHT);
+        topGridPane.setMargin(dishesTypeButton, new Insets(0, 0, 0, 2));
+
         Label dishesNameLabel = new Label("Пошук за назвою:");
-        topGridPane.add(dishesNameLabel, 2, 0);
+        topGridPane.add(dishesNameLabel, 3, 0);
         topGridPane.setMargin(dishesNameLabel, new Insets(0, 10, 0, 80));
 
         initDishesNameComboBox();
-        topGridPane.add(dishesNameComboBox, 3, 0);
+        topGridPane.add(dishesNameComboBox, 4, 0);
 
         borderPane.setTop(topGridPane);
         borderPane.setAlignment(topGridPane, Pos.TOP_LEFT);
@@ -181,6 +198,34 @@ public class MenuTableView<T extends DtoMenu> {
             dishesNameComboBox.getStyleClass().remove("warning");
             initTableView();
         });
+    }
+
+    private Button initDishesTypeButton() {
+        Button button = new Button();
+        Image image = new Image(getClass().getResourceAsStream("/icons/settings.png"));
+        button.getStylesheets().add(getClass().getResource("/menu.view/DishesTypeButtonStyle.css").toExternalForm());
+        button.setGraphic(new ImageView(image));
+
+        button.setOnAction((javafx.event.ActionEvent event) -> {
+            Stage primaryStage = new Stage();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/menu.view/DishesTypeWindow.fxml"));
+            Parent root = null;
+            try {
+                root = fxmlLoader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+//            AddingToMenuController addingToMenuController = fxmlLoader.getController();
+
+            primaryStage.initStyle(StageStyle.TRANSPARENT);
+            primaryStage.setScene(new Scene(root, 500, 500, Color.rgb(0, 0, 0, 0)));
+            primaryStage.initModality(Modality.WINDOW_MODAL);
+            primaryStage.initOwner(tableView.getScene().getWindow());
+            primaryStage.showAndWait();
+        });
+
+        return button;
     }
 
     public TableView getMenuTableView(){
