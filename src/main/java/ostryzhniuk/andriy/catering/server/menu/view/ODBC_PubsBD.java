@@ -96,7 +96,7 @@ public class ODBC_PubsBD {
                 "WHERE id = '" + id + "'");
     }
 
-    public static void deleteMenu(int menuId){
+    public static void deleteMenu(Integer menuId){
         getJdbcTemplate().update("DELETE FROM menu " +
                 "WHERE id = " + menuId + "");
     }
@@ -115,6 +115,11 @@ public class ODBC_PubsBD {
     public static void updateDishesType(String type, Integer id){
         getJdbcTemplate().update("UPDATE dishesType " +
                 "SET type = '" + type + "' " +
+                "WHERE id = '" + id + "'");
+    }
+
+    public static void deleteDishesType(Integer id){
+        getJdbcTemplate().update("DELETE FROM dishesType " +
                 "WHERE id = '" + id + "'");
     }
 

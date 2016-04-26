@@ -134,13 +134,4 @@ public class PromptAddingWindowController {
         textField.setText(text);
     }
 
-    //    public static String parseApostrophe(String string){
-//        Integer apostropheIndex = string.indexOf("'");
-//        if (apostropheIndex != -1) {
-//            System.out.println(apostropheIndex);
-//            string = string.substring(0, apostropheIndex) + "\\" + string.substring(apostropheIndex);
-//            System.out.println(string);
-//        }
-//        return string;
-//    }
 }

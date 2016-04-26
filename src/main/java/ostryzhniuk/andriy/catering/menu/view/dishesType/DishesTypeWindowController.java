@@ -13,15 +13,19 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
+import ostryzhniuk.andriy.catering.menu.view.MenuTableView;
 import ostryzhniuk.andriy.catering.menu.view.dto.DtoDishesType;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
 
 public class DishesTypeWindowController<T extends DtoDishesType> {
     public ListView<T> listView;
     private ObservableList<T> dishesTypesList = FXCollections.observableArrayList();
+
+    private MenuTableView menuTableView;
 
     @FXML
     public void initialize(){
@@ -42,6 +46,8 @@ public class DishesTypeWindowController<T extends DtoDishesType> {
 
     public void close(ActionEvent actionEvent) {
         Stage stage = (Stage) listView.getScene().getWindow();
+        menuTableView.initDishesTypeComboBoxItems();
+        menuTableView.initTableView();
         stage.close();
     }
 
@@ -59,7 +65,7 @@ public class DishesTypeWindowController<T extends DtoDishesType> {
 
         MenuItem removeItem = new MenuItem("Видалити");
         removeItem.setOnAction((ActionEvent event) -> {
-//                    menuWindowController.removeRecord();
+            removeRecord();
         });
         final javafx.scene.control.ContextMenu cellMenu = new javafx.scene.control.ContextMenu();
         cellMenu.getItems().addAll(addItem, editItem, removeItem);
@@ -88,4 +94,17 @@ public class DishesTypeWindowController<T extends DtoDishesType> {
         primaryStage.showAndWait();
 
     }
+
+    public void removeRecord(){
+        DtoDishesType dtoDishesType = listView.getSelectionModel().getSelectedItem();
+        List<Object> objectList = new LinkedList<>();
+        objectList.add(dtoDishesType.getId());
+        sendARequestToTheServer(ClientCommandTypes.DELETE_DISHES_TYPE, objectList);
+        initListView();
+    }
+
+    public void setMenuTableView(MenuTableView menuTableView) {
+        this.menuTableView = menuTableView;
+    }
+
 }

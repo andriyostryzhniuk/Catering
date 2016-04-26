@@ -343,7 +343,7 @@ public class AddingToMenuController {
     }
 
     public void initDishesTypeComboBox() {
-        dishesTypeComboBox.getStylesheets().add(getClass().getResource("/styles/ComboBoxStyle.css").toExternalForm());
+        dishesTypeComboBox.getStylesheets().add(getClass().getResource("/menu.view/DishesTypeComboBoxStyle.css").toExternalForm());
         dishesTypeComboBox.setTooltip(new Tooltip("Тип страви"));
         dishesTypeComboBox.setPromptText("Тип страви");
 

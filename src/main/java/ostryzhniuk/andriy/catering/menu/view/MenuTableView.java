@@ -20,12 +20,12 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Callback;
 import javafx.util.converter.BigDecimalStringConverter;
 import javafx.util.converter.DoubleStringConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
+import ostryzhniuk.andriy.catering.menu.view.dishesType.DishesTypeWindowController;
 import ostryzhniuk.andriy.catering.menu.view.dto.DtoMenu;
 import ostryzhniuk.andriy.catering.overridden.elements.combo.box.AutoCompleteComboBoxListener;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
@@ -160,14 +160,7 @@ public class MenuTableView<T extends DtoMenu> {
         dishesTypeComboBox.setTooltip(new Tooltip("Тип страви"));
         dishesTypeComboBox.setPromptText("Тип страви");
 
-        ObservableList<String> observableList = FXCollections.observableArrayList();
-        observableList.addAll(FXCollections.observableArrayList(
-                sendARequestToTheServer(ClientCommandTypes.SELECT_DISHES_TYPE_NAME, new LinkedList<>())));
-
-        dishesTypeComboBox.getItems().add("Всі категорії");
-        dishesTypeComboBox.getItems().addAll(observableList);
-
-        new AutoCompleteComboBoxListener<>(dishesTypeComboBox, dishesTypeComboBoxListener);
+        initDishesTypeComboBoxItems();
 
         dishesTypeComboBox.setValue("Всі категорії");
         dishesTypeComboBoxListener.setValue("Всі категорії");
@@ -215,6 +208,9 @@ public class MenuTableView<T extends DtoMenu> {
                 e.printStackTrace();
             }
 
+            DishesTypeWindowController dishesTypeWindowController = fxmlLoader.getController();
+            dishesTypeWindowController.setMenuTableView(this);
+
             primaryStage.initStyle(StageStyle.TRANSPARENT);
             primaryStage.setScene(new Scene(root, 500, 500, Color.rgb(0, 0, 0, 0)));
             primaryStage.initModality(Modality.WINDOW_MODAL);
@@ -234,25 +230,22 @@ public class MenuTableView<T extends DtoMenu> {
     }
 
     private void setComboBoxCellFactory(ComboBox comboBox, ComboBox comboBoxListener) {
-        comboBox.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
-            @Override
-            public ListCell<String> call(ListView<String> param) {
-                final ListCell<String> cell = new ListCell<String>() {
-                    {
-                        super.setOnMousePressed((MouseEvent event) -> {
+        comboBox.setCellFactory(listCell -> {
+            final ListCell<String> cell = new ListCell<String>() {
+                {
+                    super.setOnMousePressed((MouseEvent event) -> {
 //                            mouse pressed
-                            comboBoxListener.setValue(comboBox.getValue());
-                        });
-                    }
+                        comboBoxListener.setValue(comboBox.getValue());
+                    });
+                }
 
-                    @Override
-                    public void updateItem(String item, boolean empty) {
-                        super.updateItem(item, empty);
-                        setText(item);
-                    }
-                };
-                return cell;
-            }
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    setText(item);
+                }
+            };
+            return cell;
         });
     }
 
@@ -262,4 +255,20 @@ public class MenuTableView<T extends DtoMenu> {
         new AutoCompleteComboBoxSearch(dishesNameComboBox, dishesNameComboBoxListener);
 
     }
+
+    public void initDishesTypeComboBoxItems(){
+        dishesTypeComboBox.getItems().clear();
+        ObservableList<String> observableList = FXCollections.observableArrayList();
+        observableList.addAll(FXCollections.observableArrayList(
+                sendARequestToTheServer(ClientCommandTypes.SELECT_DISHES_TYPE_NAME, new LinkedList<>())));
+
+        dishesTypeComboBox.getItems().add("Всі категорії");
+        dishesTypeComboBox.getItems().addAll(observableList);
+
+        new AutoCompleteComboBoxListener<>(dishesTypeComboBox, dishesTypeComboBoxListener);
+
+        dishesTypeComboBox.setValue("Всі категорії");
+        dishesTypeComboBoxListener.setValue("Всі категорії");
+    }
+
 }
