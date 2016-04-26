@@ -23,7 +23,10 @@ public enum ClientCommandTypes {
     UPDATE_MENU(),
     DELETE_MENU(),
     SELECT_OF_LIKE_NAMES_MENU(),
+    //for dishes type
     SELECT_DISHES_TYPE(),
-    INSERT_DISHES_TYPE();
+    INSERT_DISHES_TYPE(),
+    UPDATE_DISHES_TYPE(),
+    DELETE_DISHES_TYPE();
 
 }

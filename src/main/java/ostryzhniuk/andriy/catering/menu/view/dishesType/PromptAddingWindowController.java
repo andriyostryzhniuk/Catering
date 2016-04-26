@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
+import ostryzhniuk.andriy.catering.menu.view.dto.DtoDishesType;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -22,8 +23,11 @@ public class PromptAddingWindowController {
 
     public TextField textField;
     public Label exceptionLabel;
+    public Label titleLabel;
 
     private DishesTypeWindowController dishesTypeWindowController;
+
+    private DtoDishesType dtoDishesType;
 
     @FXML
     public void initialize(){
@@ -34,7 +38,14 @@ public class PromptAddingWindowController {
         if (!textFieldIsEmpty() && textFieldMatcherFind()){
             List<Object> objectList = new LinkedList<>();
             objectList.add(textField.getText());
-            sendARequestToTheServer(ClientCommandTypes.INSERT_DISHES_TYPE, objectList);
+
+            if (dtoDishesType == null) {
+                sendARequestToTheServer(ClientCommandTypes.INSERT_DISHES_TYPE, objectList);
+            } else {
+                objectList.add(dtoDishesType.getId());
+                sendARequestToTheServer(ClientCommandTypes.UPDATE_DISHES_TYPE, objectList);
+            }
+
             dishesTypeWindowController.initListView();
             closeStage();
         } else {
@@ -51,10 +62,6 @@ public class PromptAddingWindowController {
         stage.close();
     }
 
-    public void setDishesTypeWindowController(DishesTypeWindowController dishesTypeWindowController) {
-        this.dishesTypeWindowController = dishesTypeWindowController;
-    }
-
     private void setListenerToNameTextField() {
         textField.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
         textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
@@ -65,7 +72,7 @@ public class PromptAddingWindowController {
         textField.setOnMouseClicked((MouseEvent event) -> {
             if (textField.getStyleClass().contains("warning")) {
                 textField.getStyleClass().remove("warning");
-                exceptionLabel.setText("Неприпустима назва");
+                exceptionLabel.setText("Назва містить неприпустимі символи");
             }
         });
 
@@ -105,7 +112,29 @@ public class PromptAddingWindowController {
         return isEmpty;
     }
 
-//    public static String parseApostrophe(String string){
+    public void setDishesTypeWindowController(DishesTypeWindowController dishesTypeWindowController) {
+        this.dishesTypeWindowController = dishesTypeWindowController;
+    }
+
+    public void setDtoDishesType(DtoDishesType dtoDishesType) {
+        this.dtoDishesType = dtoDishesType;
+        initTitleLabelText();
+    }
+
+    private void initTitleLabelText(){
+        if (dtoDishesType == null) {
+            titleLabel.setText("Додати категорію");
+        } else {
+            titleLabel.setText("Редагувати категорію");
+            setTextToTextField(dtoDishesType.getType());
+        }
+    }
+
+    private void setTextToTextField(String text){
+        textField.setText(text);
+    }
+
+    //    public static String parseApostrophe(String string){
 //        Integer apostropheIndex = string.indexOf("'");
 //        if (apostropheIndex != -1) {
 //            System.out.println(apostropheIndex);

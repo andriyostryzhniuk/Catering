@@ -112,4 +112,10 @@ public class ODBC_PubsBD {
                 "VALUES (null, '" + type + "')");
     }
 
+    public static void updateDishesType(String type, Integer id){
+        getJdbcTemplate().update("UPDATE dishesType " +
+                "SET type = '" + type + "' " +
+                "WHERE id = '" + id + "'");
+    }
+
 }

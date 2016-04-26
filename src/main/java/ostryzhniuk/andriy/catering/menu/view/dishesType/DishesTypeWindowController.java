@@ -1,7 +1,5 @@
 package ostryzhniuk.andriy.catering.menu.view.dishesType;
 
-
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,12 +12,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Callback;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
-import ostryzhniuk.andriy.catering.menu.view.MenuWindowController;
 import ostryzhniuk.andriy.catering.menu.view.dto.DtoDishesType;
-import ostryzhniuk.andriy.catering.menu.view.dto.DtoMenu;
-
 import java.io.IOException;
 import java.util.LinkedList;
 
@@ -43,7 +37,7 @@ public class DishesTypeWindowController<T extends DtoDishesType> {
     }
 
     public void add(ActionEvent actionEvent) {
-        showEditingRecordWindow();
+        showEditingRecordWindow(null);
     }
 
     public void close(ActionEvent actionEvent) {
@@ -54,16 +48,13 @@ public class DishesTypeWindowController<T extends DtoDishesType> {
     private void initContextMenu() {
         MenuItem addItem = new MenuItem("Додати");
         addItem.setOnAction((ActionEvent event) -> {
-            showEditingRecordWindow();
+            showEditingRecordWindow(null);
         });
 
         MenuItem editItem = new MenuItem("Редагувати");
         editItem.setOnAction((ActionEvent event) -> {
-//                    try {
-//                        menuWindowController.editRecord();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
+            DtoDishesType dtoDishesType = listView.getSelectionModel().getSelectedItem();
+            showEditingRecordWindow(dtoDishesType);
         });
 
         MenuItem removeItem = new MenuItem("Видалити");
@@ -76,7 +67,7 @@ public class DishesTypeWindowController<T extends DtoDishesType> {
         listView.setContextMenu(cellMenu);
     }
 
-    private void showEditingRecordWindow(){
+    private void showEditingRecordWindow(DtoDishesType dtoDishesType){
         Stage primaryStage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/menu.view/dishesType/PromptAddingWindow.fxml"));
         Parent root = null;
@@ -88,6 +79,7 @@ public class DishesTypeWindowController<T extends DtoDishesType> {
 
         PromptAddingWindowController promptAddingWindowController = fxmlLoader.getController();
         promptAddingWindowController.setDishesTypeWindowController(this);
+        promptAddingWindowController.setDtoDishesType(dtoDishesType);
 
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setScene(new Scene(root, 300, 162, Color.rgb(0, 0, 0, 0)));

@@ -62,7 +62,7 @@
         </GridPane>
         <Pane prefHeight="52.0" prefWidth="300.0">
             <children>
-                <Label fx:id="titleLabel" layoutX="20.0" layoutY="11.0" text="Класифікація" textFill="WHITE">
+                <Label fx:id="titleLabel" layoutX="20.0" layoutY="11.0" textFill="WHITE">
                     <font>
                         <Font size="13.0"/>
                     </font>
