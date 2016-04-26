@@ -113,6 +113,10 @@ public class ClientCommand implements Serializable {
         } else if (clientCommandType == ClientCommandTypes.SELECT_DISHES_TYPE) {
             return selectDishesType();
 
+        } else if (clientCommandType == ClientCommandTypes.INSERT_DISHES_TYPE) {
+            insertDishesType((String) objectList.get(0));
+            return new LinkedList<>();
+
         } else {
             throw new IllegalArgumentException("NO SUCH COMMAND");
         }

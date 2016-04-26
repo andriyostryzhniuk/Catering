@@ -31,7 +31,6 @@ import ostryzhniuk.andriy.catering.overridden.elements.combo.box.AutoCompleteCom
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.LinkedList;
@@ -203,20 +202,18 @@ public class MenuTableView<T extends DtoMenu> {
     private Button initDishesTypeButton() {
         Button button = new Button();
         Image image = new Image(getClass().getResourceAsStream("/icons/settings.png"));
-        button.getStylesheets().add(getClass().getResource("/menu.view/DishesTypeButtonStyle.css").toExternalForm());
+        button.getStylesheets().add(getClass().getResource("/menu.view/dishesType/DishesTypeButtonStyle.css").toExternalForm());
         button.setGraphic(new ImageView(image));
 
         button.setOnAction((javafx.event.ActionEvent event) -> {
             Stage primaryStage = new Stage();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/menu.view/DishesTypeWindow.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/menu.view/dishesType/DishesTypeWindow.fxml"));
             Parent root = null;
             try {
                 root = fxmlLoader.load();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-//            AddingToMenuController addingToMenuController = fxmlLoader.getController();
 
             primaryStage.initStyle(StageStyle.TRANSPARENT);
             primaryStage.setScene(new Scene(root, 500, 500, Color.rgb(0, 0, 0, 0)));

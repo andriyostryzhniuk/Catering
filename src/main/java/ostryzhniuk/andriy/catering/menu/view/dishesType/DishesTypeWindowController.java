@@ -6,8 +6,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.menu.view.MenuWindowController;
@@ -26,13 +32,18 @@ public class DishesTypeWindowController<T extends DtoDishesType> {
     @FXML
     public void initialize(){
         initContextMenu();
+        initListView();
+    }
+
+    public void initListView(){
+        dishesTypesList.clear();
         dishesTypesList.addAll(FXCollections.observableArrayList(
                 sendARequestToTheServer(ClientCommandTypes.SELECT_DISHES_TYPE, new LinkedList<>())));
         listView.setItems(dishesTypesList);
     }
 
     public void add(ActionEvent actionEvent) {
-
+        showEditingRecordWindow();
     }
 
     public void close(ActionEvent actionEvent) {
@@ -40,14 +51,10 @@ public class DishesTypeWindowController<T extends DtoDishesType> {
         stage.close();
     }
 
-    public void initContextMenu() {
+    private void initContextMenu() {
         MenuItem addItem = new MenuItem("Додати");
         addItem.setOnAction((ActionEvent event) -> {
-//                    try {
-//                        menuWindowController.showEditingRecordWindow(null);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
+            showEditingRecordWindow();
         });
 
         MenuItem editItem = new MenuItem("Редагувати");
@@ -67,5 +74,26 @@ public class DishesTypeWindowController<T extends DtoDishesType> {
         cellMenu.getItems().addAll(addItem, editItem, removeItem);
 
         listView.setContextMenu(cellMenu);
+    }
+
+    private void showEditingRecordWindow(){
+        Stage primaryStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/menu.view/dishesType/PromptAddingWindow.fxml"));
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        PromptAddingWindowController promptAddingWindowController = fxmlLoader.getController();
+        promptAddingWindowController.setDishesTypeWindowController(this);
+
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
+        primaryStage.setScene(new Scene(root, 300, 162, Color.rgb(0, 0, 0, 0)));
+        primaryStage.initModality(Modality.WINDOW_MODAL);
+        primaryStage.initOwner(listView.getScene().getWindow());
+        primaryStage.showAndWait();
+
     }
 }

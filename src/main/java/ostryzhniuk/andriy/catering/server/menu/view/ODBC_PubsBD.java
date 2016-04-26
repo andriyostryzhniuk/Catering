@@ -107,4 +107,9 @@ public class ODBC_PubsBD {
                 "order by type asc", BeanPropertyRowMapper.newInstance(DtoDishesType.class));
     }
 
+    public static void insertDishesType(String type){
+        getJdbcTemplate().update("INSERT INTO dishesType (id, type) " +
+                "VALUES (null, '" + type + "')");
+    }
+
 }
