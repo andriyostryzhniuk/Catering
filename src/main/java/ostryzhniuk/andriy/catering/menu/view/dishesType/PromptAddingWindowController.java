@@ -76,7 +76,7 @@ public class PromptAddingWindowController {
             }
         });
 
-        Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ\\s-]");
+        Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ'\\s-]");
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
             Matcher matcher = pattern.matcher(newValue);
             if (matcher.find()) {
@@ -89,7 +89,7 @@ public class PromptAddingWindowController {
 
     private boolean textFieldMatcherFind(){
         boolean right = true;
-        Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ\\s-]");
+        Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ'\\s-]");
         textField.setText(textField.getText().trim());
         Matcher matcher = pattern.matcher(textField.getText());
         if (matcher.find()) {

@@ -7,8 +7,8 @@ import java.math.BigDecimal;
  * Created by Andriy on 04/19/2016.
  */
 public class DtoMenu implements Serializable {
-    private int id;
-    private int dishesTypeId;
+    private Integer id;
+    private Integer dishesTypeId;
     private String dishesTypeName;
     private String name;
     private BigDecimal price;
@@ -18,7 +18,7 @@ public class DtoMenu implements Serializable {
     public DtoMenu() {
     }
 
-    public DtoMenu(int id, int dishesTypeId, String dishesTypeName, String name, BigDecimal price, Double mass,
+    public DtoMenu(Integer id, Integer dishesTypeId, String dishesTypeName, String name, BigDecimal price, Double mass,
                    String ingredients) {
         this.id = id;
         this.dishesTypeId = dishesTypeId;
@@ -29,19 +29,19 @@ public class DtoMenu implements Serializable {
         this.ingredients = ingredients;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getDishesTypeId() {
+    public Integer getDishesTypeId() {
         return dishesTypeId;
     }
 
-    public void setDishesTypeId(int dishesTypeId) {
+    public void setDishesTypeId(Integer dishesTypeId) {
         this.dishesTypeId = dishesTypeId;
     }
 

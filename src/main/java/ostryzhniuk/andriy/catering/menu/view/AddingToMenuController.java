@@ -91,7 +91,7 @@ public class AddingToMenuController {
         objectList.add(dishesTypeId);
 
         if (!isEmpty(nameTextField) &&
-                textFieldMatcherFind(nameTextField, Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ&()\\s-]"))){
+                textFieldMatcherFind(nameTextField, Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ&()'\\s-]"))){
             objectList.add(nameTextField.getText());
         } else {
             return;
@@ -151,7 +151,7 @@ public class AddingToMenuController {
 
     public void setListenerToNameTextField() {
         nameTextField.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
-        Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ&()\\s-]");
+        Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ&()'\\s-]");
         nameTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             textFieldMatcherFind (nameTextField, pattern);
             exceptionLabel.setText("");
@@ -161,7 +161,7 @@ public class AddingToMenuController {
             if (nameTextField.getStyleClass().contains("warning")) {
                 nameTextField.getStyleClass().remove("warning");
                 exceptionLabel.setText("Назва не може містити інших символів крім\n" +
-                        "латинських та кириличних, а також & -");
+                        "латинських та кириличних, а також & ' -");
             }
         });
 
@@ -169,7 +169,7 @@ public class AddingToMenuController {
             Matcher matcher = pattern.matcher(newValue);
             if (matcher.find()) {
                 exceptionLabel.setText("Назва не може містити інших символів крім\n" +
-                        "латинських та кириличних, а також & -");
+                        "латинських та кириличних, а також & ' -");
             } else {
                 exceptionLabel.setText("");
             }
@@ -274,7 +274,7 @@ public class AddingToMenuController {
 
     public void setListenerToIngredientsTextArea() {
         ingredientsTextArea.getStylesheets().add(getClass().getResource("/styles/TextAreaStyle.css").toExternalForm());
-        Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ()'\','\'%''\'.\\s\\d-]");
+        Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ()'\','\'%''\'.\\s\\d\\n'-]");
         ingredientsTextArea.focusedProperty().addListener((observable, oldValue, newValue) -> {
             ingredientsTextAreaMatcherFind();
             exceptionLabel.setText("");
@@ -312,7 +312,7 @@ public class AddingToMenuController {
 
     private boolean ingredientsTextAreaMatcherFind(){
         boolean right = true;
-        Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ()'\','\'%''\'.\\s\\d\\n-]");
+        Pattern pattern = Pattern.compile("[^a-zA-Zа-яА-ЯіІїЇєЄ()'\','\'%''\'.\\s\\d\\n'-]");
         ingredientsTextArea.setText(ingredientsTextArea.getText().trim());
         Matcher matcher = pattern.matcher(ingredientsTextArea.getText());
         if (matcher.find()) {
@@ -355,25 +355,22 @@ public class AddingToMenuController {
 
         new AutoCompleteComboBoxListener<>(dishesTypeComboBox, comboBoxListener);
 
-        dishesTypeComboBox.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
-            @Override
-            public ListCell<String> call(ListView<String> param) {
-                final ListCell<String> cell = new ListCell<String>() {
-                    {
-                        super.setOnMousePressed((MouseEvent event) -> {
+        dishesTypeComboBox.setCellFactory(listCell -> {
+            final ListCell<String> cell = new ListCell<String>() {
+                {
+                    super.setOnMousePressed((MouseEvent event) -> {
 //                            mouse pressed
-                            comboBoxListener.setValue(dishesTypeComboBox.getValue());
-                        });
-                    }
+                        comboBoxListener.setValue(dishesTypeComboBox.getValue());
+                    });
+                }
 
-                    @Override
-                    public void updateItem(String item, boolean empty) {
-                        super.updateItem(item, empty);
-                        setText(item);
-                    }
-                };
-                return cell;
-            }
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    setText(item);
+                }
+            };
+            return cell;
         });
 
         comboBoxListener.valueProperty().addListener((observableValue, oldValue, newValue) -> {

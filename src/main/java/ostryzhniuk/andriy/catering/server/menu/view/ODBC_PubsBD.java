@@ -30,9 +30,9 @@ public class ODBC_PubsBD {
         List<DtoMenu> dtoMenuList = getJdbcTemplate().query("select menu.id as id,  dishestype.id as dishesTypeId, " +
                 "dishestype.type as dishesTypeName, menu.name, menu.price, menu.mass, menu.ingredients " +
                 "from menu, dishestype " +
-                "where menu.dishesType_id = '" +  dishesTypeId + "' and " +
+                "where menu.dishesType_id = ? and " +
                 "menu.dishesType_id = dishestype.id " +
-                "order by dishestype.type", BeanPropertyRowMapper.newInstance(DtoMenu.class));
+                "order by dishestype.type", BeanPropertyRowMapper.newInstance(DtoMenu.class), dishesTypeId);
         return dtoMenuList;
     }
 
@@ -42,17 +42,19 @@ public class ODBC_PubsBD {
             dtoMenuList = getJdbcTemplate().query("select menu.id as id,  dishestype.id as dishesTypeId, " +
                     "dishestype.type as dishesTypeName, menu.name, menu.price, menu.mass, menu.ingredients " +
                     "from menu, dishestype " +
-                    "where LOWER(menu.name) LIKE LOWER('%" + likeNames + "%') and " +
+                    "where LOWER(menu.name) LIKE LOWER(?) and " +
                     "menu.dishesType_id = dishestype.id " +
-                    "order by dishestype.type", BeanPropertyRowMapper.newInstance(DtoMenu.class));
+                    "order by dishestype.type", BeanPropertyRowMapper.newInstance(DtoMenu.class),
+                    new String("%"+likeNames+"%"));
         } else {
             dtoMenuList = getJdbcTemplate().query("select menu.id as id,  dishestype.id as dishesTypeId, " +
                     "dishestype.type as dishesTypeName, menu.name, menu.price, menu.mass, menu.ingredients " +
                     "from menu, dishestype " +
-                    "where LOWER(menu.name) LIKE LOWER('%" + likeNames + "%') and " +
-                    "menu.dishesType_id = '" +  selectDishesTypeId(dishesTypeName).get(0) + "' and " +
+                    "where LOWER(menu.name) LIKE LOWER(?) and " +
+                    "menu.dishesType_id = ? and " +
                     "menu.dishesType_id = dishestype.id " +
-                    "order by dishestype.type", BeanPropertyRowMapper.newInstance(DtoMenu.class));
+                    "order by dishestype.type", BeanPropertyRowMapper.newInstance(DtoMenu.class),
+                    new String("%"+likeNames+"%"), selectDishesTypeId(dishesTypeName).get(0));
         }
         return dtoMenuList;
     }
@@ -71,7 +73,7 @@ public class ODBC_PubsBD {
     public static List<Integer> selectDishesTypeId(String dishesTypeName){
         SqlRowSet rs = getJdbcTemplate().queryForRowSet("select dishesType.id " +
                 "from dishesType " +
-                "where dishesType.type = '" + dishesTypeName + "'");
+                "where dishesType.type = ?", dishesTypeName);
         List<Integer> clientIdList = new LinkedList<>();
         while (rs.next()) {
             clientIdList.add(rs.getInt(1));
@@ -81,24 +83,23 @@ public class ODBC_PubsBD {
 
     public static void insertMenu(Integer dishesTypeId, String name, BigDecimal price, Double mass, String ingredients){
         getJdbcTemplate().update("INSERT INTO menu (id, dishesType_id, name, price, mass, ingredients) " +
-                "VALUES (null, '" + dishesTypeId + "', '" + name + "', '" + price + "', '" + mass + "', " +
-                "'" + ingredients + "')");
+                "VALUES (?, ?, ?, ?, ?, ?)", null, dishesTypeId, name, price, mass, ingredients);
     }
 
     public static void updateMenu(Integer dishesTypeId, String name, BigDecimal price, Double mass,
                                   String ingredients, int id){
         getJdbcTemplate().update("UPDATE menu " +
-                "SET dishesType_id = '" + dishesTypeId + "', " +
-                "name = '" + name + "', " +
-                "price = '" + price + "', " +
-                "mass = '" + mass + "', " +
-                "ingredients = '" + ingredients + "' " +
-                "WHERE id = '" + id + "'");
+                "SET dishesType_id = ?, " +
+                "name = ?, " +
+                "price = ?, " +
+                "mass = ?, " +
+                "ingredients = ? " +
+                "WHERE id = ?", dishesTypeId, name, price, mass, ingredients, id);
     }
 
     public static void deleteMenu(Integer menuId){
         getJdbcTemplate().update("DELETE FROM menu " +
-                "WHERE id = " + menuId + "");
+                "WHERE id = ?", menuId);
     }
 
     public static List<DtoDishesType> selectDishesType(){
@@ -109,18 +110,18 @@ public class ODBC_PubsBD {
 
     public static void insertDishesType(String type){
         getJdbcTemplate().update("INSERT INTO dishesType (id, type) " +
-                "VALUES (null, '" + type + "')");
+                "VALUES (?, ?)", null, type);
     }
 
     public static void updateDishesType(String type, Integer id){
         getJdbcTemplate().update("UPDATE dishesType " +
-                "SET type = '" + type + "' " +
-                "WHERE id = '" + id + "'");
+                "SET type = ? " +
+                "WHERE id = ?", type, id);
     }
 
     public static void deleteDishesType(Integer id){
         getJdbcTemplate().update("DELETE FROM dishesType " +
-                "WHERE id = '" + id + "'");
+                "WHERE id = ?", id);
     }
 
 }
