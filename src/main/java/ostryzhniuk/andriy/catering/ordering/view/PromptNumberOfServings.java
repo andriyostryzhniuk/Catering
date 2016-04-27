@@ -1,8 +1,6 @@
 package ostryzhniuk.andriy.catering.ordering.view;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -34,7 +32,6 @@ public class PromptNumberOfServings {
 
     public int showPrompt(Window window) {
         Stage primaryStage = new Stage();
-        primaryStage.setTitle("Prompt");
         primaryStage.initStyle(StageStyle.TRANSPARENT);
 
         Group root = new Group();
@@ -43,13 +40,13 @@ public class PromptNumberOfServings {
         Rectangle background = initRectangle();
 
         VBox vBox = new VBox(2);
-        vBox.setPadding(new Insets(100, 0, 0, 40));
+        vBox.setPadding(new Insets(90, 0, 0, 40));
         HBox hBox = new HBox(3);
 
         Label exceptionLabel = new Label("Значення неприпустиме");
         exceptionLabel.setStyle("-fx-text-fill: red");
 
-        NumberSpinner numberSpinner = initNumberSpinner(10000);
+        NumberSpinner numberSpinner = initNumberSpinner();
 
         Button okButton = new Button("Прийняти");
         okButton.setOnAction((ActionEvent event) -> {
@@ -90,24 +87,21 @@ public class PromptNumberOfServings {
         return numberOfServings;
     }
 
-    private NumberSpinner initNumberSpinner(int maxValue){
+    private NumberSpinner initNumberSpinner() {
         NumberSpinner numberSpinner = new NumberSpinner();
         numberSpinner.setPrefWidth(80);
         numberSpinner.setValue(1);
         numberSpinner.setMinValue(0);
-        numberSpinner.setMaxValue(maxValue);
-        numberSpinner.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue observableValue, Number oldValue, Number newValue) {
+        numberSpinner.setMaxValue(10000);
+        numberSpinner.valueProperty().addListener(ns -> {
 //                change detected
-                isException = false;
-                try {
-                    if (newValue.intValue() < 1) {
-                        isException = true;
-                    }
-                } catch (NullPointerException e) {
+            isException = false;
+            try {
+                if (numberSpinner.getValue().intValue() < 1) {
                     isException = true;
                 }
+            } catch (NullPointerException e) {
+                isException = true;
             }
         });
         return numberSpinner;
@@ -128,26 +122,24 @@ public class PromptNumberOfServings {
 
     private Pane initLabelPane(){
         String nameOfDish = this.nameOfDish;
-        if (nameOfDish.length() > 23) {
-            nameOfDish = nameOfDish.replace(nameOfDish, nameOfDish.substring(0, 22)+"...");
+        if (nameOfDish.length() > 40) {
+            nameOfDish = nameOfDish.replace(nameOfDish, nameOfDish.substring(0, 40)+"...");
         }
-        Label labelStock = new Label(nameOfDish+"\nДоступно одиниць: ");
+        Label labelStock = new Label("Страва:\n" + nameOfDish);
 
-        Label labelEmployee = new Label("Кому:\n");
-        Label labelObject = new Label("Об'єкт:\n");
+        Label labelNumberOfServings = new Label("Кількість порцій:");
 
         labelStock.setStyle("-fx-text-fill: white");
-        labelEmployee.setStyle("-fx-text-fill: white");
-        labelObject.setStyle("-fx-text-fill: white");
+        labelNumberOfServings.setStyle("-fx-text-fill: white");
 
         Pane labelPane = new Pane();
-        labelPane.getChildren().addAll(labelStock, labelEmployee, labelObject);
-        labelStock.setLayoutX(10);
+        labelPane.getChildren().addAll(labelStock, labelNumberOfServings);
+
+        labelStock.setLayoutX(20);
         labelStock.setLayoutY(10);
-        labelEmployee.setLayoutX(180);
-        labelEmployee.setLayoutY(10);
-        labelObject.setLayoutX(180);
-        labelObject.setLayoutY(50);
+
+        labelNumberOfServings.setLayoutX(40);
+        labelNumberOfServings.setLayoutY(65);
         return labelPane;
     }
 }
