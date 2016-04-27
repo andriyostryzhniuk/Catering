@@ -2,6 +2,7 @@ package ostryzhniuk.andriy.catering.commands;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ostryzhniuk.andriy.catering.clients.view.dto.DtoClient;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.server.order.view.ODBC_PubsBD;
 import java.io.Serializable;
@@ -154,6 +155,10 @@ public class ClientCommand implements Serializable {
         insertClient((String) objectList.get(0), (String) objectList.get(1), (String) objectList.get(2),
                 (String) objectList.get(3), (BigDecimal) objectList.get(4), (String) objectList.get(5),
                 (Integer) objectList.get(6), (String) objectList.get(7));
+
+//        insertClient(new DtoClient(null, (String) objectList.get(0), (String) objectList.get(1), (String) objectList.get(2),
+//                (String) objectList.get(3), (BigDecimal) objectList.get(4), (String) objectList.get(5),
+//                (Integer) objectList.get(6), (String) objectList.get(7)));
     }
 
     private void updateClients(){

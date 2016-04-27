@@ -7,7 +7,7 @@ import java.math.BigDecimal;
  * Created by Andriy on 04/18/2016.
  */
 public class DtoClient implements Serializable {
-    private int id;
+    private Integer id;
     private String name;
     private String address;
     private String telephoneNumber;
@@ -20,7 +20,7 @@ public class DtoClient implements Serializable {
     public DtoClient() {
     }
 
-    public DtoClient(int id, String name, String address, String telephoneNumber, String contactPerson,
+    public DtoClient(Integer id, String name, String address, String telephoneNumber, String contactPerson,
                      BigDecimal discount, String email, Integer icq, String skype) {
         this.id = id;
         this.name = name;
@@ -33,11 +33,11 @@ public class DtoClient implements Serializable {
         this.skype = skype;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

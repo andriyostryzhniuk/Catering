@@ -96,4 +96,15 @@ public class MainWindowController {
             mainGridPane.getChildren().remove(i-1);
         }
     }
+
+    public void initOrderingView(ActionEvent actionEvent) {
+        removeMainGridPaneChildren();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ordering.view/OrderingWindow.fxml"));
+        try {
+            mainGridPane.add(fxmlLoader.load(), 1, 1);
+        } catch (IOException exception) {
+            throw new UncheckedIOException(exception);
+        }
+        mainGridPane.add(initButtonContainer(initButtonClose()), 1, 2);
+    }
 }
