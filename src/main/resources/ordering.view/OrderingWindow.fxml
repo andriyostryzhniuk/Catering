@@ -9,70 +9,64 @@
     <center>
         <GridPane fx:id="rootGridPane" BorderPane.alignment="CENTER">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="360.0" prefWidth="360.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="20.0" prefWidth="20.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="620.0" prefWidth="620.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="530.0" minWidth="530.0" prefWidth="530.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="20.0" prefWidth="20.0" />
+                <ColumnConstraints fx:id="tableViewColumnConstraints" hgrow="SOMETIMES" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="500.0" prefHeight="500.0" vgrow="SOMETIMES" />
             </rowConstraints>
-            <children>
-                <GridPane fx:id="controlsGridPane">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                    <children>
-                        <DatePicker fx:id="datePicker" minWidth="150.0" prefWidth="150.0" promptText="Дата" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField fx:id="costTextField" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" promptText="Вартість" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <TextField fx:id="discountTextField" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" promptText="Знижка (%)" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <TextField fx:id="billTextField" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" promptText="До оплати" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <TextField fx:id="paidTextField" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" promptText="Сплачено" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <Label text="Вартість:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
-                            <GridPane.margin>
-                                <Insets right="10.0" />
-                            </GridPane.margin>
-                        </Label>
-                        <Label text="Дата:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-                            <GridPane.margin>
-                                <Insets right="10.0" />
-                            </GridPane.margin>
-                        </Label>
-                        <Label text="Клаєнт:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
-                            <GridPane.margin>
-                                <Insets right="10.0" />
-                            </GridPane.margin>
-                        </Label>
-                        <Label text="Знижка: (%)" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
-                            <GridPane.margin>
-                                <Insets right="10.0" />
-                            </GridPane.margin>
-                        </Label>
-                        <Label text="До оплати:" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
-                            <padding>
-                                <Insets right="10.0" />
-                            </padding>
-                        </Label>
-                        <Label text="Сплачено:" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
-                            <padding>
-                                <Insets right="10.0" />
-                            </padding>
-                        </Label>
-                        <Button fx:id="saveButton" maxHeight="25.0" maxWidth="72.0" minHeight="25.0" minWidth="72.0" mnemonicParsing="false" onAction="#saveToDB" prefHeight="25.0" prefWidth="72.0" text="Зберегти" GridPane.rowIndex="7" />
-                        <Button fx:id="escapeButton" maxHeight="25.0" maxWidth="72.0" minHeight="25.0" minWidth="72.0" mnemonicParsing="false" onAction="#escape" prefHeight="25.0" prefWidth="72.0" text="Скасувати" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                    </children>
-                </GridPane>
-            </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
         </GridPane>
     </center>
+    <top>
+        <GridPane fx:id="controlsGridPane" BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="170.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="270.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="150.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="150.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="150.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="150.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <DatePicker fx:id="datePicker" minWidth="150.0" prefWidth="150.0" promptText="Дата" GridPane.rowIndex="1" />
+                <Label text="Дата:" GridPane.halignment="LEFT">
+                    <GridPane.margin>
+                        <Insets />
+                    </GridPane.margin>
+                </Label>
+                <Label text="Клієнт:" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+                    <GridPane.margin>
+                        <Insets />
+                    </GridPane.margin>
+                </Label>
+                <Label text="Вартість:" GridPane.columnIndex="2" GridPane.halignment="LEFT">
+                    <GridPane.margin>
+                        <Insets />
+                    </GridPane.margin>
+                </Label>
+                <Label text="Знижка: (%)" GridPane.columnIndex="3" GridPane.halignment="LEFT">
+                    <GridPane.margin>
+                        <Insets />
+                    </GridPane.margin>
+                </Label>
+                <Label text="До оплати:" GridPane.columnIndex="4" GridPane.halignment="LEFT" />
+                <Label text="Сплачено:" GridPane.columnIndex="5" GridPane.halignment="LEFT" />
+                <TextField fx:id="costTextField" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" promptText="Вартість" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <TextField fx:id="discountTextField" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" promptText="Знижка (%)" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                <TextField fx:id="billTextField" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" promptText="До оплати" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                <TextField fx:id="paidTextField" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" promptText="Сплачено" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="30.0" />
+            </BorderPane.margin>
+        </GridPane>
+    </top>
 </BorderPane>

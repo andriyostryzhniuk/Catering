@@ -3,7 +3,11 @@ package ostryzhniuk.andriy.catering.ordering.view;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.menu.view.MenuTableView;
@@ -16,13 +20,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
-
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
 
-/**
- * Created by Andriy on 04/26/2016.
- */
-public class OrderingWindowController {
+public class OrderingWindowController extends MenuTableView {
 
     public DatePicker datePicker;
     public ComboBox clientComboBox = new ComboBox();
@@ -31,11 +31,10 @@ public class OrderingWindowController {
     public TextField discountTextField;
     public TextField billTextField;
     public TextField paidTextField;
-    public Button saveButton;
-    public Button escapeButton;
     public GridPane controlsGridPane;
     public GridPane rootGridPane;
-    private ostryzhniuk.andriy.catering.order.view.ControlsElements controlsElements;
+    public ColumnConstraints tableViewColumnConstraints;
+    private ostryzhniuk.andriy.catering.ordering.view.ControlsElements controlsElements;
     private Integer orderId = null;
 
     private MenuTableView menuTableView = new MenuTableView();
@@ -45,11 +44,11 @@ public class OrderingWindowController {
 
     @FXML
     public void initialize(){
-        controlsElements = new ControlsElements(billTextField, clientComboBox, comboBoxListener, costTextField,
+        controlsElements = new ostryzhniuk.andriy.catering.ordering.view.ControlsElements(billTextField, clientComboBox, comboBoxListener, costTextField,
                 datePicker, discountTextField,  paidTextField);
 
         controlsElements.initClientComboBox();
-        controlsGridPane.add(clientComboBox, 1, 2);
+        controlsGridPane.add(clientComboBox, 1, 1);
 
         controlsElements.setDataPickerListener();
         controlsElements.setCostTextFieldListener();
@@ -59,10 +58,12 @@ public class OrderingWindowController {
         billTextField.setTooltip(new Tooltip("До оплати (з урахуванням знижки)"));
 
         initMenuTableView();
+        initTopBorderPane();
+        setColsDateProperties();
 
     }
 
-    public void saveToDB(ActionEvent actionEvent) {
+    public void saveToDB() {
         boolean isWarning = false;
         List<Object> objectList = new LinkedList<>();
 
@@ -147,11 +148,6 @@ public class OrderingWindowController {
         }
     }
 
-    public void escape(ActionEvent actionEvent) {
-        orderId = null;
-        controlsElements.clear();
-    }
-
     private void initMenuTableView(){
         menuTableView.initialize();
         tableView = menuTableView.getMenuTableView();
@@ -159,8 +155,10 @@ public class OrderingWindowController {
         IntStream.range(3, tableView.getColumns().size()).forEach(i -> {
             tableView.getColumns().get(i).setVisible(false);
         });
-        tableView.setMaxWidth(502);
-        rootGridPane.add(menuTableView.getBorderPane(), 2, 0);
+        tableView.setMaxWidth(530);
+        rootGridPane.add(menuTableView.getBorderPane(), 0, 0);
+//        tableViewColumnConstraints.setPrefWidth(tableView.getMaxWidth());
+//        tableViewColumnConstraints.setMaxWidth(tableView.getMaxWidth());
         setOnDoubleClickToTableView();
     }
 
@@ -179,4 +177,35 @@ public class OrderingWindowController {
             return row ;
         });
     }
+
+    public void initTopBorderPane(){
+        GridPane topGridPane = new GridPane();
+
+        Label dishesTypeLabel = new Label("Класифікація:");
+        topGridPane.add(dishesTypeLabel, 0, 0);
+        topGridPane.setMargin(dishesTypeLabel, new Insets(0, 0, 7, 0));
+
+        initDishesTypeComboBox();
+        topGridPane.add(menuTableView.getDishesTypeComboBox(), 0, 1);
+
+        Label dishesNameLabel = new Label("Пошук:");
+        topGridPane.add(dishesNameLabel, 1, 0);
+        topGridPane.setMargin(dishesNameLabel, new Insets(0, 0, 7, 30));
+
+        initDishesNameComboBox();
+        topGridPane.add(menuTableView.getDishesNameComboBox(), 1, 1);
+        topGridPane.setMargin(menuTableView.getDishesNameComboBox(), new Insets(0, 0, 0, 30));
+
+        menuTableView.getBorderPane().setTop(topGridPane);
+        menuTableView.getBorderPane().setAlignment(topGridPane, Pos.TOP_LEFT);
+        menuTableView.getBorderPane().setMargin(topGridPane, new Insets(0, 0, 5, 0));
+
+    }
+
+    private void setColsDateProperties() {
+        menuTableView.dishesTypeCol.setPercentWidth(206); menuTableView.dishesTypeCol.setMinWidth(206);
+        menuTableView.nameCol.setPercentWidth(236); menuTableView.nameCol.setMinWidth(236);
+        menuTableView.priceCol.setPercentWidth(86); menuTableView.priceCol.setMinWidth(86);
+    }
+
 }

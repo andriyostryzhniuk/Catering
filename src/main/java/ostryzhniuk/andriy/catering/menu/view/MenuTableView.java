@@ -127,7 +127,7 @@ public class MenuTableView<T extends DtoMenu> {
         tableView.getTableView().getColumns().addAll(dishesTypeCol, nameCol, priceCol, massCol, ingredientsCol);
     }
 
-    private void initTopBorderPane(){
+    protected void initTopBorderPane(){
         GridPane topGridPane = new GridPane();
 
         Label dishesTypeLabel = new Label("Класифікація:");
@@ -142,7 +142,7 @@ public class MenuTableView<T extends DtoMenu> {
         topGridPane.setHalignment(dishesTypeButton, HPos.RIGHT);
         topGridPane.setMargin(dishesTypeButton, new Insets(0, 0, 0, 2));
 
-        Label dishesNameLabel = new Label("Пошук за назвою:");
+        Label dishesNameLabel = new Label("Пошук:");
         topGridPane.add(dishesNameLabel, 3, 0);
         topGridPane.setMargin(dishesNameLabel, new Insets(0, 10, 0, 80));
 
@@ -155,7 +155,7 @@ public class MenuTableView<T extends DtoMenu> {
 
     }
 
-    private void initDishesTypeComboBox() {
+    protected void initDishesTypeComboBox() {
         dishesTypeComboBox.getStylesheets().add(getClass().getResource("/styles/ComboBoxStyle.css").toExternalForm());
         dishesTypeComboBox.setTooltip(new Tooltip("Тип страви"));
         dishesTypeComboBox.setPromptText("Тип страви");
@@ -177,10 +177,10 @@ public class MenuTableView<T extends DtoMenu> {
         });
     }
 
-    private void initDishesNameComboBox() {
+    protected void initDishesNameComboBox() {
         dishesNameComboBox.getStylesheets().add(getClass().getResource("/menu.view/ComboBoxStyle.css").toExternalForm());
         dishesNameComboBox.setTooltip(new Tooltip("Пошук за назвою страви"));
-        dishesNameComboBox.setPromptText("Пошук за назвою");
+        dishesNameComboBox.setPromptText("Пошук");
 
         new AutoCompleteComboBoxSearch(dishesNameComboBox, dishesNameComboBoxListener);
 
@@ -269,6 +269,14 @@ public class MenuTableView<T extends DtoMenu> {
 
         dishesTypeComboBox.setValue("Всі категорії");
         dishesTypeComboBoxListener.setValue("Всі категорії");
+    }
+
+    public ComboBox getDishesTypeComboBox() {
+        return dishesTypeComboBox;
+    }
+
+    public ComboBox getDishesNameComboBox() {
+        return dishesNameComboBox;
     }
 
 }

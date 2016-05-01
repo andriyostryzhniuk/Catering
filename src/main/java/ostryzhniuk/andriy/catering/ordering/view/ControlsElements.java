@@ -16,9 +16,6 @@ import java.util.LinkedList;
 
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
 
-/**
- * Created by Andriy on 04/17/2016.
- */
 public class ControlsElements {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ControlsElements.class);

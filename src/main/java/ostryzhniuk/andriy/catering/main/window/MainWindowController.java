@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ostryzhniuk.andriy.catering.ordering.view.OrderingWindowController;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -19,7 +20,7 @@ public class MainWindowController {
     private static final Logger LOGGER = LoggerFactory.getLogger(MainWindowController.class);
     public GridPane mainGridPane;
 
-//    private OrderWindowController orderWindowController;
+    private OrderingWindowController orderingWindowController;
 
     @FXML
     public void initialize(){
@@ -31,7 +32,6 @@ public class MainWindowController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/order/view/OrderWindow.fxml"));
         try {
             mainGridPane.add(fxmlLoader.load(), 1, 1);
-//            orderWindowController = fxmlLoader.getController();
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         }
@@ -102,9 +102,26 @@ public class MainWindowController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ordering.view/OrderingWindow.fxml"));
         try {
             mainGridPane.add(fxmlLoader.load(), 1, 1);
+            orderingWindowController = fxmlLoader.getController();
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         }
-        mainGridPane.add(initButtonContainer(initButtonClose()), 1, 2);
+        mainGridPane.add(initButtonContainer(initButtonOrderingSave (), initButtonOrderingCancel()), 1, 2);
+    }
+
+    public Button initButtonOrderingCancel (){
+        Button buttonCancel = initButton("Скасувати");
+        buttonCancel.setOnAction((ActionEvent event) -> {
+            removeMainGridPaneChildren();
+        });
+        return buttonCancel;
+    }
+
+    public Button initButtonOrderingSave (){
+        Button buttonSave = initButton("Зберегти");
+        buttonSave.setOnAction((ActionEvent event) -> {
+            orderingWindowController.saveToDB();
+        });
+        return buttonSave;
     }
 }
