@@ -97,6 +97,10 @@ public class OrderWindowController<T extends DtoOrder> {
         tableView.getTableView().getColumns().addAll(idCol, dateCol, clientCol, costCol, discountCol, billCol, paidCol);
     }
 
+    public void addRecord(){
+        mainWindowController.initOrderingView();
+    }
+
     public void editRecord(){
         TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
         int rowIndex = pos.getRow();

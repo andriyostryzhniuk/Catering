@@ -24,6 +24,11 @@ public class ContextMenu {
                     rowMenu.getItems().addAll(tableMenu.getItems());
                     rowMenu.getItems().add(new SeparatorMenuItem());
                 }
+                MenuItem addItem = new MenuItem("Додати");
+                addItem.setOnAction((ActionEvent event) -> {
+                    orderWindowController.addRecord();
+                });
+
                 MenuItem editItem = new MenuItem("Редагувати");
                 editItem.setOnAction((ActionEvent event) -> {
                     orderWindowController.editRecord();
@@ -33,7 +38,7 @@ public class ContextMenu {
                 removeItem.setOnAction((ActionEvent event) -> {
                     orderWindowController.removeRecord();
                 });
-                rowMenu.getItems().addAll(editItem, removeItem);
+                rowMenu.getItems().addAll(addItem, editItem, removeItem);
                 row.contextMenuProperty().bind(
                         Bindings.when(Bindings.isNotNull(row.itemProperty()))
                                 .then(rowMenu)

@@ -101,7 +101,11 @@ public class MainWindowController {
         }
     }
 
-    public void initOrderingView(ActionEvent actionEvent) {
+    public void onActionOrderingButton(ActionEvent actionEvent) {
+        initOrderingView();
+    }
+
+    public void initOrderingView(){
         removeMainGridPaneChildren();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ordering.view/OrderingWindow.fxml"));
         try {
