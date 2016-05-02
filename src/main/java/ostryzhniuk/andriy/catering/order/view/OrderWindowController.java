@@ -16,6 +16,7 @@ import javafx.util.converter.IntegerStringConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
+import ostryzhniuk.andriy.catering.main.window.MainWindowController;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
@@ -45,6 +46,7 @@ public class OrderWindowController<T extends DtoOrder> {
     public TextField paidTextField;
     public Button saveButton;
     public Button escapeButton;
+    private MainWindowController mainWindowController;
 
     @FXML
     private TableViewHolder<T> tableView = new TableViewHolder<>();
@@ -223,23 +225,7 @@ public class OrderWindowController<T extends DtoOrder> {
         int rowIndex = pos.getRow();
         DtoOrder dtoOrder = tableView.getTableView().getItems().get(rowIndex);
 
-        java.util.Date inputDate = dtoOrder.getDate();
-        LocalDate localDate = inputDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        datePicker.setValue(localDate);
-
-        clientComboBox.setValue(dtoOrder.getClient());
-        comboBoxListener.setValue(dtoOrder.getClient());
-
-        costTextField.setText(dtoOrder.getCost().toString());
-        controlsElements.costTextFieldValidation();
-
-        discountTextField.setText(dtoOrder.getDiscount().toString());
-        controlsElements.discountTextFieldValidation();
-
-        paidTextField.setText(dtoOrder.getPaid().toString());
-        controlsElements.paidTextFieldValidation();
-
-        orderId = dtoOrder.getId();
+        mainWindowController.initOrderingViewForEditing(dtoOrder);
     }
 
     public void removeRecord(){
@@ -253,4 +239,7 @@ public class OrderWindowController<T extends DtoOrder> {
         initTableView();
     }
 
+    public void setMainWindowController(MainWindowController mainWindowController) {
+        this.mainWindowController = mainWindowController;
+    }
 }

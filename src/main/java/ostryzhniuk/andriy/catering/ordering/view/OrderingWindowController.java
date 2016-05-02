@@ -11,9 +11,12 @@ import javafx.scene.layout.GridPane;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.menu.view.MenuTableView;
 import ostryzhniuk.andriy.catering.menu.view.dto.DtoMenu;
+import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.ordering.view.dto.DtoOrdering;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -31,6 +34,7 @@ public class OrderingWindowController extends MenuTableView {
     public TextField paidTextField;
     public GridPane controlsGridPane;
     public GridPane rootGridPane;
+    public Label orderIdLabel;
     private ostryzhniuk.andriy.catering.ordering.view.ControlsElements controlsElements;
     private Integer orderId = null;
 
@@ -44,13 +48,14 @@ public class OrderingWindowController extends MenuTableView {
 
     @FXML
     public void initialize(){
+        orderIdLabel.setText("-");
         orderingTableView.setPlaceholder(new Label("Не замовлено жодної страви"));
 
         controlsElements = new ostryzhniuk.andriy.catering.ordering.view.ControlsElements(billTextField, clientComboBox, comboBoxListener, costTextField,
                 datePicker, discountTextField,  paidTextField);
 
         controlsElements.initClientComboBox();
-        controlsGridPane.add(clientComboBox, 1, 1);
+        controlsGridPane.add(clientComboBox, 2, 1);
 
         controlsElements.setDataPickerListener();
         controlsElements.setCostTextFieldListener();
@@ -143,6 +148,7 @@ public class OrderingWindowController extends MenuTableView {
         if (!isWarning) {
             if (orderId == null) {
                 orderId = (Integer) sendARequestToTheServer(ClientCommandTypes.INSERT_ORDER, objectList).get(0);
+                orderIdLabel.setText(orderId.toString());
             } else {
                 objectList.add(orderId);
                 sendARequestToTheServer(ClientCommandTypes.UPDATE_ORDER, objectList);
@@ -251,6 +257,29 @@ public class OrderingWindowController extends MenuTableView {
         menuTableView.dishesTypeCol.setPercentWidth(206); menuTableView.dishesTypeCol.setMinWidth(206);
         menuTableView.nameCol.setPercentWidth(236); menuTableView.nameCol.setMinWidth(236);
         menuTableView.priceCol.setPercentWidth(86); menuTableView.priceCol.setMinWidth(86);
+    }
+
+    public void setDataForEditing(DtoOrder dtoOrder){
+        orderId = dtoOrder.getId();
+        orderIdLabel.setText(orderId.toString());
+
+        java.util.Date inputDate = dtoOrder.getDate();
+        LocalDate localDate = inputDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        datePicker.setValue(localDate);
+
+        clientComboBox.setValue(dtoOrder.getClient());
+        comboBoxListener.setValue(dtoOrder.getClient());
+
+        costTextField.setText(dtoOrder.getCost().toString());
+        controlsElements.costTextFieldValidation();
+
+        discountTextField.setText(dtoOrder.getDiscount().toString());
+        controlsElements.discountTextFieldValidation();
+
+        paidTextField.setText(dtoOrder.getPaid().toString());
+        controlsElements.paidTextFieldValidation();
+
+        orderId = dtoOrder.getId();
     }
 
 }

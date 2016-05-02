@@ -9,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ostryzhniuk.andriy.catering.order.view.OrderWindowController;
+import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.ordering.view.OrderingWindowController;
 
 import java.io.IOException;
@@ -32,6 +34,8 @@ public class MainWindowController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/order/view/OrderWindow.fxml"));
         try {
             mainGridPane.add(fxmlLoader.load(), 1, 1);
+            OrderWindowController orderWindowController = fxmlLoader.getController();
+            orderWindowController.setMainWindowController(this);
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         }
@@ -103,6 +107,19 @@ public class MainWindowController {
         try {
             mainGridPane.add(fxmlLoader.load(), 1, 1);
             orderingWindowController = fxmlLoader.getController();
+        } catch (IOException exception) {
+            throw new UncheckedIOException(exception);
+        }
+        mainGridPane.add(initButtonContainer(initButtonOrderingSave (), initButtonOrderingCancel()), 1, 2);
+    }
+
+    public void initOrderingViewForEditing(DtoOrder dtoOrder){
+        removeMainGridPaneChildren();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ordering.view/OrderingWindow.fxml"));
+        try {
+            mainGridPane.add(fxmlLoader.load(), 1, 1);
+            orderingWindowController = fxmlLoader.getController();
+            orderingWindowController.setDataForEditing(dtoOrder);
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         }
