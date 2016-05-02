@@ -53,8 +53,7 @@ public class ClientCommand implements Serializable {
             return ODBC_PubsBD.selectClientNames();
 
         } else if (clientCommandType == ClientCommandTypes.INSERT_ORDER) {
-            insertOrder();
-            return new LinkedList<>();
+            return insertOrder();
 
         } else if (clientCommandType == ClientCommandTypes.SELECT_CLIENT_ID) {
             return ODBC_PubsBD.selectClientId((String)objectList.get(0));
@@ -141,9 +140,9 @@ public class ClientCommand implements Serializable {
         return dtoOrdersList;
     }
 
-    private void insertOrder(){
-        ODBC_PubsBD.insertOrder((String)objectList.get(0), (Integer)objectList.get(1), (BigDecimal)objectList.get(2),
-                (BigDecimal)objectList.get(3), (BigDecimal)objectList.get(4));
+    private List<Integer> insertOrder(){
+        return ODBC_PubsBD.insertOrder((String)objectList.get(0), (Integer)objectList.get(1),
+                (BigDecimal)objectList.get(2), (BigDecimal)objectList.get(3), (BigDecimal)objectList.get(4));
     }
 
     private void updateOrder(){

@@ -210,13 +210,4 @@ public class ControlsElements {
         }
     }
 
-    public void clear(){
-        datePicker.setValue(null);
-        clientComboBox.setValue(null);
-        comboBoxListener.setValue(null);
-        costTextField.setText("");
-        discountTextField.setText("");
-        billTextField.setText("");
-        paidTextField.setText("");
-    }
 }

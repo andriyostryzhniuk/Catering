@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import ostryzhniuk.andriy.catering.overridden.elements.number.spinner.NumberSpinner;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -25,9 +24,11 @@ public class PromptNumberOfServings {
     private boolean isException = false;
     private Integer numberOfServings = 0;
     private String nameOfDish;
+    private Integer currentValue = 0;
 
-    public PromptNumberOfServings(String nameOfDish) {
+    public PromptNumberOfServings(String nameOfDish, Integer currentValue) {
         this.nameOfDish = nameOfDish;
+        this.currentValue = currentValue;
     }
 
     public int showPrompt(Window window) {
@@ -90,7 +91,7 @@ public class PromptNumberOfServings {
     private NumberSpinner initNumberSpinner() {
         NumberSpinner numberSpinner = new NumberSpinner();
         numberSpinner.setPrefWidth(80);
-        numberSpinner.setValue(1);
+        numberSpinner.setValue(currentValue);
         numberSpinner.setMinValue(0);
         numberSpinner.setMaxValue(10000);
         numberSpinner.valueProperty().addListener(ns -> {

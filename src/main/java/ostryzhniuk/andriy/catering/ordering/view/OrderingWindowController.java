@@ -1,26 +1,24 @@
 package ostryzhniuk.andriy.catering.ordering.view;
 
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.menu.view.MenuTableView;
 import ostryzhniuk.andriy.catering.menu.view.dto.DtoMenu;
-import ostryzhniuk.andriy.catering.order.view.ControlsElements;
-
+import ostryzhniuk.andriy.catering.ordering.view.dto.DtoOrdering;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.IntStream;
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
+import static ostryzhniuk.andriy.catering.ordering.view.ContextMenu.initContextMenu;
 
 public class OrderingWindowController extends MenuTableView {
 
@@ -33,17 +31,21 @@ public class OrderingWindowController extends MenuTableView {
     public TextField paidTextField;
     public GridPane controlsGridPane;
     public GridPane rootGridPane;
-    public ColumnConstraints tableViewColumnConstraints;
     private ostryzhniuk.andriy.catering.ordering.view.ControlsElements controlsElements;
     private Integer orderId = null;
 
     private MenuTableView menuTableView = new MenuTableView();
     private TableView<DtoMenu> tableView;
 
-    private Map<Integer, Integer> orderingMenuMap = FXCollections.observableHashMap();
+    public TableView<DtoOrdering> orderingTableView;
+    public TableColumn orderingDishesNameCol;
+    public TableColumn orderingNumberOfServingsCol;
+    private ObservableList<DtoOrdering> orderingObservableList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize(){
+        orderingTableView.setPlaceholder(new Label("Не замовлено жодної страви"));
+
         controlsElements = new ostryzhniuk.andriy.catering.ordering.view.ControlsElements(billTextField, clientComboBox, comboBoxListener, costTextField,
                 datePicker, discountTextField,  paidTextField);
 
@@ -59,7 +61,9 @@ public class OrderingWindowController extends MenuTableView {
 
         initMenuTableView();
         initTopBorderPane();
-        setColsDateProperties();
+        setColsDateProperties();initContextMenu(orderingTableView, this);
+
+        initOrderingTableView();
 
     }
 
@@ -138,13 +142,12 @@ public class OrderingWindowController extends MenuTableView {
 
         if (!isWarning) {
             if (orderId == null) {
-                sendARequestToTheServer(ClientCommandTypes.INSERT_ORDER, objectList);
+                orderId = (Integer) sendARequestToTheServer(ClientCommandTypes.INSERT_ORDER, objectList).get(0);
             } else {
                 objectList.add(orderId);
                 sendARequestToTheServer(ClientCommandTypes.UPDATE_ORDER, objectList);
             }
             orderId = null;
-            controlsElements.clear();
         }
     }
 
@@ -157,9 +160,29 @@ public class OrderingWindowController extends MenuTableView {
         });
         tableView.setMaxWidth(530);
         rootGridPane.add(menuTableView.getBorderPane(), 0, 0);
-//        tableViewColumnConstraints.setPrefWidth(tableView.getMaxWidth());
-//        tableViewColumnConstraints.setMaxWidth(tableView.getMaxWidth());
         setOnDoubleClickToTableView();
+    }
+
+    private void initOrderingTableView(){
+        orderingTableView.getStylesheets().add(getClass().getResource("/styles/TableViewStyle.css").toExternalForm());
+        orderingDishesNameCol.setCellValueFactory(new PropertyValueFactory("dishesName"));
+        orderingNumberOfServingsCol.setCellValueFactory(new PropertyValueFactory("numberOfServings"));
+        orderingTableView.setItems(orderingObservableList);
+    }
+
+    private void addOrdering(Integer menuId, String dishesName, Integer numberOfServings) {
+        for (DtoOrdering item : orderingObservableList) {
+            if (item.getMenuId() == menuId) {
+                int sumNumbersOfServings = item.getNumberOfServings() + numberOfServings;
+                if (sumNumbersOfServings > 10000) {
+                    sumNumbersOfServings = 10000;
+                }
+                item.setNumberOfServings(sumNumbersOfServings);
+                orderingTableView.refresh();
+                return;
+            }
+        }
+        orderingObservableList.add(new DtoOrdering(orderId, menuId, dishesName, numberOfServings));
     }
 
     private void setOnDoubleClickToTableView(){
@@ -168,14 +191,36 @@ public class OrderingWindowController extends MenuTableView {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
                     DtoMenu rowData = row.getItem();
-                    PromptNumberOfServings promptNumberOfServings = new PromptNumberOfServings(rowData.getName());
+                    PromptNumberOfServings promptNumberOfServings = new PromptNumberOfServings(rowData.getName(), 1);
                     Integer numberOfServings = promptNumberOfServings.showPrompt(rootGridPane.getScene().getWindow());
-                    System.out.println("nameOfDish: " + rowData.getId() + "  numberOfServings: " + numberOfServings);
-
+                    if (numberOfServings > 0) {
+                        addOrdering(rowData.getId(), rowData.getName(), numberOfServings);
+                    }
                 }
             });
             return row ;
         });
+    }
+
+    public void editNumberOfServings(){
+        TablePosition pos = orderingTableView.getSelectionModel().getSelectedCells().get(0);
+        int rowIndex = pos.getRow();
+        DtoOrdering dtoOrdering = orderingTableView.getItems().get(rowIndex);
+
+        PromptNumberOfServings promptNumberOfServings =
+                new PromptNumberOfServings(dtoOrdering.getDishesName(), dtoOrdering.getNumberOfServings());
+        Integer numberOfServings = promptNumberOfServings.showPrompt(rootGridPane.getScene().getWindow());
+        if (numberOfServings > 0) {
+            dtoOrdering.setNumberOfServings(numberOfServings);
+            orderingTableView.refresh();
+        }
+    }
+
+    public void rejectDishes(){
+        TablePosition pos = orderingTableView.getSelectionModel().getSelectedCells().get(0);
+        int rowIndex = pos.getRow();
+        DtoOrdering dtoOrdering = orderingTableView.getItems().get(rowIndex);
+        orderingObservableList.remove(dtoOrdering);
     }
 
     public void initTopBorderPane(){

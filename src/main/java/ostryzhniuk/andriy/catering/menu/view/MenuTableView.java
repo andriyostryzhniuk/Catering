@@ -194,7 +194,7 @@ public class MenuTableView<T extends DtoMenu> {
 
     private Button initDishesTypeButton() {
         Button button = new Button();
-        Image image = new Image(getClass().getResourceAsStream("/icons/settings.png"));
+        Image image = new Image(getClass().getResourceAsStream("/icons/settings_icon.png"));
         button.getStylesheets().add(getClass().getResource("/menu.view/dishesType/DishesTypeButtonStyle.css").toExternalForm());
         button.setGraphic(new ImageView(image));
 

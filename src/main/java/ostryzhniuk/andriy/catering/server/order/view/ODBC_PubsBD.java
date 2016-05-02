@@ -3,16 +3,23 @@ package ostryzhniuk.andriy.catering.server.order.view;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
+import static ostryzhniuk.andriy.catering.server.mysql.DB_Connector.creteSimpleJdbcInsert;
 import static ostryzhniuk.andriy.catering.server.mysql.DB_Connector.getJdbcTemplate;
 
 public class ODBC_PubsBD {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ODBC_PubsBD.class);
+
+    private static SimpleJdbcInsert simpleJdbcInsertForOrder;
 
     public static List<DtoOrder> selectOrders() {
         List<DtoOrder> dtoOrdersList = getJdbcTemplate().query("select ordering.id, ordering.date, " +
@@ -45,9 +52,16 @@ public class ODBC_PubsBD {
         return clientIdList;
     }
 
-    public static void insertOrder(String date, Integer clientId, BigDecimal cost, BigDecimal discount, BigDecimal paid){
-        getJdbcTemplate().update("INSERT INTO ordering (id, date, client_id, cost, discount, paid) " +
-                "VALUES (null, convert('" + date + "', DATE), " + clientId + ", " + cost + ", " + discount + ", " + paid + ")");
+    public static List<Integer> insertOrder(String date, Integer clientId, BigDecimal cost, BigDecimal discount, BigDecimal paid){
+        Map<String, Object> parameters = new HashMap<>(5);
+        parameters.put("date", date);
+        parameters.put("client_id", clientId);
+        parameters.put("cost", cost);
+        parameters.put("discount", discount);
+        parameters.put("paid", paid);
+        List<Integer> orderIdList = new LinkedList<>();
+        orderIdList.add(getSimpleJdbcInsertForOrder().executeAndReturnKey(parameters).intValue());
+        return orderIdList;
     }
 
     public static void updateOrder(int id, String date, int clientId, BigDecimal cost, BigDecimal discount, BigDecimal paid){
@@ -63,6 +77,16 @@ public class ODBC_PubsBD {
     public static void deleteOrder(int orderId){
         getJdbcTemplate().update("DELETE FROM ordering " +
                 "WHERE id = " + orderId + "");
+    }
+
+    private static SimpleJdbcInsert getSimpleJdbcInsertForOrder() {
+        if (simpleJdbcInsertForOrder == null) {
+            simpleJdbcInsertForOrder = creteSimpleJdbcInsert();
+            simpleJdbcInsertForOrder
+                    .withTableName("ordering")
+                    .usingGeneratedKeyColumns("id");
+        }
+        return simpleJdbcInsertForOrder;
     }
 
 }
