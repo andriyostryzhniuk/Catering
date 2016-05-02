@@ -2,14 +2,11 @@ package ostryzhniuk.andriy.catering.order.view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.converter.BigDecimalStringConverter;
 import javafx.util.converter.IntegerStringConverter;
@@ -21,9 +18,6 @@ import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.LinkedList;
 import java.util.List;
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
@@ -36,16 +30,6 @@ public class OrderWindowController<T extends DtoOrder> {
     public BorderPane rootBorderPane;
     public StackPane stackPane;
 
-    public GridPane controlsGridPane;
-    public DatePicker datePicker;
-    public ComboBox clientComboBox = new ComboBox();
-    public ComboBox comboBoxListener = new ComboBox();
-    public TextField costTextField;
-    public TextField discountTextField;
-    public TextField billTextField;
-    public TextField paidTextField;
-    public Button saveButton;
-    public Button escapeButton;
     private MainWindowController mainWindowController;
 
     @FXML
@@ -59,8 +43,6 @@ public class OrderWindowController<T extends DtoOrder> {
     public CustomTableColumn<T, BigDecimal> paidCol = new CustomTableColumn<>("Сплачено");
 
     private ObservableList<T> dtoOrdersList = FXCollections.observableArrayList();
-    private ControlsElements controlsElements;
-    private Integer orderId = null;
 
     @FXML
     public void initialize(){
@@ -72,20 +54,6 @@ public class OrderWindowController<T extends DtoOrder> {
         stackPane.getChildren().add(tableView);
         initContextMenu(tableView.getTableView(), this);
         initTableView();
-
-        controlsElements = new ControlsElements(billTextField, clientComboBox, comboBoxListener, costTextField,
-                datePicker, discountTextField,  paidTextField);
-
-        controlsElements.initClientComboBox();
-        controlsGridPane.add(clientComboBox, 2, 1);
-        controlsGridPane.setMargin(clientComboBox, new Insets(0, 20, 0, 0));
-
-        controlsElements.setDataPickerListener();
-        controlsElements.setCostTextFieldListener();
-        controlsElements.setDiscountTextFieldListener();
-        billTextField.setEditable(false);
-        controlsElements.setPaidTextFieldListener();
-        billTextField.setTooltip(new Tooltip("До оплати (з урахуванням знижки)"));
     }
 
     public void initTableView(){
@@ -127,97 +95,6 @@ public class OrderWindowController<T extends DtoOrder> {
 
     public void fillTableView(){
         tableView.getTableView().getColumns().addAll(idCol, dateCol, clientCol, costCol, discountCol, billCol, paidCol);
-    }
-
-    public void saveToDB(ActionEvent actionEvent) {
-        boolean isWarning = false;
-        List<Object> objectList = new LinkedList<>();
-
-        try {
-            objectList.add(Date.valueOf(datePicker.getValue()).toString());
-        } catch (NullPointerException e) {
-            isWarning = true;
-            if (!datePicker.getStyleClass().contains("warning")) {
-                datePicker.getStyleClass().add("warning");
-            }
-        }
-
-        List<Object> clientNameList = new LinkedList<>();
-        clientNameList.add(comboBoxListener.getValue());
-        Integer clientId = null;
-        try {
-            clientId = (Integer) sendARequestToTheServer(ClientCommandTypes.SELECT_CLIENT_ID, clientNameList).get(0);
-            if (clientComboBox.getStyleClass().contains("warning")) {
-                isWarning = true;
-            }
-        } catch (IndexOutOfBoundsException e) {
-            isWarning = true;
-            if (!clientComboBox.getStyleClass().contains("warning")) {
-                clientComboBox.getStyleClass().add("warning");
-            }
-        }
-        objectList.add(clientId);
-
-        try {
-            objectList.add(new BigDecimal(costTextField.getText()));
-            if (costTextField.getStyleClass().contains("warning")) {
-                isWarning = true;
-            }
-        } catch (NumberFormatException e) {
-            isWarning = true;
-            if (!costTextField.getStyleClass().contains("warning")) {
-                costTextField.getStyleClass().add("warning");
-            }
-        }
-
-        try {
-            objectList.add(new BigDecimal(discountTextField.getText()));
-            if (discountTextField.getStyleClass().contains("warning")) {
-                isWarning = true;
-            }
-        } catch (NumberFormatException e) {
-            if (discountTextField.getText().isEmpty()) {
-                objectList.add(new BigDecimal(0));
-            } else {
-                isWarning = true;
-                if (!discountTextField.getStyleClass().contains("warning")) {
-                    discountTextField.getStyleClass().add("warning");
-                }
-            }
-        }
-
-        try {
-            objectList.add(new BigDecimal(paidTextField.getText()));
-            if (paidTextField.getStyleClass().contains("warning")) {
-                isWarning = true;
-            }
-        } catch (NumberFormatException e) {
-            if (paidTextField.getText().isEmpty()) {
-                objectList.add(new BigDecimal(0));
-            } else {
-                isWarning = true;
-                if (!paidTextField.getStyleClass().contains("warning")) {
-                    paidTextField.getStyleClass().add("warning");
-                }
-            }
-        }
-
-        if (!isWarning) {
-            if (orderId == null) {
-                sendARequestToTheServer(ClientCommandTypes.INSERT_ORDER, objectList);
-            } else {
-                objectList.add(orderId);
-                sendARequestToTheServer(ClientCommandTypes.UPDATE_ORDER, objectList);
-            }
-            orderId = null;
-            initTableView();
-            controlsElements.clear();
-        }
-    }
-
-    public void escape(ActionEvent actionEvent) {
-        orderId = null;
-        controlsElements.clear();
     }
 
     public void editRecord(){
