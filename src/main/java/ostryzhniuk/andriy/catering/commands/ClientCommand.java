@@ -2,20 +2,16 @@ package ostryzhniuk.andriy.catering.commands;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ostryzhniuk.andriy.catering.clients.view.dto.DtoClient;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
+import ostryzhniuk.andriy.catering.ordering.view.dto.DtoOrdering;
 import ostryzhniuk.andriy.catering.server.order.view.ODBC_PubsBD;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
-
 import static ostryzhniuk.andriy.catering.server.clients.view.ODBC_PubsBD.*;
 import static ostryzhniuk.andriy.catering.server.menu.view.ODBC_PubsBD.*;
 
-/**
- * Created by Andriy on 04/10/2016.
- */
 public class ClientCommand implements Serializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientCommand.class);
@@ -26,22 +22,6 @@ public class ClientCommand implements Serializable {
     public ClientCommand(ClientCommandTypes clientCommandType, List<Object> objectList) {
         this.clientCommandType = clientCommandType;
         this.objectList = objectList;
-    }
-
-    public List<Object> getObjectList() {
-        return objectList;
-    }
-
-    public void setObjectList(List<Object> objectList) {
-        this.objectList = objectList;
-    }
-
-    public ClientCommandTypes getClientCommandType() {
-        return clientCommandType;
-    }
-
-    public void setClientCommandType(ClientCommandTypes clientCommandType) {
-        this.clientCommandType = clientCommandType;
     }
 
     public Object processCommand() {
@@ -64,6 +44,12 @@ public class ClientCommand implements Serializable {
 
         } else if (clientCommandType == ClientCommandTypes.DELETE_ORDER) {
             ODBC_PubsBD.deleteOrder((Integer)objectList.get(0));
+            return new LinkedList<>();
+
+        } else if (clientCommandType == ClientCommandTypes.INSERT_ORDERING) {
+            List<DtoOrdering> dtoOrderingList = new LinkedList<>();
+            objectList.forEach(item -> dtoOrderingList.add((DtoOrdering) item));
+            ODBC_PubsBD.insertOrdering(dtoOrderingList);
             return new LinkedList<>();
 //      for client view
         } else if (clientCommandType == ClientCommandTypes.SELECT_CLIENT) {

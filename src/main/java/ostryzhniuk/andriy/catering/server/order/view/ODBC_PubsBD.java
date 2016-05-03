@@ -3,17 +3,19 @@ package ostryzhniuk.andriy.catering.server.order.view;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
+import ostryzhniuk.andriy.catering.ordering.view.dto.DtoOrdering;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import static ostryzhniuk.andriy.catering.server.mysql.DB_Connector.creteSimpleJdbcInsert;
 import static ostryzhniuk.andriy.catering.server.mysql.DB_Connector.getJdbcTemplate;
+import static ostryzhniuk.andriy.catering.server.mysql.DB_Connector.getNamedParameterJdbcTemplate;
 
 public class ODBC_PubsBD {
 
@@ -87,6 +89,12 @@ public class ODBC_PubsBD {
                     .usingGeneratedKeyColumns("id");
         }
         return simpleJdbcInsertForOrder;
+    }
+
+    public static void insertOrdering(List<DtoOrdering> dtoOrderingList){
+        getNamedParameterJdbcTemplate().batchUpdate("INSERT INTO ordering_menu (id, ordering_id, menu_id, servings) " +
+                "VALUES (:id, :orderId, :menuId, :numberOfServings)",
+                SqlParameterSourceUtils.createBatch(dtoOrderingList.toArray()));
     }
 
 }

@@ -145,15 +145,20 @@ public class OrderingWindowController extends MenuTableView {
             }
         }
 
-        if (!isWarning) {
+        if (! isWarning) {
             if (orderId == null) {
                 orderId = (Integer) sendARequestToTheServer(ClientCommandTypes.INSERT_ORDER, objectList).get(0);
                 orderIdLabel.setText(orderId.toString());
+                orderingObservableList.forEach(item -> item.setOrderId(orderId));
             } else {
                 objectList.add(orderId);
                 sendARequestToTheServer(ClientCommandTypes.UPDATE_ORDER, objectList);
             }
-            orderId = null;
+            if (! orderingObservableList.isEmpty()) {
+                List<Object> orderingObjectList = new LinkedList<>();
+                orderingObjectList.addAll(orderingObservableList);
+                sendARequestToTheServer(ClientCommandTypes.INSERT_ORDERING, orderingObjectList);
+            }
         }
     }
 
@@ -188,7 +193,7 @@ public class OrderingWindowController extends MenuTableView {
                 return;
             }
         }
-        orderingObservableList.add(new DtoOrdering(orderId, menuId, dishesName, numberOfServings));
+        orderingObservableList.add(new DtoOrdering(null, orderId, menuId, dishesName, numberOfServings));
     }
 
     private void setOnDoubleClickToTableView(){

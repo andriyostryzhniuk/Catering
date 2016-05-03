@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class DtoOrdering implements Serializable {
     private Integer id;
+    private Integer orderId;
     private Integer menuId;
     private String dishesName;
     private Integer numberOfServings;
@@ -11,8 +12,9 @@ public class DtoOrdering implements Serializable {
     public DtoOrdering() {
     }
 
-    public DtoOrdering(Integer id, Integer menuId, String dishesName, Integer numberOfServings) {
+    public DtoOrdering(Integer id, Integer orderId, Integer menuId, String dishesName, Integer numberOfServings) {
         this.id = id;
+        this.orderId = orderId;
         this.menuId = menuId;
         this.dishesName = dishesName;
         this.numberOfServings = numberOfServings;
@@ -24,6 +26,14 @@ public class DtoOrdering implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
 
     public Integer getMenuId() {
