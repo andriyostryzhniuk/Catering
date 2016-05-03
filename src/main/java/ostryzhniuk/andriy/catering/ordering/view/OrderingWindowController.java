@@ -285,6 +285,11 @@ public class OrderingWindowController extends MenuTableView {
         controlsElements.paidTextFieldValidation();
 
         orderId = dtoOrder.getId();
+
+        List<Object> objectList = new LinkedList<>();
+        objectList.add(orderId);
+        orderingObservableList.addAll(FXCollections.observableArrayList(
+                sendARequestToTheServer(ClientCommandTypes.SELECT_ORDERING, objectList)));
     }
 
 }

@@ -51,6 +51,9 @@ public class ClientCommand implements Serializable {
             objectList.forEach(item -> dtoOrderingList.add((DtoOrdering) item));
             ODBC_PubsBD.insertOrdering(dtoOrderingList);
             return new LinkedList<>();
+
+        } else if (clientCommandType == ClientCommandTypes.SELECT_ORDERING) {
+            return ODBC_PubsBD.selectOrdering((Integer) objectList.get(0));
 //      for client view
         } else if (clientCommandType == ClientCommandTypes.SELECT_CLIENT) {
             return selectClients();

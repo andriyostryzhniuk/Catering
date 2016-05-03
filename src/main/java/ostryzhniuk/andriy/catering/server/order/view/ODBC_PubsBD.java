@@ -23,6 +23,16 @@ public class ODBC_PubsBD {
 
     private static SimpleJdbcInsert simpleJdbcInsertForOrder;
 
+    private static SimpleJdbcInsert getSimpleJdbcInsertForOrder() {
+        if (simpleJdbcInsertForOrder == null) {
+            simpleJdbcInsertForOrder = creteSimpleJdbcInsert();
+            simpleJdbcInsertForOrder
+                    .withTableName("ordering")
+                    .usingGeneratedKeyColumns("id");
+        }
+        return simpleJdbcInsertForOrder;
+    }
+
     public static List<DtoOrder> selectOrders() {
         List<DtoOrder> dtoOrdersList = getJdbcTemplate().query("select ordering.id, ordering.date, " +
                 "client.name as client, ordering.cost, ordering.discount, ordering.paid " +
@@ -81,20 +91,19 @@ public class ODBC_PubsBD {
                 "WHERE id = " + orderId + "");
     }
 
-    private static SimpleJdbcInsert getSimpleJdbcInsertForOrder() {
-        if (simpleJdbcInsertForOrder == null) {
-            simpleJdbcInsertForOrder = creteSimpleJdbcInsert();
-            simpleJdbcInsertForOrder
-                    .withTableName("ordering")
-                    .usingGeneratedKeyColumns("id");
-        }
-        return simpleJdbcInsertForOrder;
-    }
-
     public static void insertOrdering(List<DtoOrdering> dtoOrderingList){
         getNamedParameterJdbcTemplate().batchUpdate("INSERT INTO ordering_menu (id, ordering_id, menu_id, servings) " +
                 "VALUES (:id, :orderId, :menuId, :numberOfServings)",
                 SqlParameterSourceUtils.createBatch(dtoOrderingList.toArray()));
+    }
+
+    public static List<DtoOrdering> selectOrdering(Integer orderId) {
+        return getJdbcTemplate().query("select ordering_menu.id, ordering_menu.ordering_id as orderId, " +
+                "ordering_menu.menu_id as menuId, menu.name as dishesName, ordering_menu.servings as numberOfServings " +
+                "from ordering_menu, menu " +
+                "where ordering_menu.ordering_id = ? and " +
+                "menu.id = ordering_menu.menu_id " +
+                "order by menu.name asc", BeanPropertyRowMapper.newInstance(DtoOrdering.class), orderId);
     }
 
 }
