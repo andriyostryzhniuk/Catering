@@ -70,8 +70,8 @@ public class OrderingWindowController extends MenuTableView {
 
         initMenuTableView();
         initTopBorderPane();
-        setColsDateProperties();initContextMenu(orderingTableView, this);
-
+        setColsDateProperties();
+        initContextMenu(orderingTableView, this);
         initOrderingTableView();
 
     }
@@ -220,8 +220,8 @@ public class OrderingWindowController extends MenuTableView {
         }
         DtoOrdering dtoOrdering = new DtoOrdering(null, orderId, dtoMenu.getId(), dtoMenu.getName(),
                 numberOfServings, dtoMenu.getPrice());
-        calculateSumPrice(dtoOrdering);
         orderingObservableList.add(dtoOrdering);
+        calculateSumPrice(dtoOrdering);
     }
 
     public void editNumberOfServings(){
@@ -244,6 +244,7 @@ public class OrderingWindowController extends MenuTableView {
         int rowIndex = pos.getRow();
         DtoOrdering dtoOrdering = orderingTableView.getItems().get(rowIndex);
         orderingObservableList.remove(dtoOrdering);
+        calculateSumPrice(dtoOrdering);
     }
 
     public void initTopBorderPane(){

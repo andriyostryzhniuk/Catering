@@ -8,10 +8,8 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
+import java.io.IOException;
 
-/**
- * Created by Andriy on 04/17/2016.
- */
 public class ContextMenu {
 
     public static void initContextMenu(TableView tableView, OrderWindowController orderWindowController) {
@@ -36,13 +34,32 @@ public class ContextMenu {
 
                 MenuItem removeItem = new MenuItem("Видалити");
                 removeItem.setOnAction((ActionEvent event) -> {
-                    orderWindowController.removeRecord();
+                    orderWindowController.removeRecord(row.getItem());
                 });
-                rowMenu.getItems().addAll(addItem, editItem, removeItem);
+
+                MenuItem detailsOrderItem = new MenuItem("Детальніше");
+                detailsOrderItem.setOnAction((ActionEvent event) -> {
+                    try {
+                        orderWindowController.showOrderDetailsWindow(row.getItem());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                rowMenu.getItems().addAll(addItem, editItem, removeItem, detailsOrderItem);
                 row.contextMenuProperty().bind(
                         Bindings.when(Bindings.isNotNull(row.itemProperty()))
                                 .then(rowMenu)
                                 .otherwise((javafx.scene.control.ContextMenu) null));
+
+                row.setOnMouseClicked(event -> {
+                    if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                        try {
+                            orderWindowController.showOrderDetailsWindow(row.getItem());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
                 return row;
             }
         });

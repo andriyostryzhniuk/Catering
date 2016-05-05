@@ -116,10 +116,6 @@ public class ClientWindowController<T extends DtoClient> {
                 discountCol, emailCol, icqCol, skypeCol);
     }
 
-    public void addRecord(ActionEvent actionEvent) throws IOException {
-        showEditingRecordWindow(null);
-    }
-
     public void editRecord() throws IOException {
         TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
         int rowIndex = pos.getRow();

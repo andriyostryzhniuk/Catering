@@ -3,13 +3,17 @@ package ostryzhniuk.andriy.catering.order.view;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.util.converter.BigDecimalStringConverter;
-import javafx.util.converter.IntegerStringConverter;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
@@ -17,6 +21,7 @@ import ostryzhniuk.andriy.catering.main.window.MainWindowController;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,7 +55,6 @@ public class OrderWindowController<T extends DtoOrder> {
         setColsDateProperties();
         fillTableView();
         tableView.getTableView().getStylesheets().add(getClass().getResource("/styles/TableViewStyle.css").toExternalForm());
-        tableView.getTableView().setEditable(true);
         stackPane.getChildren().add(tableView);
         initContextMenu(tableView.getTableView(), this);
         initTableView();
@@ -74,13 +78,13 @@ public class OrderWindowController<T extends DtoOrder> {
         billCol.setCellValueFactory(new PropertyValueFactory("bill"));
         paidCol.setCellValueFactory(new PropertyValueFactory("paid"));
 
-        idCol.setCellFactory(TextFieldTableCell.<T, Integer>forTableColumn(new IntegerStringConverter()));
-        dateCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        clientCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        costCol.setCellFactory(TextFieldTableCell.<T, BigDecimal>forTableColumn(new BigDecimalStringConverter()));
-        discountCol.setCellFactory(TextFieldTableCell.<T, BigDecimal>forTableColumn(new BigDecimalStringConverter()));
-        billCol.setCellFactory(TextFieldTableCell.<T, BigDecimal>forTableColumn(new BigDecimalStringConverter()));
-        paidCol.setCellFactory(TextFieldTableCell.<T, BigDecimal>forTableColumn(new BigDecimalStringConverter()));
+//        idCol.setCellFactory(TextFieldTableCell.<T, Integer>forTableColumn(new IntegerStringConverter()));
+//        dateCol.setCellFactory(TextFieldTableCell.forTableColumn());
+//        clientCol.setCellFactory(TextFieldTableCell.forTableColumn());
+//        costCol.setCellFactory(TextFieldTableCell.<T, BigDecimal>forTableColumn(new BigDecimalStringConverter()));
+//        discountCol.setCellFactory(TextFieldTableCell.<T, BigDecimal>forTableColumn(new BigDecimalStringConverter()));
+//        billCol.setCellFactory(TextFieldTableCell.<T, BigDecimal>forTableColumn(new BigDecimalStringConverter()));
+//        paidCol.setCellFactory(TextFieldTableCell.<T, BigDecimal>forTableColumn(new BigDecimalStringConverter()));
     }
 
     public void setColsDateProperties() {
@@ -109,11 +113,7 @@ public class OrderWindowController<T extends DtoOrder> {
         mainWindowController.initOrderingViewForEditing(dtoOrder);
     }
 
-    public void removeRecord(){
-        TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
-        int rowIndex = pos.getRow();
-        DtoOrder dtoOrder = tableView.getTableView().getItems().get(rowIndex);
-
+    public void removeRecord(T dtoOrder){
         List<Object> objectList = new LinkedList<>();
         objectList.add(dtoOrder.getId());
         sendARequestToTheServer(ClientCommandTypes.DELETE_ORDER, objectList);
@@ -122,5 +122,22 @@ public class OrderWindowController<T extends DtoOrder> {
 
     public void setMainWindowController(MainWindowController mainWindowController) {
         this.mainWindowController = mainWindowController;
+    }
+
+    public void showOrderDetailsWindow(T dtoOrder) throws IOException {
+        Stage primaryStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/order/view/OrderDetailsWindow.fxml"));
+        Parent root = fxmlLoader.load();
+
+        OrderDetailsWindowController orderDetailsWindowController = fxmlLoader.getController();
+        orderDetailsWindowController.setOrderId(dtoOrder.getId());
+        orderDetailsWindowController.setOrderWindowController(this);
+        orderDetailsWindowController.initOrderingTableView();
+
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
+        primaryStage.setScene(new Scene(root, 500, 500, Color.rgb(0, 0, 0, 0)));
+        primaryStage.initModality(Modality.WINDOW_MODAL);
+        primaryStage.initOwner(tableView.getTableView().getScene().getWindow());
+        primaryStage.showAndWait();
     }
 }
