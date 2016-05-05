@@ -10,6 +10,8 @@ public enum ClientCommandTypes {
     UPDATE_ORDER(),
     DELETE_ORDER(),
     SELECT_ORDERING(),
+    UPDATE_ORDERING(),
+    DELETE_ORDERING(),
     INSERT_ORDERING(),
     //for client view
     SELECT_CLIENT(),

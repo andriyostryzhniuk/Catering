@@ -2,6 +2,7 @@ package ostryzhniuk.andriy.catering.server.order.view;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -9,6 +10,8 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.ordering.view.dto.DtoOrdering;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -91,19 +94,44 @@ public class ODBC_PubsBD {
                 "WHERE id = " + orderId + "");
     }
 
+    public static List<DtoOrdering> selectOrdering(Integer orderId) {
+        return getJdbcTemplate().query("select ordering_menu.id, ordering_menu.ordering_id as orderId, " +
+                "ordering_menu.menu_id as menuId, menu.name as dishesName, ordering_menu.servings as numberOfServings, " +
+                "menu.price " +
+                "from ordering_menu, menu " +
+                "where ordering_menu.ordering_id = ? and " +
+                "menu.id = ordering_menu.menu_id " +
+                "order by menu.name asc", BeanPropertyRowMapper.newInstance(DtoOrdering.class), orderId);
+    }
+
     public static void insertOrdering(List<DtoOrdering> dtoOrderingList){
         getNamedParameterJdbcTemplate().batchUpdate("INSERT INTO ordering_menu (id, ordering_id, menu_id, servings) " +
                 "VALUES (:id, :orderId, :menuId, :numberOfServings)",
                 SqlParameterSourceUtils.createBatch(dtoOrderingList.toArray()));
     }
 
-    public static List<DtoOrdering> selectOrdering(Integer orderId) {
-        return getJdbcTemplate().query("select ordering_menu.id, ordering_menu.ordering_id as orderId, " +
-                "ordering_menu.menu_id as menuId, menu.name as dishesName, ordering_menu.servings as numberOfServings " +
-                "from ordering_menu, menu " +
-                "where ordering_menu.ordering_id = ? and " +
-                "menu.id = ordering_menu.menu_id " +
-                "order by menu.name asc", BeanPropertyRowMapper.newInstance(DtoOrdering.class), orderId);
+    public static void updateOrdering(List<DtoOrdering> dtoOrderingList){
+        getNamedParameterJdbcTemplate().batchUpdate("UPDATE ordering_menu " +
+                "SET ordering_id = :orderId, " +
+                "menu_id = :menuId, " +
+                "servings = :numberOfServings " +
+                "WHERE id = :id",
+                SqlParameterSourceUtils.createBatch(dtoOrderingList.toArray()));
+    }
+
+    public static void deleteOrdering(List<Integer> idList) {
+        getJdbcTemplate().batchUpdate("DELETE FROM ordering_menu " +
+                "WHERE id = ?", new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setInt(1, idList.get(i));
+            }
+
+            @Override
+            public int getBatchSize() {
+                return idList.size();
+            }
+        });
     }
 
 }

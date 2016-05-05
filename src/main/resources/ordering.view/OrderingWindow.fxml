@@ -32,15 +32,41 @@
                     <children>
                         <TableView fx:id="orderingTableView" prefHeight="400.0" prefWidth="400.0" GridPane.rowIndex="1">
                             <columns>
-                                <TableColumn fx:id="orderingDishesNameCol" maxWidth="268.0" minWidth="268.0" prefWidth="268.0" text="Назва страви" />
-                                <TableColumn fx:id="orderingNumberOfServingsCol" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" text="Кількість порцій" />
+                                <TableColumn fx:id="orderingDishesNameCol" maxWidth="220.0" minWidth="220.0" prefWidth="220.0" text="Назва страви" />
+                                <TableColumn fx:id="orderingNumberOfServingsCol" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="Порції" />
+                                <TableColumn fx:id="sumPriceCol" maxWidth="108.0" minWidth="108.0" prefWidth="108.0" text="Вартість" />
                             </columns>
                         </TableView>
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="24.0" minHeight="24.0" prefHeight="24.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
                         <Label text="Замовлення:">
-                            <padding>
-                                <Insets bottom="7.0" />
-                            </padding>
+                           <padding>
+                              <Insets bottom="7.0" />
+                           </padding>
                         </Label>
+                        <Label text="Загальна вартість:" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                           <padding>
+                              <Insets bottom="7.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="sumPriceTextField" editable="false" promptText="Сума" GridPane.columnIndex="2">
+                           <GridPane.margin>
+                              <Insets bottom="7.0" />
+                           </GridPane.margin>
+                        </TextField>
+                     </children>
+                  </GridPane>
                     </children>
                 </GridPane>
             </children>

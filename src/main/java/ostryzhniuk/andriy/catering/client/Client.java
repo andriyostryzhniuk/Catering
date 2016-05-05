@@ -12,11 +12,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.commands.ClientCommand;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
+import ostryzhniuk.andriy.catering.ordering.view.dto.DtoOrdering;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+
+import static ostryzhniuk.andriy.catering.commands.ClientCommandTypes.UPDATE_ORDERING;
 
 public class Client extends Application {
 
@@ -63,6 +67,13 @@ public class Client extends Application {
 
     public static List sendARequestToTheServer(ClientCommandTypes clientCommandType, List<Object> parametersList) {
         ClientCommand clientCommand = new ClientCommand(clientCommandType, parametersList);
+
+        if (clientCommand.getClientCommandType() == UPDATE_ORDERING) {
+            List<DtoOrdering> dtoOrderingList = new LinkedList<>();
+            clientCommand.getObjectList().forEach(item -> dtoOrderingList.add((DtoOrdering) item));
+            dtoOrderingList.forEach(item -> LOGGER.info(item.getId() + " : " + item.getNumberOfServings()));
+        }
+
         try {
             objectSocketOS.writeObject(clientCommand);
             return (List) objectSocketIS.readObject();

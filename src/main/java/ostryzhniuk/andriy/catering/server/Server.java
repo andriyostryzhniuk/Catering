@@ -3,13 +3,16 @@ package ostryzhniuk.andriy.catering.server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.commands.ClientCommand;
+import ostryzhniuk.andriy.catering.ordering.view.dto.DtoOrdering;
 import ostryzhniuk.andriy.catering.server.mysql.DB_Connector;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
+
+import static ostryzhniuk.andriy.catering.commands.ClientCommandTypes.UPDATE_ORDERING;
 
 
 public class Server implements Runnable {
@@ -23,7 +26,7 @@ public class Server implements Runnable {
     private final OutputStreamWriter osWriterSocket;
     private final LocalDateTime startDateTime;
     private final ObjectOutputStream objectOsSocket;
-    private final ObjectInputStream objectIsSocket;
+    private ObjectInputStream objectIsSocket;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Server.class);
 
@@ -69,6 +72,13 @@ public class Server implements Runnable {
 
             while ((inputObject = objectIsSocket.readObject()) != null) {
                 clientCommand = (ClientCommand) inputObject;
+
+                if (clientCommand.getClientCommandType() == UPDATE_ORDERING) {
+                    List<DtoOrdering> dtoOrderingList = new LinkedList<>();
+                    clientCommand.getObjectList().forEach(item -> dtoOrderingList.add((DtoOrdering) item));
+                    dtoOrderingList.forEach(item -> LOGGER.info(item.getId() + " : " + item.getNumberOfServings()));
+                }
+
                 responseObject = clientCommand.processCommand();
 //                List list = (List) responseObject;
 //                LOGGER.info("list size: " + list.size());

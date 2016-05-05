@@ -142,6 +142,8 @@ public class MainWindowController {
         Button buttonSave = initButton("Зберегти");
         buttonSave.setOnAction((ActionEvent event) -> {
             orderingWindowController.saveToDB();
+            DtoOrder dtoOrder = orderingWindowController.getCurrentDataOrder();
+            initOrderingViewForEditing(dtoOrder);
         });
         return buttonSave;
     }

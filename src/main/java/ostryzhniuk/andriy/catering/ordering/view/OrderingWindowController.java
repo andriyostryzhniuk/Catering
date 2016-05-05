@@ -35,6 +35,7 @@ public class OrderingWindowController extends MenuTableView {
     public GridPane controlsGridPane;
     public GridPane rootGridPane;
     public Label orderIdLabel;
+    public TextField sumPriceTextField;
     private ostryzhniuk.andriy.catering.ordering.view.ControlsElements controlsElements;
     private Integer orderId = null;
 
@@ -44,7 +45,10 @@ public class OrderingWindowController extends MenuTableView {
     public TableView<DtoOrdering> orderingTableView;
     public TableColumn orderingDishesNameCol;
     public TableColumn orderingNumberOfServingsCol;
+    public TableColumn sumPriceCol;
     private ObservableList<DtoOrdering> orderingObservableList = FXCollections.observableArrayList();
+    private List<DtoOrdering> initialDataList = new LinkedList<>();
+    private DtoOrder currentDataOrder;
 
     @FXML
     public void initialize(){
@@ -149,16 +153,17 @@ public class OrderingWindowController extends MenuTableView {
             if (orderId == null) {
                 orderId = (Integer) sendARequestToTheServer(ClientCommandTypes.INSERT_ORDER, objectList).get(0);
                 orderIdLabel.setText(orderId.toString());
-                orderingObservableList.forEach(item -> item.setOrderId(orderId));
+                insertOrderingFromObservableList();
             } else {
                 objectList.add(orderId);
                 sendARequestToTheServer(ClientCommandTypes.UPDATE_ORDER, objectList);
+                chooseAction();
             }
-            if (! orderingObservableList.isEmpty()) {
-                List<Object> orderingObjectList = new LinkedList<>();
-                orderingObjectList.addAll(orderingObservableList);
-                sendARequestToTheServer(ClientCommandTypes.INSERT_ORDERING, orderingObjectList);
-            }
+
+            currentDataOrder = new DtoOrder(orderId,
+                    Date.from(datePicker.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),
+                    comboBoxListener.getValue().toString(), (BigDecimal) objectList.get(2),
+                    (BigDecimal) objectList.get(3), (BigDecimal) objectList.get(4));
         }
     }
 
@@ -178,22 +183,8 @@ public class OrderingWindowController extends MenuTableView {
         orderingTableView.getStylesheets().add(getClass().getResource("/styles/TableViewStyle.css").toExternalForm());
         orderingDishesNameCol.setCellValueFactory(new PropertyValueFactory("dishesName"));
         orderingNumberOfServingsCol.setCellValueFactory(new PropertyValueFactory("numberOfServings"));
+        sumPriceCol.setCellValueFactory(new PropertyValueFactory("sumPrice"));
         orderingTableView.setItems(orderingObservableList);
-    }
-
-    private void addOrdering(Integer menuId, String dishesName, Integer numberOfServings) {
-        for (DtoOrdering item : orderingObservableList) {
-            if (item.getMenuId() == menuId) {
-                int sumNumbersOfServings = item.getNumberOfServings() + numberOfServings;
-                if (sumNumbersOfServings > 10000) {
-                    sumNumbersOfServings = 10000;
-                }
-                item.setNumberOfServings(sumNumbersOfServings);
-                orderingTableView.refresh();
-                return;
-            }
-        }
-        orderingObservableList.add(new DtoOrdering(null, orderId, menuId, dishesName, numberOfServings));
     }
 
     private void setOnDoubleClickToTableView(){
@@ -205,12 +196,31 @@ public class OrderingWindowController extends MenuTableView {
                     PromptNumberOfServings promptNumberOfServings = new PromptNumberOfServings(rowData.getName(), 1);
                     Integer numberOfServings = promptNumberOfServings.showPrompt(rootGridPane.getScene().getWindow());
                     if (numberOfServings > 0) {
-                        addOrdering(rowData.getId(), rowData.getName(), numberOfServings);
+                        addOrdering(rowData, numberOfServings);
                     }
                 }
             });
             return row ;
         });
+    }
+
+    private void addOrdering(DtoMenu dtoMenu, Integer numberOfServings) {
+        for (DtoOrdering item : orderingObservableList) {
+            if (item.getMenuId() == dtoMenu.getId()) {
+                int sumNumbersOfServings = item.getNumberOfServings() + numberOfServings;
+                if (sumNumbersOfServings > 10000) {
+                    sumNumbersOfServings = 10000;
+                }
+                item.setNumberOfServings(sumNumbersOfServings);
+                calculateSumPrice(item);
+                orderingTableView.refresh();
+                return;
+            }
+        }
+        DtoOrdering dtoOrdering = new DtoOrdering(null, orderId, dtoMenu.getId(), dtoMenu.getName(),
+                numberOfServings, dtoMenu.getPrice());
+        calculateSumPrice(dtoOrdering);
+        orderingObservableList.add(dtoOrdering);
     }
 
     public void editNumberOfServings(){
@@ -223,6 +233,7 @@ public class OrderingWindowController extends MenuTableView {
         Integer numberOfServings = promptNumberOfServings.showPrompt(rootGridPane.getScene().getWindow());
         if (numberOfServings > 0) {
             dtoOrdering.setNumberOfServings(numberOfServings);
+            calculateSumPrice(dtoOrdering);
             orderingTableView.refresh();
         }
     }
@@ -288,8 +299,61 @@ public class OrderingWindowController extends MenuTableView {
 
         List<Object> objectList = new LinkedList<>();
         objectList.add(orderId);
-        orderingObservableList.addAll(FXCollections.observableArrayList(
+        initialDataList.addAll(FXCollections.observableArrayList(
                 sendARequestToTheServer(ClientCommandTypes.SELECT_ORDERING, objectList)));
+        orderingObservableList.addAll(initialDataList);
+        orderingObservableList.forEach(item -> calculateSumPrice(item));
     }
 
+    private void insertOrderingFromObservableList(){
+        if (! orderingObservableList.isEmpty()) {
+            orderingObservableList.forEach(item -> item.setOrderId(orderId));
+            List<Object> orderingObjectList = new LinkedList<>();
+            orderingObjectList.addAll(orderingObservableList);
+            sendARequestToTheServer(ClientCommandTypes.INSERT_ORDERING, orderingObjectList);
+        }
+    }
+
+    private void chooseAction(){
+        List<Object> objectListForInserting = new LinkedList<>();
+        List<Object> objectListForUpdating = new LinkedList<>();
+        List<Object> objectListForDeleting = new LinkedList<>();
+
+        orderingObservableList.forEach(item -> {
+            if (item.getId() == null) {
+                objectListForInserting.add(item);
+            } else {
+                objectListForUpdating.add(item);
+            }
+        });
+
+        initialDataList.forEach(item -> {
+            if (! orderingObservableList.contains(item)) {
+                objectListForDeleting.add(item.getId());
+            }
+        });
+
+        if (! objectListForInserting.isEmpty()) {
+            sendARequestToTheServer(ClientCommandTypes.INSERT_ORDERING, objectListForInserting);
+        }
+        if (! objectListForUpdating.isEmpty()) {
+            sendARequestToTheServer(ClientCommandTypes.UPDATE_ORDERING, objectListForUpdating);
+        }
+        if (! objectListForDeleting.isEmpty()) {
+            sendARequestToTheServer(ClientCommandTypes.DELETE_ORDERING, objectListForDeleting);
+        }
+    }
+
+    private void calculateSumPrice(DtoOrdering dtoOrdering){
+        dtoOrdering.calculateSumPrice();
+        BigDecimal sumPrice = new BigDecimal(0);
+        for (DtoOrdering item : orderingObservableList) {
+            sumPrice = sumPrice.add(item.getSumPrice());
+        }
+        sumPriceTextField.setText(sumPrice.toString());
+    }
+
+    public DtoOrder getCurrentDataOrder() {
+        return currentDataOrder;
+    }
 }

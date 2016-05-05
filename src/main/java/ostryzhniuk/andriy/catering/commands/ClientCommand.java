@@ -24,6 +24,14 @@ public class ClientCommand implements Serializable {
         this.objectList = objectList;
     }
 
+    public List<Object> getObjectList() {
+        return objectList;
+    }
+
+    public ClientCommandTypes getClientCommandType() {
+        return clientCommandType;
+    }
+
     public Object processCommand() {
 //        for order view
         if (clientCommandType == ClientCommandTypes.SELECT_ORDER) {
@@ -46,14 +54,26 @@ public class ClientCommand implements Serializable {
             ODBC_PubsBD.deleteOrder((Integer)objectList.get(0));
             return new LinkedList<>();
 
+        } else if (clientCommandType == ClientCommandTypes.SELECT_ORDERING) {
+            return ODBC_PubsBD.selectOrdering((Integer) objectList.get(0));
+
         } else if (clientCommandType == ClientCommandTypes.INSERT_ORDERING) {
             List<DtoOrdering> dtoOrderingList = new LinkedList<>();
             objectList.forEach(item -> dtoOrderingList.add((DtoOrdering) item));
             ODBC_PubsBD.insertOrdering(dtoOrderingList);
             return new LinkedList<>();
 
-        } else if (clientCommandType == ClientCommandTypes.SELECT_ORDERING) {
-            return ODBC_PubsBD.selectOrdering((Integer) objectList.get(0));
+        } else if (clientCommandType == ClientCommandTypes.UPDATE_ORDERING) {
+            List<DtoOrdering> dtoOrderingList = new LinkedList<>();
+            objectList.forEach(item -> dtoOrderingList.add((DtoOrdering) item));
+            ODBC_PubsBD.updateOrdering(dtoOrderingList);
+            return new LinkedList<>();
+
+        } else if (clientCommandType == ClientCommandTypes.DELETE_ORDERING) {
+            List<Integer> dtoOrderingList = new LinkedList<>();
+            objectList.forEach(item -> dtoOrderingList.add((Integer) item));
+            ODBC_PubsBD.deleteOrdering(dtoOrderingList);
+            return new LinkedList<>();
 //      for client view
         } else if (clientCommandType == ClientCommandTypes.SELECT_CLIENT) {
             return selectClients();
