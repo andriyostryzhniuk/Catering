@@ -67,13 +67,6 @@ public class Client extends Application {
 
     public static List sendARequestToTheServer(ClientCommandTypes clientCommandType, List<Object> parametersList) {
         ClientCommand clientCommand = new ClientCommand(clientCommandType, parametersList);
-
-        if (clientCommand.getClientCommandType() == UPDATE_ORDERING) {
-            List<DtoOrdering> dtoOrderingList = new LinkedList<>();
-            clientCommand.getObjectList().forEach(item -> dtoOrderingList.add((DtoOrdering) item));
-            dtoOrderingList.forEach(item -> LOGGER.info(item.getId() + " : " + item.getNumberOfServings()));
-        }
-
         try {
             objectSocketOS.writeObject(clientCommand);
             return (List) objectSocketIS.readObject();

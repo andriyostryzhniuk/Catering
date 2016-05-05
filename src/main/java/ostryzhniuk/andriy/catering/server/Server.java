@@ -72,13 +72,6 @@ public class Server implements Runnable {
 
             while ((inputObject = objectIsSocket.readObject()) != null) {
                 clientCommand = (ClientCommand) inputObject;
-
-                if (clientCommand.getClientCommandType() == UPDATE_ORDERING) {
-                    List<DtoOrdering> dtoOrderingList = new LinkedList<>();
-                    clientCommand.getObjectList().forEach(item -> dtoOrderingList.add((DtoOrdering) item));
-                    dtoOrderingList.forEach(item -> LOGGER.info(item.getId() + " : " + item.getNumberOfServings()));
-                }
-
                 responseObject = clientCommand.processCommand();
 //                List list = (List) responseObject;
 //                LOGGER.info("list size: " + list.size());

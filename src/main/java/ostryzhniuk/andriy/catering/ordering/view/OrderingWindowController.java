@@ -76,7 +76,7 @@ public class OrderingWindowController extends MenuTableView {
 
     }
 
-    public void saveToDB() {
+    public boolean saveToDB() {
         boolean isWarning = false;
         List<Object> objectList = new LinkedList<>();
 
@@ -165,6 +165,7 @@ public class OrderingWindowController extends MenuTableView {
                     comboBoxListener.getValue().toString(), (BigDecimal) objectList.get(2),
                     (BigDecimal) objectList.get(3), (BigDecimal) objectList.get(4));
         }
+        return isWarning;
     }
 
     private void initMenuTableView(){
