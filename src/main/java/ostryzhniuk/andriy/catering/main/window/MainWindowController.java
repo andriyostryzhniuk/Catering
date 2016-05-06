@@ -148,4 +148,15 @@ public class MainWindowController {
         });
         return buttonSave;
     }
+
+    public void onActionDebtorsButton(ActionEvent actionEvent) {
+        removeMainGridPaneChildren();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/debtors.view/DebtorsWindow.fxml"));
+        try {
+            mainGridPane.add(fxmlLoader.load(), 1, 1);
+        } catch (IOException exception) {
+            throw new UncheckedIOException(exception);
+        }
+        mainGridPane.add(initButtonContainer(initButtonClose()), 1, 2);
+    }
 }

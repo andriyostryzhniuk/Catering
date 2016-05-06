@@ -133,7 +133,9 @@ public class ClientCommand implements Serializable {
         } else if (clientCommandType == ClientCommandTypes.DELETE_DISHES_TYPE) {
             deleteDishesType((Integer)objectList.get(0));
             return new LinkedList<>();
-
+//      for debtors view
+        } else if (clientCommandType == ClientCommandTypes.SELECT_DEBTORS) {
+            return selectDebtors();
         } else {
             throw new IllegalArgumentException("NO SUCH COMMAND");
         }

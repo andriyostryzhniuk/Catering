@@ -31,6 +31,8 @@ public enum ClientCommandTypes {
     SELECT_DISHES_TYPE(),
     INSERT_DISHES_TYPE(),
     UPDATE_DISHES_TYPE(),
-    DELETE_DISHES_TYPE();
+    DELETE_DISHES_TYPE(),
+    //for debtors view
+    SELECT_DEBTORS();
 
 }
