@@ -2,6 +2,7 @@ package ostryzhniuk.andriy.catering.commands;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ostryzhniuk.andriy.catering.debtors.view.dto.DtoDebtors;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.ordering.view.dto.DtoOrdering;
 import ostryzhniuk.andriy.catering.server.order.view.ODBC_PubsBD;
@@ -135,7 +136,7 @@ public class ClientCommand implements Serializable {
             return new LinkedList<>();
 //      for debtors view
         } else if (clientCommandType == ClientCommandTypes.SELECT_DEBTORS) {
-            return selectDebtors();
+            return dtoDebtorses();
         } else {
             throw new IllegalArgumentException("NO SUCH COMMAND");
         }
@@ -175,6 +176,14 @@ public class ClientCommand implements Serializable {
         updateClient((String) objectList.get(0), (String) objectList.get(1), (String) objectList.get(2),
                 (String) objectList.get(3), (BigDecimal) objectList.get(4), (String) objectList.get(5),
                 (Integer) objectList.get(6), (String) objectList.get(7), (Integer) objectList.get(8));
+    }
+
+    private List<DtoDebtors> dtoDebtorses(){
+        List<DtoDebtors> dtoDebtorsList = selectDebtors();
+        dtoDebtorsList.forEach(item -> {
+            item.formattingDate();
+        });
+        return dtoDebtorsList;
     }
 
 }
