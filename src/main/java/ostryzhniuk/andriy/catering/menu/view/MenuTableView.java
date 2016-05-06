@@ -197,6 +197,7 @@ public class MenuTableView<T extends DtoMenu> {
         Image image = new Image(getClass().getResourceAsStream("/icons/settings_icon.png"));
         button.getStylesheets().add(getClass().getResource("/menu.view/dishesType/DishesTypeButtonStyle.css").toExternalForm());
         button.setGraphic(new ImageView(image));
+        button.setTooltip(new Tooltip("Налаштування класифікації"));
 
         button.setOnAction((javafx.event.ActionEvent event) -> {
             Stage primaryStage = new Stage();

@@ -10,6 +10,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.ordering.view.dto.DtoOrdering;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -42,6 +43,16 @@ public class ODBC_PubsBD {
                 "from ordering, client " +
                 "where ordering.client_id = client.id " +
                 "order by ordering.date desc", BeanPropertyRowMapper.newInstance(DtoOrder.class));
+        return dtoOrdersList;
+    }
+
+    public static List<DtoOrder> selectOrdersByDate(Date date) {
+        List<DtoOrder> dtoOrdersList = getJdbcTemplate().query("select ordering.id, ordering.date, " +
+                "client.name as client, ordering.cost, ordering.discount, ordering.paid " +
+                "from ordering, client " +
+                "where ordering.date = ? and " +
+                "ordering.client_id = client.id " +
+                "order by ordering.date desc", BeanPropertyRowMapper.newInstance(DtoOrder.class), date);
         return dtoOrdersList;
     }
 

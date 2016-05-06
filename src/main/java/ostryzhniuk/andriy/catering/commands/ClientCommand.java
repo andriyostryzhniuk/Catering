@@ -8,6 +8,7 @@ import ostryzhniuk.andriy.catering.ordering.view.dto.DtoOrdering;
 import ostryzhniuk.andriy.catering.server.order.view.ODBC_PubsBD;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 import static ostryzhniuk.andriy.catering.server.clients.view.ODBC_PubsBD.*;
@@ -37,6 +38,9 @@ public class ClientCommand implements Serializable {
 //        for order view
         if (clientCommandType == ClientCommandTypes.SELECT_ORDER) {
             return selectOrders();
+
+        } else if (clientCommandType == ClientCommandTypes.SELECT_ORDER_BY_DATE) {
+            return selectOrdersByDate();
 
         } else if (clientCommandType == ClientCommandTypes.SELECT_CLIENT_NAMES) {
             return ODBC_PubsBD.selectClientNames();
@@ -145,6 +149,15 @@ public class ClientCommand implements Serializable {
 
     private List<DtoOrder> selectOrders(){
         List<DtoOrder> dtoOrdersList = ODBC_PubsBD.selectOrders();
+        dtoOrdersList.forEach(item -> {
+            item.formattingDate();
+            item.calculationBill();
+        });
+        return dtoOrdersList;
+    }
+
+    private List<DtoOrder> selectOrdersByDate(){
+        List<DtoOrder> dtoOrdersList = ODBC_PubsBD.selectOrdersByDate((Date) objectList.get(0));
         dtoOrdersList.forEach(item -> {
             item.formattingDate();
             item.calculationBill();

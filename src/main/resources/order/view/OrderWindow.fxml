@@ -11,4 +11,28 @@
 
         </StackPane>
     </center>
+    <top>
+        <GridPane fx:id="topGridPane" BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="102.0" prefWidth="102.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+                <ColumnConstraints hgrow="SOMETIMES" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label text="Пошук за датою:" GridPane.halignment="RIGHT">
+                    <GridPane.margin>
+                        <Insets right="10.0" />
+                    </GridPane.margin>
+                </Label>
+                <DatePicker fx:id="datePickerSearch" editable="false" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="Дата" GridPane.columnIndex="1" />
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="20.0" />
+            </BorderPane.margin>
+        </GridPane>
+    </top>
 </BorderPane>
