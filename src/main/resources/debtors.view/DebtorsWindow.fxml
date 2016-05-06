@@ -5,7 +5,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="rootBorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ostryzhniuk.andriy.catering.debtors.view.DebtorsWindowController">
+<BorderPane fx:id="rootBorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ostryzhniuk.andriy.catering.debtors.view.DebtorsWindowController">
     <center>
         <StackPane fx:id="stackPane" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8">
 
