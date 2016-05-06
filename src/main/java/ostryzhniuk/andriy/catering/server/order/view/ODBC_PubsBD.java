@@ -70,7 +70,7 @@ public class ODBC_PubsBD {
     public static List<Integer> selectClientId(String clientName){
         SqlRowSet rs = getJdbcTemplate().queryForRowSet("select client.id " +
                 "from client " +
-                "where client.name = '" + clientName + "'");
+                "where client.name = ?", clientName);
         List<Integer> clientIdList = new LinkedList<>();
         while (rs.next()) {
             clientIdList.add(rs.getInt(1));
@@ -92,17 +92,17 @@ public class ODBC_PubsBD {
 
     public static void updateOrder(int id, String date, int clientId, BigDecimal cost, BigDecimal discount, BigDecimal paid){
         getJdbcTemplate().update("UPDATE ordering " +
-                "SET date = convert('" + date + "', DATE), " +
-                "client_id = " + clientId + ", " +
-                "cost = " + cost + ", " +
-                "discount = " + discount + ", " +
-                "paid = " + paid + " " +
-                "WHERE id = " + id + "");
+                "SET date = convert(?, DATE), " +
+                "client_id = ?, " +
+                "cost = ?, " +
+                "discount = ?, " +
+                "paid = ? " +
+                "WHERE id = ?", date, clientId, cost, discount, paid, id);
     }
 
     public static void deleteOrder(int orderId){
         getJdbcTemplate().update("DELETE FROM ordering " +
-                "WHERE id = " + orderId + "");
+                "WHERE id = ?", orderId);
     }
 
     public static List<DtoOrdering> selectOrdering(Integer orderId) {
