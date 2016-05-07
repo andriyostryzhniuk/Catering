@@ -19,20 +19,18 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.main.window.MainWindowController;
-import ostryzhniuk.andriy.catering.main.window.XSSFInitializer;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
 import java.io.*;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.LinkedList;
 import java.util.List;
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
@@ -188,59 +186,23 @@ public class OrderWindowController<T extends DtoOrder> {
         return button;
     }
 
-    private void createExcelReport(){
-        XSSFInitializer xssfInitializer = new XSSFInitializer("Звіт_замовлень");
-        XSSFSheet sheet = xssfInitializer.getSheet();
-
-        Row row;
-        Cell cell;
-        int columnCount;
-        int rowCount = 0;
-
-        List<String> colNamesList = new LinkedList<>();
-        tableView.getTableView().getColumns().forEach(item -> colNamesList.add(item.getText()));
-        xssfInitializer.createTitleHeaders(colNamesList);
-
-        for (T item : dtoOrdersList) {
-            row = sheet.createRow(++rowCount);
-            columnCount = 0;
-
-            cell = row.createCell(columnCount);
-            cell.setCellValue(item.getId());
-
-            cell = row.createCell(++columnCount);
-            cell.setCellStyle(xssfInitializer.getDateStyle());
-            java.util.Date date =  xssfInitializer.parseDate(item.getFormatDate());
-            cell.setCellValue(date);
-
-            cell = row.createCell(++columnCount);
-            cell.setCellValue(item.getClient());
-
-            cell = row.createCell(++columnCount);
-            cell.setCellStyle(xssfInitializer.getDollarStyle());
-            cell.setCellValue(Double.parseDouble(String.valueOf(item.getCost())));
-
-            cell = row.createCell(++columnCount);
-            cell.setCellStyle(xssfInitializer.getPercentageStyle());
-            cell.setCellValue(Double.parseDouble(String.valueOf(item.getDiscount().divide(new BigDecimal(100)))));
-
-            cell = row.createCell(++columnCount);
-            cell.setCellStyle(xssfInitializer.getDollarStyle());
-            cell.setCellValue(Double.parseDouble(String.valueOf(item.getBill())));
-
-            cell = row.createCell(++columnCount);
-            cell.setCellStyle(xssfInitializer.getDollarStyle());
-            cell.setCellValue(Double.parseDouble(String.valueOf(item.getPaid())));
-        }
-
-        xssfInitializer.setAutoSizeColumn(7);
-
-        xssfInitializer.write();
-        xssfInitializer.openFileInMicrosoftExcel();
-
+    public void createTableReportButton(ActionEvent actionEvent) {
+        ExcelOrderReport excelOrderReport = new ExcelOrderReport();
+        excelOrderReport.createTableOrderReport(tableView.getTableView(), dtoOrdersList);
     }
 
     public void createReportButton(ActionEvent actionEvent) {
-        createExcelReport();
+        ExcelOrderReport excelOrderReport = new ExcelOrderReport();
+        if (datePickerSearch.getValue() != null) {
+            LocalDate localDate = datePickerSearch.getValue();
+            java.util.Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            excelOrderReport.createOrderReport(date, dtoOrdersList);
+        } else {
+            excelOrderReport.createOrderReport(new java.util.Date(), dtoOrdersList);
+        }
+    }
+
+    public void createMenuButton(ActionEvent actionEvent) {
+
     }
 }

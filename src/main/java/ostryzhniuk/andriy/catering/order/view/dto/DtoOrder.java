@@ -19,6 +19,7 @@ public class DtoOrder implements Serializable {
     private BigDecimal bill;
     private BigDecimal paid;
     private String formatDate;
+    private BigDecimal debt;
 
     public DtoOrder() {
     }
@@ -39,6 +40,10 @@ public class DtoOrder implements Serializable {
     public void formattingDate(){
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         this.formatDate = dateFormat.format(this.date);
+    }
+
+    public void calculationDebt(){
+        this.debt = bill.subtract(paid).setScale(2, RoundingMode.CEILING);
     }
 
     public int getId() {
@@ -103,5 +108,13 @@ public class DtoOrder implements Serializable {
 
     public void setFormatDate(String formatDate) {
         this.formatDate = formatDate;
+    }
+
+    public BigDecimal getDebt() {
+        return debt;
+    }
+
+    public void setDebt(BigDecimal debt) {
+        this.debt = debt;
     }
 }
