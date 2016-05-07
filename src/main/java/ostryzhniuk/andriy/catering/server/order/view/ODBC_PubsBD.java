@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
+import ostryzhniuk.andriy.catering.order.view.dto.DtoOrderReport;
 import ostryzhniuk.andriy.catering.ordering.view.dto.DtoOrdering;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -143,6 +144,21 @@ public class ODBC_PubsBD {
                 return idList.size();
             }
         });
+    }
+
+    public static List<DtoOrderReport> selectOrderReport (Date date) {
+        return getJdbcTemplate().query("select ordering.date, client.name as client, client.address, " +
+                "ordering.id as orderId, bill, if(debt > 0, debt, 0) as debt " +
+                "from ordering, client, ( " +
+                "   select id, bill, truncate(bill - paid, 2) as debt " +
+                "   from ( " +
+                "       select ordering.id as id, ordering.paid as paid, " +
+                "       truncate(cost - (cost * (ordering.discount / 100)), 2) as bill " +
+                "       from ordering) billTable) debtTable\n" +
+                "where ordering.date = ? and " +
+                "ordering.id = debtTable.id and " +
+                "ordering.client_id = client.id " +
+                "order by client.name", BeanPropertyRowMapper.newInstance(DtoOrderReport.class), date);
     }
 
 }

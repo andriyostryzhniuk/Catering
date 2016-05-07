@@ -196,9 +196,9 @@ public class OrderWindowController<T extends DtoOrder> {
         if (datePickerSearch.getValue() != null) {
             LocalDate localDate = datePickerSearch.getValue();
             java.util.Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-            excelOrderReport.createOrderReport(date, dtoOrdersList);
+            excelOrderReport.createOrderReport(date);
         } else {
-            excelOrderReport.createOrderReport(new java.util.Date(), dtoOrdersList);
+            excelOrderReport.createOrderReport(new java.util.Date());
         }
     }
 

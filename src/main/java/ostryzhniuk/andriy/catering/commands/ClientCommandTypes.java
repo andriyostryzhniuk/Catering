@@ -10,6 +10,7 @@ public enum ClientCommandTypes {
     SELECT_CLIENT_ID(),
     UPDATE_ORDER(),
     DELETE_ORDER(),
+    //for ordering view
     SELECT_ORDERING(),
     UPDATE_ORDERING(),
     DELETE_ORDERING(),
@@ -34,6 +35,8 @@ public enum ClientCommandTypes {
     UPDATE_DISHES_TYPE(),
     DELETE_DISHES_TYPE(),
     //for debtors view
-    SELECT_DEBTORS();
+    SELECT_DEBTORS(),
+    //for order report
+    SELECT_ORDER_REPORT();
 
 }

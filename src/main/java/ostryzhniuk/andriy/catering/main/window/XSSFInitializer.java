@@ -73,8 +73,8 @@ public class XSSFInitializer {
         }
     }
 
-    public void createTitleHeaders(List<String> colNamesList){
-        Row row = sheet.createRow(0);
+    public void createTitleHeaders(List<String> colNamesList, Integer rowIndex){
+        Row row = sheet.createRow(rowIndex);
         int columnCount = 0;
 
         for (String tableColumnName : colNamesList) {
@@ -136,16 +136,16 @@ public class XSSFInitializer {
         return dateStyle;
     }
 
-    public java.util.Date parseDate(String dateStringValue){
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", new Locale("uk"));
-        java.util.Date date = null;
-        try {
-            date = dateFormat.parse(dateStringValue);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
-    }
+//    public java.util.Date parseDate(String dateStringValue){
+//        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", new Locale("uk"));
+//        java.util.Date date = null;
+//        try {
+//            date = dateFormat.parse(dateStringValue);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        return date;
+//    }
 
     public CellStyle getTitleStyle(){
         if (titleStyle == null) {

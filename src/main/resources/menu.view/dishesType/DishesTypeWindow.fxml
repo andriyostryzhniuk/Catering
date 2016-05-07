@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Group fx:id="rootGroup" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<Group fx:orderId="rootGroup" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
        fx:controller="ostryzhniuk.andriy.catering.menu.view.dishesType.DishesTypeWindowController">
     <children>
         <Rectangle arcHeight="15.0" arcWidth="15.0" fill="#0000008c" height="500.0" stroke="#ffffffe5"
@@ -21,15 +21,15 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
-                <GridPane fx:id="controlsGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                <GridPane fx:orderId="controlsGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
                           minWidth="-Infinity" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <children>
                         <GridPane GridPane.rowIndex="1">
                             <children>
-                                <Button fx:id="closeButton" maxHeight="25.0" maxWidth="72.0" minHeight="25.0"
+                                <Button fx:orderId="closeButton" maxHeight="25.0" maxWidth="72.0" minHeight="25.0"
                                         minWidth="72.0" mnemonicParsing="false" onAction="#close" prefHeight="25.0"
                                         prefWidth="72.0" text="Закрити" GridPane.columnIndex="2"/>
-                                <Button fx:id="addButton" maxHeight="25.0" maxWidth="72.0" minHeight="25.0"
+                                <Button fx:orderId="addButton" maxHeight="25.0" maxWidth="72.0" minHeight="25.0"
                                         minWidth="72.0" mnemonicParsing="false" onAction="#add" prefHeight="25.0"
                                         prefWidth="72.0" text="Додати" GridPane.columnIndex="1">
                                     <GridPane.margin>
@@ -48,7 +48,7 @@
                                 <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <ListView fx:id="listView" GridPane.hgrow="SOMETIMES" GridPane.vgrow="SOMETIMES"/>
+                        <ListView fx:orderId="listView" GridPane.hgrow="SOMETIMES" GridPane.vgrow="SOMETIMES"/>
                     </children>
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="300.0" prefWidth="300.0"/>
@@ -62,7 +62,7 @@
         </GridPane>
         <Pane prefHeight="40.0" prefWidth="300.0">
             <children>
-                <Label fx:id="titleLabel" layoutX="52.0" layoutY="5.0" text="Класифікація" textFill="WHITE">
+                <Label fx:orderId="titleLabel" layoutX="52.0" layoutY="5.0" text="Класифікація" textFill="WHITE">
                     <font>
                         <Font size="13.0"/>
                     </font>
