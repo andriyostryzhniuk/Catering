@@ -1,6 +1,5 @@
 package ostryzhniuk.andriy.catering.order.view;
 
-
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 import org.apache.poi.ss.usermodel.Cell;
@@ -10,6 +9,7 @@ import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.main.window.XSSFInitializer;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrderReport;
+import ostryzhniuk.andriy.catering.ordering.view.dto.DtoOrdering;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -98,7 +98,7 @@ public class ExcelOrderReport<T extends DtoOrder> {
             colNamesList.add("Замовлення №");
             colNamesList.add("До оплати");
             colNamesList.add("Борг");
-            xssfInitializer.createTitleHeaders(colNamesList, 0);
+            xssfInitializer.createTitleHeaders(colNamesList, rowCount);
 
             row = sheet.createRow(++rowCount);
             columnCount = 0;
@@ -127,47 +127,46 @@ public class ExcelOrderReport<T extends DtoOrder> {
                 cell.setCellStyle(xssfInitializer.getDollarStyle());
                 cell.setCellValue(Double.parseDouble(String.valueOf(item.getDebt())));
             }
+            ++rowCount;
 
+            colNamesList = new LinkedList<>();
+            colNamesList.add("Назва страви");
+            colNamesList.add("Кількість порцій");
+            xssfInitializer.createTitleHeaders(colNamesList, ++rowCount);
 
+            objectList = new LinkedList<>();
+            objectList.add(item.getOrderId());
+            List<DtoOrdering> dtoOrderingList = Collections.synchronizedList(
+                    sendARequestToTheServer(ClientCommandTypes.SELECT_ORDERING, objectList));
+
+            if (dtoOrderingList.isEmpty()) {
+                columnCount = 0;
+                row = sheet.createRow(++rowCount);
+
+                cell = row.createCell(columnCount);
+                cell.setCellValue("-");
+
+                cell = row.createCell(++columnCount);
+                cell.setCellValue("-");
+            } else{
+                for (DtoOrdering orderingItem : dtoOrderingList) {
+                    columnCount = 0;
+                    row = sheet.createRow(++rowCount);
+
+                    cell = row.createCell(columnCount);
+                    cell.setCellValue(orderingItem.getDishesName());
+
+                    cell = row.createCell(++columnCount);
+                    cell.setCellValue(orderingItem.getNumberOfServings());
+                }
+            }
+            rowCount = rowCount + 3;
         }
 
         xssfInitializer.setAutoSizeColumn(6);
 
         xssfInitializer.write();
         xssfInitializer.openFileInMicrosoftExcel();
-
-
-//        for (T item : dtoOrdersList) {
-//            row = sheet.createRow(++rowCount);
-//            columnCount = 0;
-//
-//            cell = row.createCell(columnCount);
-//            cell.setCellValue(item.getOrderId());
-//
-//            cell = row.createCell(++columnCount);
-//            cell.setCellStyle(xssfInitializer.getDateStyle());
-//            java.util.Date date2 =  xssfInitializer.parseDate(item.getFormatDate());
-//            cell.setCellValue(date2);
-//
-//            cell = row.createCell(++columnCount);
-//            cell.setCellValue(item.getClient());
-//
-//            cell = row.createCell(++columnCount);
-//            cell.setCellStyle(xssfInitializer.getDollarStyle());
-//            cell.setCellValue(Double.parseDouble(String.valueOf(item.getCost())));
-//
-//            cell = row.createCell(++columnCount);
-//            cell.setCellStyle(xssfInitializer.getPercentageStyle());
-//            cell.setCellValue(Double.parseDouble(String.valueOf(item.getDiscount().divide(new BigDecimal(100)))));
-//
-//            cell = row.createCell(++columnCount);
-//            cell.setCellStyle(xssfInitializer.getDollarStyle());
-//            cell.setCellValue(Double.parseDouble(String.valueOf(item.getBill())));
-//
-//            cell = row.createCell(++columnCount);
-//            cell.setCellStyle(xssfInitializer.getDollarStyle());
-//            cell.setCellValue(Double.parseDouble(String.valueOf(item.getPaid())));
-//        }
 
     }
 }
