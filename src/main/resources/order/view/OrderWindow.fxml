@@ -18,6 +18,7 @@
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="102.0" prefWidth="102.0"/>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="150.0" prefWidth="150.0"/>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0"/>
                 <ColumnConstraints hgrow="SOMETIMES"/>
             </columnConstraints>
             <rowConstraints>
@@ -31,6 +32,8 @@
                 </Label>
                 <DatePicker fx:id="datePickerSearch" editable="false" maxWidth="150.0" minWidth="150.0"
                             prefWidth="150.0" promptText="Дата" GridPane.columnIndex="1"/>
+                <Button mnemonicParsing="false" onAction="#createReportButton" text="Створити звіт"
+                        GridPane.columnIndex="3" GridPane.halignment="RIGHT"/>
             </children>
             <BorderPane.margin>
                 <Insets bottom="20.0"/>
