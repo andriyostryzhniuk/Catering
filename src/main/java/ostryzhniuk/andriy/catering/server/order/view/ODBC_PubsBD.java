@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrderReport;
+import ostryzhniuk.andriy.catering.order.view.dto.DtoOrderingForReport;
 import ostryzhniuk.andriy.catering.ordering.view.dto.DtoOrdering;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -159,6 +160,16 @@ public class ODBC_PubsBD {
                 "ordering.id = debtTable.id and " +
                 "ordering.client_id = client.id " +
                 "order by client.name", BeanPropertyRowMapper.newInstance(DtoOrderReport.class), date);
+    }
+
+    public static List<DtoOrderingForReport> selectMealsADay(Date date) {
+        return getJdbcTemplate().query("select menu.name, sum(ordering_menu.servings), dishestype.type " +
+                "from ordering, ordering_menu, menu, dishestype " +
+                "where ordering.date = ? and " +
+                "ordering.id = ordering_menu.ordering_id and " +
+                "ordering_menu.menu_id = menu.id and " +
+                "menu.dishesType_id = dishestype.id " +
+                "group by menu_id", BeanPropertyRowMapper.newInstance(DtoOrderingForReport.class), date);
     }
 
 }

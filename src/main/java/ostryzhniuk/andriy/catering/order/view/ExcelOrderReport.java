@@ -9,8 +9,8 @@ import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.main.window.XSSFInitializer;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrderReport;
+import ostryzhniuk.andriy.catering.order.view.dto.DtoOrderingForReport;
 import ostryzhniuk.andriy.catering.ordering.view.dto.DtoOrdering;
-
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -168,5 +168,15 @@ public class ExcelOrderReport<T extends DtoOrder> {
         xssfInitializer.write();
         xssfInitializer.openFileInMicrosoftExcel();
 
+    }
+
+    public void createMenuReport(Date date){
+        List<Object> objectList = new LinkedList<>();
+        objectList.add(new java.sql.Date(date.getTime()));
+
+        List<DtoOrderingForReport> dtoOrderingForReportList = Collections.synchronizedList(
+                sendARequestToTheServer(ClientCommandTypes.SELECT_MEALS_A_DAY, objectList));
+
+        System.out.println(dtoOrderingForReportList.size());
     }
 }

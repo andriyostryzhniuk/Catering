@@ -26,6 +26,11 @@ public class DtoOrdering implements Serializable {
         this.price = price;
     }
 
+    public DtoOrdering(String dishesName, Integer numberOfServings) {
+        this.dishesName = dishesName;
+        this.numberOfServings = numberOfServings;
+    }
+
     public Integer getId() {
         return id;
     }

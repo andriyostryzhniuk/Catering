@@ -203,6 +203,13 @@ public class OrderWindowController<T extends DtoOrder> {
     }
 
     public void createMenuButton(ActionEvent actionEvent) {
-
+        ExcelOrderReport excelOrderReport = new ExcelOrderReport();
+        if (datePickerSearch.getValue() != null) {
+            LocalDate localDate = datePickerSearch.getValue();
+            java.util.Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            excelOrderReport.createMenuReport(date);
+        } else {
+            excelOrderReport.createMenuReport(new java.util.Date());
+        }
     }
 }

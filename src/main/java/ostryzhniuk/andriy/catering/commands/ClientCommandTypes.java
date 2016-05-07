@@ -37,6 +37,7 @@ public enum ClientCommandTypes {
     //for debtors view
     SELECT_DEBTORS(),
     //for order report
-    SELECT_ORDER_REPORT();
+    SELECT_ORDER_REPORT(),
+    SELECT_MEALS_A_DAY();
 
 }

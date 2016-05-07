@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 import static ostryzhniuk.andriy.catering.server.clients.view.ODBC_PubsBD.*;
 import static ostryzhniuk.andriy.catering.server.menu.view.ODBC_PubsBD.*;
+import static ostryzhniuk.andriy.catering.server.order.view.ODBC_PubsBD.selectMealsADay;
 import static ostryzhniuk.andriy.catering.server.order.view.ODBC_PubsBD.selectOrderReport;
 
 public class ClientCommand implements Serializable {
@@ -145,6 +146,10 @@ public class ClientCommand implements Serializable {
 //      for order report
         } else if (clientCommandType == ClientCommandTypes.SELECT_ORDER_REPORT) {
             return selectOrderReport((Date) objectList.get(0));
+
+        } else if (clientCommandType == ClientCommandTypes.SELECT_MEALS_A_DAY) {
+            return selectMealsADay((Date) objectList.get(0));
+
         } else {
             throw new IllegalArgumentException("NO SUCH COMMAND");
         }
