@@ -163,7 +163,8 @@ public class ODBC_PubsBD {
     }
 
     public static List<DtoOrderingForReport> selectMealsADay(Date date) {
-        return getJdbcTemplate().query("select menu.name, sum(ordering_menu.servings), dishestype.type " +
+        return getJdbcTemplate().query("select menu.name as dishesName, " +
+                "sum(ordering_menu.servings) as numberOfServings, dishestype.type as dishesType " +
                 "from ordering, ordering_menu, menu, dishestype " +
                 "where ordering.date = ? and " +
                 "ordering.id = ordering_menu.ordering_id and " +

@@ -21,7 +21,7 @@ public class XSSFInitializer {
     private CellStyle percentageStyle;
     private CellStyle dateStyle;
     private CellStyle titleStyle;
-
+    private CellStyle resultStyle;
 
     public XSSFInitializer(String fileName) {
         this.fileName = fileName;
@@ -151,10 +151,24 @@ public class XSSFInitializer {
         if (titleStyle == null) {
             titleStyle = workbook.createCellStyle();
             titleStyle.setAlignment(CellStyle.ALIGN_CENTER);
-            Font font = sheet.getWorkbook().createFont();
-            font.setBold(true);
-            titleStyle.setFont(font);
+            titleStyle.setFont(getFontBold());
         }
         return titleStyle;
     }
+
+    public CellStyle getResultStyle(){
+        if (resultStyle == null) {
+            resultStyle = workbook.createCellStyle();
+            resultStyle.setAlignment(CellStyle.ALIGN_RIGHT);
+            resultStyle.setFont(getFontBold());
+        }
+        return resultStyle;
+    }
+
+    public Font getFontBold(){
+        Font font = sheet.getWorkbook().createFont();
+        font.setBold(true);
+        return font;
+    }
+
 }

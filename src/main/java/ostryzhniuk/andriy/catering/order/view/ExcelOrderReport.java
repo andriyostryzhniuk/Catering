@@ -177,6 +177,65 @@ public class ExcelOrderReport<T extends DtoOrder> {
         List<DtoOrderingForReport> dtoOrderingForReportList = Collections.synchronizedList(
                 sendARequestToTheServer(ClientCommandTypes.SELECT_MEALS_A_DAY, objectList));
 
-        System.out.println(dtoOrderingForReportList.size());
+        DateFormat dateFormat = new SimpleDateFormat("(dd.MM.yyyy)", new Locale("uk"));
+        String formatDate = dateFormat.format(date);
+
+        XSSFInitializer xssfInitializer = new XSSFInitializer("Звіт_кількість_страв"+formatDate);
+        XSSFSheet sheet = xssfInitializer.getSheet();
+
+        Row row;
+        Cell cell;
+        int columnCount;
+        int rowCount = 0;
+
+        List<String> colNamesList = new LinkedList<>();
+        colNamesList.add("Тип страви");
+        colNamesList.add("Назва страви");
+        colNamesList.add("Кількість порцій");
+        xssfInitializer.createTitleHeaders(colNamesList, rowCount);
+
+        Integer sumOfServings = 0;
+
+        for (DtoOrderingForReport item : dtoOrderingForReportList) {
+            row = sheet.createRow(++rowCount);
+            columnCount = 0;
+
+            cell = row.createCell(columnCount);
+            cell.setCellValue(item.getDishesType());
+
+            cell = row.createCell(++columnCount);
+            cell.setCellValue(item.getDishesName());
+
+            cell = row.createCell(++columnCount);
+            cell.setCellValue(item.getNumberOfServings());
+
+            sumOfServings = sumOfServings + item.getNumberOfServings();
+        }
+
+        row = sheet.createRow(++rowCount);
+
+        cell = row.createCell(1);
+        cell.setCellStyle(xssfInitializer.getResultStyle());
+        cell.setCellValue("Всього:");
+
+        cell = row.createCell(2);
+        cell.setCellStyle(xssfInitializer.getResultStyle());
+        cell.setCellValue(sumOfServings);
+
+        rowCount = rowCount + 2;
+        row = sheet.createRow(rowCount);
+        cell = row.createCell(2);
+        cell.setCellStyle(xssfInitializer.getResultStyle());
+        cell.setCellValue("Дата");
+
+        row = sheet.createRow(++rowCount);
+        cell = row.createCell(2);
+        cell.setCellStyle(xssfInitializer.getDateStyle());
+        cell.setCellValue(date);
+
+        xssfInitializer.setAutoSizeColumn(3);
+
+        xssfInitializer.write();
+        xssfInitializer.openFileInMicrosoftExcel();
     }
 }
