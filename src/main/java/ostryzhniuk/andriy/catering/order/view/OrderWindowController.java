@@ -26,7 +26,7 @@ import ostryzhniuk.andriy.catering.main.window.MainWindowController;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
-import ostryzhniuk.andriy.catering.subsidiary.classes.AlterWindow;
+import ostryzhniuk.andriy.catering.subsidiary.classes.AlertWindow;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -103,14 +103,6 @@ public class OrderWindowController<T extends DtoOrder> {
         discountCol.setCellValueFactory(new PropertyValueFactory("discount"));
         billCol.setCellValueFactory(new PropertyValueFactory("bill"));
         paidCol.setCellValueFactory(new PropertyValueFactory("paid"));
-
-//        idCol.setCellFactory(TextFieldTableCell.<T, Integer>forTableColumn(new IntegerStringConverter()));
-//        dateCol.setCellFactory(TextFieldTableCell.forTableColumn());
-//        clientCol.setCellFactory(TextFieldTableCell.forTableColumn());
-//        costCol.setCellFactory(TextFieldTableCell.<T, BigDecimal>forTableColumn(new BigDecimalStringConverter()));
-//        discountCol.setCellFactory(TextFieldTableCell.<T, BigDecimal>forTableColumn(new BigDecimalStringConverter()));
-//        billCol.setCellFactory(TextFieldTableCell.<T, BigDecimal>forTableColumn(new BigDecimalStringConverter()));
-//        paidCol.setCellFactory(TextFieldTableCell.<T, BigDecimal>forTableColumn(new BigDecimalStringConverter()));
     }
 
     public void setColsDateProperties() {
@@ -140,12 +132,17 @@ public class OrderWindowController<T extends DtoOrder> {
     }
 
     public void removeRecord(T dtoOrder){
+        AlertWindow alertWindow = new AlertWindow(Alert.AlertType.WARNING);
+        if (! alertWindow.showDeletingWarning()) {
+            return;
+        }
+
         List<Object> objectList = new LinkedList<>();
         objectList.add(dtoOrder.getId());
         Boolean isSuccessful = (Boolean) sendARequestToTheServer(ClientCommandTypes.DELETE_ORDER, objectList).get(0);
         if (! isSuccessful) {
-            AlterWindow alterWindow = new AlterWindow(Alert.AlertType.ERROR);
-            alterWindow.showDeletingError();
+            alertWindow = new AlertWindow(Alert.AlertType.ERROR);
+            alertWindow.showDeletingError();
         }
         initTableView();
     }

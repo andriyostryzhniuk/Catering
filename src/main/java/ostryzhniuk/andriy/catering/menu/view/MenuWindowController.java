@@ -19,12 +19,10 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.menu.view.dto.DtoMenu;
-import ostryzhniuk.andriy.catering.subsidiary.classes.AlterWindow;
-
+import ostryzhniuk.andriy.catering.subsidiary.classes.AlertWindow;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
 import static ostryzhniuk.andriy.catering.menu.view.ContextMenu.initContextMenu;
 
@@ -53,6 +51,11 @@ public class MenuWindowController extends MenuTableView {
     }
 
     public void removeRecord(){
+        AlertWindow alertWindow = new AlertWindow(Alert.AlertType.WARNING);
+        if (! alertWindow.showDeletingWarning()) {
+            return;
+        }
+
         TablePosition pos = tableView.getSelectionModel().getSelectedCells().get(0);
         int rowIndex = pos.getRow();
         DtoMenu dtoMenu = tableView.getItems().get(rowIndex);
@@ -61,8 +64,8 @@ public class MenuWindowController extends MenuTableView {
         objectList.add(dtoMenu.getId());
         Boolean isSuccessful = (Boolean) sendARequestToTheServer(ClientCommandTypes.DELETE_MENU, objectList).get(0);
         if (! isSuccessful) {
-            AlterWindow alterWindow = new AlterWindow(Alert.AlertType.ERROR);
-            alterWindow.showDeletingError();
+            alertWindow = new AlertWindow(Alert.AlertType.ERROR);
+            alertWindow.showDeletingError();
         }
         menuTableView.initTableView();
     }

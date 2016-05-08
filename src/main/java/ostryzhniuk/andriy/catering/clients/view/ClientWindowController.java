@@ -25,7 +25,7 @@ import ostryzhniuk.andriy.catering.clients.view.dto.DtoClient;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
-import ostryzhniuk.andriy.catering.subsidiary.classes.AlterWindow;
+import ostryzhniuk.andriy.catering.subsidiary.classes.AlertWindow;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -129,6 +129,11 @@ public class ClientWindowController<T extends DtoClient> {
     }
 
     public void removeRecord(){
+        AlertWindow alertWindow = new AlertWindow(Alert.AlertType.WARNING);
+        if (! alertWindow.showDeletingWarning()) {
+            return;
+        }
+
         TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
         int rowIndex = pos.getRow();
         DtoClient dtoClient = tableView.getTableView().getItems().get(rowIndex);
@@ -137,8 +142,8 @@ public class ClientWindowController<T extends DtoClient> {
         objectList.add(dtoClient.getId());
         Boolean isSuccessful = (Boolean) sendARequestToTheServer(ClientCommandTypes.DELETE_CLIENT, objectList).get(0);
         if (! isSuccessful) {
-            AlterWindow alterWindow = new AlterWindow(Alert.AlertType.ERROR);
-            alterWindow.showDeletingError();
+            alertWindow = new AlertWindow(Alert.AlertType.ERROR);
+            alertWindow.showDeletingError();
         }
         initTableView();
     }

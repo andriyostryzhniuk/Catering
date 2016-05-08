@@ -7,25 +7,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.commands.ClientCommand;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
-import ostryzhniuk.andriy.catering.ordering.view.dto.DtoOrdering;
-import ostryzhniuk.andriy.catering.subsidiary.classes.AlterWindow;
+import ostryzhniuk.andriy.catering.subsidiary.classes.AlertWindow;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-
-import static ostryzhniuk.andriy.catering.commands.ClientCommandTypes.UPDATE_ORDERING;
 
 public class Client extends Application {
 
@@ -89,8 +83,8 @@ public class Client extends Application {
     private static void alterError(){
         String headerText = "Ой, під час підключення до сервера трапилась помилка.\nПідключення було невдалим.";
         String contentText = "Перезапустіть програму та спробуйте ще раз.";
-        AlterWindow alterWindow = new AlterWindow(Alert.AlertType.ERROR, headerText, contentText);
-        alterWindow.startShow();
+        AlertWindow alertWindow = new AlertWindow(Alert.AlertType.ERROR, headerText, contentText);
+        alertWindow.showError();
     }
 
 }

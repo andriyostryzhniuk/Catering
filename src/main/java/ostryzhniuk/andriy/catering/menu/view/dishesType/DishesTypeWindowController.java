@@ -15,7 +15,7 @@ import javafx.stage.StageStyle;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.menu.view.MenuTableView;
 import ostryzhniuk.andriy.catering.menu.view.dto.DtoDishesType;
-import ostryzhniuk.andriy.catering.subsidiary.classes.AlterWindow;
+import ostryzhniuk.andriy.catering.subsidiary.classes.AlertWindow;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -98,13 +98,18 @@ public class DishesTypeWindowController<T extends DtoDishesType> {
     }
 
     public void removeRecord(){
+        AlertWindow alertWindow = new AlertWindow(Alert.AlertType.WARNING);
+        if (! alertWindow.showDeletingWarning()) {
+            return;
+        }
+
         DtoDishesType dtoDishesType = listView.getSelectionModel().getSelectedItem();
         List<Object> objectList = new LinkedList<>();
         objectList.add(dtoDishesType.getId());
         Boolean isSuccessful = (Boolean) sendARequestToTheServer(ClientCommandTypes.DELETE_DISHES_TYPE, objectList).get(0);
         if (! isSuccessful) {
-            AlterWindow alterWindow = new AlterWindow(Alert.AlertType.ERROR);
-            alterWindow.showDeletingError();
+            alertWindow = new AlertWindow(Alert.AlertType.ERROR);
+            alertWindow.showDeletingError();
         }
         initListView();
     }
