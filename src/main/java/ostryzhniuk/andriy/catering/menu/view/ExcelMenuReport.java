@@ -5,7 +5,7 @@ import javafx.scene.control.TableView;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
-import ostryzhniuk.andriy.catering.main.window.XSSFInitializer;
+import ostryzhniuk.andriy.catering.subsidiary.classes.XSSFInitializer;
 import ostryzhniuk.andriy.catering.menu.view.dto.DtoMenu;
 import java.util.*;
 

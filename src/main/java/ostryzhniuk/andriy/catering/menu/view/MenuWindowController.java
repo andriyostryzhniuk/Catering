@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
@@ -18,6 +19,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.menu.view.dto.DtoMenu;
+import ostryzhniuk.andriy.catering.subsidiary.classes.AlterWindow;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -57,7 +59,11 @@ public class MenuWindowController extends MenuTableView {
 
         List<Object> objectList = new LinkedList<>();
         objectList.add(dtoMenu.getId());
-        sendARequestToTheServer(ClientCommandTypes.DELETE_MENU, objectList);
+        Boolean isSuccessful = (Boolean) sendARequestToTheServer(ClientCommandTypes.DELETE_MENU, objectList).get(0);
+        if (! isSuccessful) {
+            AlterWindow alterWindow = new AlterWindow(Alert.AlertType.ERROR);
+            alterWindow.showDeletingError();
+        }
         menuTableView.initTableView();
     }
 

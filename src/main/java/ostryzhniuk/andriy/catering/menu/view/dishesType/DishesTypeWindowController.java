@@ -15,6 +15,8 @@ import javafx.stage.StageStyle;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.menu.view.MenuTableView;
 import ostryzhniuk.andriy.catering.menu.view.dto.DtoDishesType;
+import ostryzhniuk.andriy.catering.subsidiary.classes.AlterWindow;
+
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -99,7 +101,11 @@ public class DishesTypeWindowController<T extends DtoDishesType> {
         DtoDishesType dtoDishesType = listView.getSelectionModel().getSelectedItem();
         List<Object> objectList = new LinkedList<>();
         objectList.add(dtoDishesType.getId());
-        sendARequestToTheServer(ClientCommandTypes.DELETE_DISHES_TYPE, objectList);
+        Boolean isSuccessful = (Boolean) sendARequestToTheServer(ClientCommandTypes.DELETE_DISHES_TYPE, objectList).get(0);
+        if (! isSuccessful) {
+            AlterWindow alterWindow = new AlterWindow(Alert.AlertType.ERROR);
+            alterWindow.showDeletingError();
+        }
         initListView();
     }
 

@@ -58,8 +58,9 @@ public class ClientCommand implements Serializable {
             return new LinkedList<>();
 
         } else if (clientCommandType == ClientCommandTypes.DELETE_ORDER) {
-            ODBC_PubsBD.deleteOrder((Integer)objectList.get(0));
-            return new LinkedList<>();
+            List<Boolean> booleanList = new LinkedList<>();
+            booleanList.add(ODBC_PubsBD.deleteOrder((Integer)objectList.get(0)));
+            return booleanList;
 //        for ordering view
         } else if (clientCommandType == ClientCommandTypes.SELECT_ORDERING) {
             return ODBC_PubsBD.selectOrdering((Integer) objectList.get(0));
@@ -94,8 +95,9 @@ public class ClientCommand implements Serializable {
             return new LinkedList<>();
 
         } else if (clientCommandType == ClientCommandTypes.DELETE_CLIENT) {
-            deleteClient((Integer) objectList.get(0));
-            return new LinkedList<>();
+            List<Boolean> booleanList = new LinkedList<>();
+            booleanList.add(deleteClient((Integer) objectList.get(0)));
+            return booleanList;
 //      for menu view
         } else if (clientCommandType == ClientCommandTypes.SELECT_ALL_OF_MENU) {
             return selectAllOfMenu();
@@ -120,8 +122,9 @@ public class ClientCommand implements Serializable {
             return new LinkedList<>();
 
         } else if (clientCommandType == ClientCommandTypes.DELETE_MENU) {
-            deleteMenu((Integer) objectList.get(0));
-            return new LinkedList<>();
+            List<Boolean> booleanList = new LinkedList<>();
+            booleanList.add(deleteMenu((Integer) objectList.get(0)));
+            return booleanList;
 
         } else if (clientCommandType == ClientCommandTypes.SELECT_OF_LIKE_NAMES_MENU) {
             return selectOfLikeNamesMenu((String) objectList.get(0), (String) objectList.get(1));
@@ -138,8 +141,9 @@ public class ClientCommand implements Serializable {
             return new LinkedList<>();
 
         } else if (clientCommandType == ClientCommandTypes.DELETE_DISHES_TYPE) {
-            deleteDishesType((Integer)objectList.get(0));
-            return new LinkedList<>();
+            List<Boolean> booleanList = new LinkedList<>();
+            booleanList.add(deleteDishesType((Integer)objectList.get(0)));
+            return booleanList;
 //      for debtors view
         } else if (clientCommandType == ClientCommandTypes.SELECT_DEBTORS) {
             return dtoDebtorses();

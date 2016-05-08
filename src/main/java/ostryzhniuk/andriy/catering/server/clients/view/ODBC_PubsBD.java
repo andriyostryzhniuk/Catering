@@ -2,6 +2,7 @@ package ostryzhniuk.andriy.catering.server.clients.view;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -56,13 +57,6 @@ public class ODBC_PubsBD {
         getSimpleJdbcInsertForClient().execute(parameters);
     }
 
-//    public static void insertClient(DtoClient dtoClient){
-//        String sqlInsert = "INSERT INTO client (id, name, address, telephoneNumber, contactPerson, " +
-//                "discount, email, icq, skype) " +
-//                "VALUES (:id, :name, :address, :telephoneNumber, :contactPerson, :discount, :email, :icq, :skype)";
-//        getJdbcTemplate().update(sqlInsert, new BeanPropertySqlParameterSource(dtoClient));
-//    }
-
     public static void updateClient(String name, String address, String telephoneNumber, String contactPerson,
                                    BigDecimal discount, String email, Integer icq, String skype, int id){
         getJdbcTemplate().update("UPDATE client " +
@@ -77,9 +71,14 @@ public class ODBC_PubsBD {
                 "WHERE id = ?", name, address, telephoneNumber, contactPerson, discount, email, icq, skype, id);
     }
 
-    public static void deleteClient(int clientId){
-        getJdbcTemplate().update("DELETE FROM client " +
-                "WHERE id = ?", clientId);
+    public static Boolean deleteClient(int clientId){
+        try {
+            getJdbcTemplate().update("DELETE FROM client " +
+                    "WHERE id = ?", clientId);
+        } catch (DataIntegrityViolationException e) {
+            return false;
+        }
+        return true;
     }
 
     public static List<DtoDebtors> selectDebtors(){

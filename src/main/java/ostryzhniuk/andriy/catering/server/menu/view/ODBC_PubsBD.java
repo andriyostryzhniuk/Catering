@@ -2,6 +2,7 @@ package ostryzhniuk.andriy.catering.server.menu.view;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import ostryzhniuk.andriy.catering.menu.view.dto.DtoDishesType;
@@ -97,9 +98,14 @@ public class ODBC_PubsBD {
                 "WHERE id = ?", dishesTypeId, name, price, mass, ingredients, id);
     }
 
-    public static void deleteMenu(Integer menuId){
-        getJdbcTemplate().update("DELETE FROM menu " +
-                "WHERE id = ?", menuId);
+    public static Boolean deleteMenu(Integer menuId){
+        try {
+            getJdbcTemplate().update("DELETE FROM menu " +
+                    "WHERE id = ?", menuId);
+        } catch (DataIntegrityViolationException e) {
+            return false;
+        }
+        return true;
     }
 
     public static List<DtoDishesType> selectDishesType(){
@@ -119,9 +125,14 @@ public class ODBC_PubsBD {
                 "WHERE id = ?", type, id);
     }
 
-    public static void deleteDishesType(Integer id){
-        getJdbcTemplate().update("DELETE FROM dishesType " +
-                "WHERE id = ?", id);
+    public static Boolean deleteDishesType(Integer id){
+        try {
+            getJdbcTemplate().update("DELETE FROM dishesType " +
+                    "WHERE id = ?", id);
+        } catch (DataIntegrityViolationException e) {
+            return false;
+        }
+        return true;
     }
 
 }

@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -24,6 +25,8 @@ import ostryzhniuk.andriy.catering.clients.view.dto.DtoClient;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
+import ostryzhniuk.andriy.catering.subsidiary.classes.AlterWindow;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.LinkedList;
@@ -132,7 +135,11 @@ public class ClientWindowController<T extends DtoClient> {
 
         List<Object> objectList = new LinkedList<>();
         objectList.add(dtoClient.getId());
-        sendARequestToTheServer(ClientCommandTypes.DELETE_CLIENT, objectList);
+        Boolean isSuccessful = (Boolean) sendARequestToTheServer(ClientCommandTypes.DELETE_CLIENT, objectList).get(0);
+        if (! isSuccessful) {
+            AlterWindow alterWindow = new AlterWindow(Alert.AlertType.ERROR);
+            alterWindow.showDeletingError();
+        }
         initTableView();
     }
 

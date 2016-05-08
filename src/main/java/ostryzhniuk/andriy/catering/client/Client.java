@@ -6,6 +6,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.slf4j.Logger;
@@ -13,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.commands.ClientCommand;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.ordering.view.dto.DtoOrdering;
+import ostryzhniuk.andriy.catering.subsidiary.classes.AlterWindow;
+
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
@@ -72,12 +77,20 @@ public class Client extends Application {
             return (List) objectSocketIS.readObject();
         } catch (SocketException e) {
             LOGGER.error("server has been down" + e);
+            alterError();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private static void alterError(){
+        String headerText = "Ой, під час підключення до сервера трапилась помилка.\nПідключення було невдалим.";
+        String contentText = "Перезапустіть програму та спробуйте ще раз.";
+        AlterWindow alterWindow = new AlterWindow(Alert.AlertType.ERROR, headerText, contentText);
+        alterWindow.startShow();
     }
 
 }

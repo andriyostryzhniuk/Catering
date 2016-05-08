@@ -26,6 +26,8 @@ import ostryzhniuk.andriy.catering.main.window.MainWindowController;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
+import ostryzhniuk.andriy.catering.subsidiary.classes.AlterWindow;
+
 import java.io.*;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -140,7 +142,11 @@ public class OrderWindowController<T extends DtoOrder> {
     public void removeRecord(T dtoOrder){
         List<Object> objectList = new LinkedList<>();
         objectList.add(dtoOrder.getId());
-        sendARequestToTheServer(ClientCommandTypes.DELETE_ORDER, objectList);
+        Boolean isSuccessful = (Boolean) sendARequestToTheServer(ClientCommandTypes.DELETE_ORDER, objectList).get(0);
+        if (! isSuccessful) {
+            AlterWindow alterWindow = new AlterWindow(Alert.AlertType.ERROR);
+            alterWindow.showDeletingError();
+        }
         initTableView();
     }
 
@@ -212,4 +218,5 @@ public class OrderWindowController<T extends DtoOrder> {
             excelOrderReport.createMenuReport(new java.util.Date());
         }
     }
+
 }

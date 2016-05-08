@@ -2,6 +2,7 @@ package ostryzhniuk.andriy.catering.server.order.view;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
@@ -102,9 +103,14 @@ public class ODBC_PubsBD {
                 "WHERE id = ?", date, clientId, cost, discount, paid, id);
     }
 
-    public static void deleteOrder(int orderId){
-        getJdbcTemplate().update("DELETE FROM ordering " +
-                "WHERE id = ?", orderId);
+    public static Boolean deleteOrder(int orderId){
+        try {
+            getJdbcTemplate().update("DELETE FROM ordering " +
+                    "WHERE id = ?", orderId);
+        } catch (DataIntegrityViolationException e) {
+            return false;
+        }
+        return true;
     }
 
     public static List<DtoOrdering> selectOrdering(Integer orderId) {
