@@ -12,4 +12,21 @@
 
         </StackPane>
     </center>
+    <top>
+        <GridPane BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <Button maxWidth="155.0" minWidth="155.0" mnemonicParsing="false" onAction="#createTableReportButton"
+                        prefWidth="155.0" text="Створити звіт таблиці" GridPane.halignment="RIGHT"/>
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="20.0"/>
+            </BorderPane.margin>
+        </GridPane>
+    </top>
 </BorderPane>

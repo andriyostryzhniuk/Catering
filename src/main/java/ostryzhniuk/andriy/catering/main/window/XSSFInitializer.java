@@ -86,7 +86,7 @@ public class XSSFInitializer {
     }
 
     public void setAutoSizeColumn(Integer numberOfColumns){
-        IntStream.range(0, 7).forEach(i -> sheet.autoSizeColumn(i));
+        IntStream.range(0, numberOfColumns).forEach(i -> sheet.autoSizeColumn(i));
     }
 
     public File getExcelFile() {

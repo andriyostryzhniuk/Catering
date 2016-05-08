@@ -2,6 +2,7 @@ package ostryzhniuk.andriy.catering.debtors.view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -100,5 +101,10 @@ public class DebtorsWindowController<T extends DtoDebtors> {
     public void fillTableView(){
         tableView.getTableView().getColumns().addAll(clientNameCol, telephoneNumberCol, contactPersonCol, orderIdCol,
                 dateCol, costCol, discountCol, billCol, paidCol, debtCol);
+    }
+
+    public void createTableReportButton(ActionEvent actionEvent) {
+        ExcelDebtorsReport excelDebtorsReport = new ExcelDebtorsReport();
+        excelDebtorsReport.createTableDebtorsReport(tableView.getTableView(), dtoDebtorsList);
     }
 }

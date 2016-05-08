@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.menu.view.dto.DtoMenu;
-import ostryzhniuk.andriy.catering.order.view.ExcelOrderReport;
+
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class MenuWindowController extends MenuTableView {
         tableView = menuTableView.getMenuTableView();
         rootBorderPane.setCenter(menuTableView.getBorderPane());
         initContextMenu(tableView, this);
-        initButton();
+        initTableReportButton();
     }
 
     public void editRecord() throws IOException {
@@ -84,7 +84,7 @@ public class MenuWindowController extends MenuTableView {
         primaryStage.showAndWait();
     }
 
-    private void initButton(){
+    private void initTableReportButton(){
         GridPane topGridPane = menuTableView.getTopGridPane();
 
         Button createTableReportButton = new Button("Створити звіт таблиці");

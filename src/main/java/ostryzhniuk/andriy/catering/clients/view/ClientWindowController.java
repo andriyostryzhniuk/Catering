@@ -160,4 +160,8 @@ public class ClientWindowController<T extends DtoClient> {
         primaryStage.showAndWait();
     }
 
+    public void createTableReportButton(ActionEvent actionEvent) {
+        ExcelClientsReport excelClientsReport = new ExcelClientsReport();
+        excelClientsReport.createTableClientsReport(tableView.getTableView(), dtoClientsList);
+    }
 }
