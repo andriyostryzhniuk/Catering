@@ -48,6 +48,7 @@ public class MenuTableView<T extends DtoMenu> {
     private ComboBox dishesTypeComboBoxListener = new ComboBox();
     private ComboBox dishesNameComboBox = new ComboBox();
     private ComboBox dishesNameComboBoxListener = new ComboBox();
+    private GridPane topGridPane = new GridPane();
 
     @FXML
     private TableViewHolder<T> tableView = new TableViewHolder<>();
@@ -128,8 +129,6 @@ public class MenuTableView<T extends DtoMenu> {
     }
 
     protected void initTopBorderPane(){
-        GridPane topGridPane = new GridPane();
-
         Label dishesTypeLabel = new Label("Класифікація:");
         topGridPane.add(dishesTypeLabel, 0, 0);
         topGridPane.setMargin(dishesTypeLabel, new Insets(0, 10, 0, 0));
@@ -280,4 +279,11 @@ public class MenuTableView<T extends DtoMenu> {
         return dishesNameComboBox;
     }
 
+    public GridPane getTopGridPane() {
+        return topGridPane;
+    }
+
+    public ObservableList<T> getDtoMenuList() {
+        return dtoMenuList;
+    }
 }
