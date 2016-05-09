@@ -194,7 +194,7 @@ public class ClientWindowController<T extends DtoClient> {
         excelClientsReport.createTableClientsReport(tableView.getTableView(), dtoClientsList);
     }
 
-    public void initEditPanel(){
+    private void initEditPanel(){
         EditPanel editPanel = new EditPanel();
         topGridPane.add(editPanel.getContainerGridPane(), 0, 0);
 

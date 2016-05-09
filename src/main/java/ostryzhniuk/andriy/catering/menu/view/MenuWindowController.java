@@ -1,8 +1,10 @@
 package ostryzhniuk.andriy.catering.menu.view;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -20,6 +22,8 @@ import javafx.stage.StageStyle;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.menu.view.dto.DtoMenu;
 import ostryzhniuk.andriy.catering.subsidiary.classes.AlertWindow;
+import ostryzhniuk.andriy.catering.subsidiary.classes.EditPanel;
+
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,11 +42,19 @@ public class MenuWindowController extends MenuTableView {
         tableView = menuTableView.getMenuTableView();
         rootBorderPane.setCenter(menuTableView.getBorderPane());
         initContextMenu(tableView, this);
+        initEditPanel();
         initTableReportButton();
     }
 
     public void editRecord() throws IOException {
-        TablePosition pos = tableView.getSelectionModel().getSelectedCells().get(0);
+        TablePosition pos;
+        try {
+            pos = tableView.getSelectionModel().getSelectedCells().get(0);
+        } catch (IndexOutOfBoundsException e) {
+            AlertWindow alertWindow = new AlertWindow(Alert.AlertType.INFORMATION);
+            alertWindow.showEditingInformation();
+            return;
+        }
         int rowIndex = pos.getRow();
         DtoMenu dtoClient = tableView.getItems().get(rowIndex);
 
@@ -51,12 +63,20 @@ public class MenuWindowController extends MenuTableView {
     }
 
     public void removeRecord(){
+        TablePosition pos;
+        try {
+            pos = tableView.getSelectionModel().getSelectedCells().get(0);
+        } catch (IndexOutOfBoundsException e) {
+            AlertWindow alertWindow = new AlertWindow(Alert.AlertType.INFORMATION);
+            alertWindow.showEditingInformation();
+            return;
+        }
+
         AlertWindow alertWindow = new AlertWindow(Alert.AlertType.WARNING);
         if (! alertWindow.showDeletingWarning()) {
             return;
         }
 
-        TablePosition pos = tableView.getSelectionModel().getSelectedCells().get(0);
         int rowIndex = pos.getRow();
         DtoMenu dtoMenu = tableView.getItems().get(rowIndex);
 
@@ -96,22 +116,51 @@ public class MenuWindowController extends MenuTableView {
     private void initTableReportButton(){
         GridPane topGridPane = menuTableView.getTopGridPane();
 
-        Button createTableReportButton = new Button("Створити звіт таблиці");
-        createTableReportButton.setMinWidth(155);
-        createTableReportButton.setMaxWidth(155);
+        Button tableReportButton = new Button("Створити звіт таблиці");
+        tableReportButton.setMinWidth(155);
+        tableReportButton.setMaxWidth(155);
 
-        createTableReportButton.setOnAction((javafx.event.ActionEvent event) -> {
+        tableReportButton.setOnAction((javafx.event.ActionEvent event) -> {
             ExcelMenuReport excelMenuReport = new ExcelMenuReport();
             excelMenuReport.createTableMenuReport(tableView, menuTableView.getDtoMenuList());
         });
 
+        topGridPane.add(tableReportButton, 6, 0);
+        topGridPane.setHalignment(tableReportButton, HPos.RIGHT);
+        topGridPane.setMargin(tableReportButton, new Insets(0, 0, 0, 50));
+    }
+
+    private void initEditPanel(){
+        GridPane topGridPane = menuTableView.getTopGridPane();
+
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setHgrow(Priority.SOMETIMES);
 
-        topGridPane.getColumnConstraints().addAll(new ColumnConstraints(), new ColumnConstraints(),
-                new ColumnConstraints(), new ColumnConstraints(), new ColumnConstraints(), columnConstraints);
-        topGridPane.add(createTableReportButton, 5, 0);
-        topGridPane.setHalignment(createTableReportButton, HPos.RIGHT);
+        topGridPane.getColumnConstraints().add(columnConstraints);
+
+        EditPanel editPanel = new EditPanel();
+        topGridPane.add(editPanel.getContainerGridPane(), 0, 0);
+
+        editPanel.getAddButton().setOnAction((ActionEvent event) -> {
+            try {
+                showEditingRecordWindow(null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        editPanel.getEditButton().setOnAction((ActionEvent event) -> {
+            try {
+                editRecord();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        editPanel.getDeleteButton().setOnAction((ActionEvent event) -> {
+            removeRecord();
+        });
+
     }
 
 }

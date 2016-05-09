@@ -129,26 +129,27 @@ public class MenuTableView<T extends DtoMenu> {
     }
 
     protected void initTopBorderPane(){
+        topGridPane.setAlignment(Pos.CENTER_RIGHT);
+
         Label dishesTypeLabel = new Label("Класифікація:");
         dishesTypeLabel.setStyle("-fx-text-fill: white");
-        topGridPane.add(dishesTypeLabel, 0, 0);
+        topGridPane.add(dishesTypeLabel, 1, 0);
         topGridPane.setMargin(dishesTypeLabel, new Insets(0, 10, 0, 0));
 
         initDishesTypeComboBox();
-        topGridPane.add(dishesTypeComboBox, 1, 0);
+        topGridPane.add(dishesTypeComboBox, 2, 0);
 
         Button dishesTypeButton = initDishesTypeButton();
-        topGridPane.add(dishesTypeButton, 2, 0);
-        topGridPane.setHalignment(dishesTypeButton, HPos.RIGHT);
+        topGridPane.add(dishesTypeButton, 3, 0);
         topGridPane.setMargin(dishesTypeButton, new Insets(0, 0, 0, 2));
 
         Label dishesNameLabel = new Label("Пошук:");
         dishesNameLabel.setStyle("-fx-text-fill: white");
-        topGridPane.add(dishesNameLabel, 3, 0);
+        topGridPane.add(dishesNameLabel, 4, 0);
         topGridPane.setMargin(dishesNameLabel, new Insets(0, 10, 0, 80));
 
         initDishesNameComboBox();
-        topGridPane.add(dishesNameComboBox, 4, 0);
+        topGridPane.add(dishesNameComboBox, 5, 0);
 
         borderPane.setTop(topGridPane);
         borderPane.setAlignment(topGridPane, Pos.TOP_LEFT);

@@ -237,7 +237,7 @@ public class OrderWindowController<T extends DtoOrder> {
         }
     }
 
-    public void initEditPanel(){
+    private void initEditPanel(){
         EditPanel editPanel = new EditPanel();
         topGridPane.add(editPanel.getContainerGridPane(), 0, 0);
 
