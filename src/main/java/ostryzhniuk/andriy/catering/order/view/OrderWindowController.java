@@ -28,6 +28,7 @@ import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableCol
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
 import ostryzhniuk.andriy.catering.subsidiary.classes.AlertWindow;
 import ostryzhniuk.andriy.catering.subsidiary.classes.EditPanel;
+import ostryzhniuk.andriy.catering.subsidiary.classes.SetterExcelStyle;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -47,6 +48,9 @@ public class OrderWindowController<T extends DtoOrder> {
     public StackPane stackPane;
     public DatePicker datePickerSearch;
     public GridPane topGridPane;
+    public Button tableReportButton;
+    public Button orderingReportButton;
+    public Button menuReportButton;
 
     private MainWindowController mainWindowController;
 
@@ -78,6 +82,7 @@ public class OrderWindowController<T extends DtoOrder> {
         Button rejectSearchingButton = initRejectSearchingButton();
         topGridPane.add(rejectSearchingButton, 3, 0);
         topGridPane.setMargin(rejectSearchingButton, new Insets(0, 0, 0, 5));
+        initReportButtonsStyle();
     }
 
     public void initTableView(){
@@ -215,7 +220,7 @@ public class OrderWindowController<T extends DtoOrder> {
         excelOrderReport.createTableOrderReport(tableView.getTableView(), dtoOrdersList);
     }
 
-    public void createReportButton(ActionEvent actionEvent) {
+    public void createOrderingReportButton(ActionEvent actionEvent) {
         ExcelOrderReport excelOrderReport = new ExcelOrderReport();
         if (datePickerSearch.getValue() != null) {
             LocalDate localDate = datePickerSearch.getValue();
@@ -226,7 +231,7 @@ public class OrderWindowController<T extends DtoOrder> {
         }
     }
 
-    public void createMenuButton(ActionEvent actionEvent) {
+    public void createMenuReportButton(ActionEvent actionEvent) {
         ExcelOrderReport excelOrderReport = new ExcelOrderReport();
         if (datePickerSearch.getValue() != null) {
             LocalDate localDate = datePickerSearch.getValue();
@@ -276,6 +281,13 @@ public class OrderWindowController<T extends DtoOrder> {
             }
         });
 
+    }
+
+    private void initReportButtonsStyle(){
+        SetterExcelStyle setterExcelStyle = new SetterExcelStyle();
+        setterExcelStyle.setStyle(tableReportButton, "Створити звіт таблиці");
+        setterExcelStyle.setStyle(orderingReportButton, "Створити звіт замовлень");
+        setterExcelStyle.setStyle(menuReportButton, "Створити звіт кількості замовлених страв");
     }
 
 }

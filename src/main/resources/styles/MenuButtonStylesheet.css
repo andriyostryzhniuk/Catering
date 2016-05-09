@@ -1,0 +1,31 @@
+.button {
+    -fx-background-color:
+            #000000,
+            linear-gradient(#7ebcea, #2f4b8f),
+            linear-gradient(#426ab7, #263e75),
+            linear-gradient(#395cab, #223768);
+    -fx-background-insets: 0,1,2,3;
+    -fx-background-radius: 3,2,2,2;
+    -fx-padding: 12 0 12 0;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+}
+.button .text {
+    -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.8) , 0, 0.0 , 0 , 1);
+}
+
+.button:hover {
+    -fx-background-color:
+            #000000,
+            linear-gradient(#92d0fe, #435fa3),
+            linear-gradient(#567ecb, #3a527f),
+            linear-gradient(#4d70bf, #364b7c);
+}
+
+.button:armed {
+    -fx-background-color:
+            #000000,
+            linear-gradient(#92d0fe, #435fa3),
+            linear-gradient(#567ecb, #3a527f),
+            linear-gradient(#4d70bf, #364b7c);
+}

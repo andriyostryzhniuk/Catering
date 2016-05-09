@@ -1,0 +1,8 @@
+.combo-box .arrow-button {
+    -fx-padding: 0 0 0 -7;
+}
+
+.combo-box-popup > .list-view {
+    -fx-max-height: 0;
+    -fx-pref-height: 0;
+}

@@ -51,32 +51,37 @@
                                 <GridPane prefHeight="517.0" prefWidth="216.0">
                                     <children>
                                         <Button mnemonicParsing="false" onAction="#initOrderView" prefHeight="35.0"
-                                                prefWidth="150.0" text="Замовлення">
+                                                prefWidth="150.0" stylesheets="@../../styles/MenuButtonStylesheet.css"
+                                                text="Замовлення">
                                             <GridPane.margin>
                                                 <Insets left="10.0"/>
                                             </GridPane.margin>
                                         </Button>
                                         <Button mnemonicParsing="false" onAction="#initClientView" prefHeight="35.0"
-                                                prefWidth="150.0" text="Клієнти" GridPane.rowIndex="3">
+                                                prefWidth="150.0" stylesheets="@../../styles/MenuButtonStylesheet.css"
+                                                text="Клієнти" GridPane.rowIndex="3">
                                             <GridPane.margin>
                                                 <Insets left="10.0"/>
                                             </GridPane.margin>
                                         </Button>
                                         <Button mnemonicParsing="false" onAction="#initMenuView" prefHeight="35.0"
-                                                prefWidth="150.0" text="Меню" GridPane.rowIndex="2">
+                                                prefWidth="150.0" stylesheets="@../../styles/MenuButtonStylesheet.css"
+                                                text="Меню" GridPane.rowIndex="2">
                                             <GridPane.margin>
                                                 <Insets left="10.0"/>
                                             </GridPane.margin>
                                         </Button>
                                         <Button mnemonicParsing="false" onAction="#onActionOrderingButton"
-                                                prefHeight="35.0" prefWidth="150.0" text="Оформити замовлення"
-                                                GridPane.rowIndex="1">
+                                                prefHeight="35.0" prefWidth="150.0"
+                                                stylesheets="@../../styles/MenuButtonStylesheet.css"
+                                                text="Оформити замовлення" GridPane.rowIndex="1">
                                             <GridPane.margin>
                                                 <Insets left="10.0"/>
                                             </GridPane.margin>
                                         </Button>
                                         <Button mnemonicParsing="false" onAction="#onActionDebtorsButton"
-                                                prefHeight="35.0" prefWidth="150.0" text="Боржники"
+                                                prefHeight="35.0" stylesheets="@../../styles/MenuButtonStylesheet.css"
+                                                prefWidth="150.0" text="Боржники"
                                                 GridPane.rowIndex="4">
                                             <GridPane.margin>
                                                 <Insets left="10.0"/>

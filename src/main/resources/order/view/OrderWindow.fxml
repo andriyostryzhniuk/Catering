@@ -14,13 +14,13 @@
     <top>
         <GridPane fx:id="topGridPane" BorderPane.alignment="CENTER">
             <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" />
+                <ColumnConstraints hgrow="SOMETIMES" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="102.0" prefWidth="102.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.0" minWidth="185.0" prefWidth="185.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.0" minWidth="185.0" prefWidth="185.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="165.0" minWidth="165.0" prefWidth="165.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints vgrow="SOMETIMES" />
@@ -32,24 +32,24 @@
                     </GridPane.margin>
                 </Label>
                 <DatePicker fx:id="datePickerSearch" editable="false" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="Дата" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
-                <Button maxWidth="155.0" minWidth="155.0" mnemonicParsing="false" onAction="#createTableReportButton" prefWidth="155.0" text="Створити звіт таблиці" GridPane.columnIndex="6" GridPane.halignment="RIGHT">
+                <Button fx:id="tableReportButton" maxWidth="155.0" minWidth="155.0" mnemonicParsing="false" onAction="#createTableReportButton" prefWidth="155.0" text="Створити звіт таблиці" GridPane.columnIndex="6" GridPane.halignment="RIGHT">
                     <GridPane.margin>
-                        <Insets left="30.0" />
+                        <Insets left="10.0" />
                     </GridPane.margin>
                 </Button>
-                <Button maxWidth="155.0" minWidth="155.0" mnemonicParsing="false" onAction="#createReportButton" prefWidth="155.0" text="Створити звіт замовлень" GridPane.columnIndex="5" GridPane.halignment="RIGHT">
+                <Button fx:id="orderingReportButton" maxWidth="175.0" minWidth="175.0" mnemonicParsing="false" onAction="#createOrderingReportButton" prefWidth="175.0" text="Створити звіт замовлень" GridPane.columnIndex="5" GridPane.halignment="RIGHT">
                     <GridPane.margin>
-                        <Insets left="30.0" />
+                        <Insets left="10.0" />
                     </GridPane.margin>
                 </Button>
-                <Button maxWidth="155.0" minWidth="155.0" mnemonicParsing="false" onAction="#createMenuButton" prefWidth="155.0" text="Створити звіт меню" GridPane.columnIndex="4" GridPane.halignment="RIGHT">
+                <Button fx:id="menuReportButton" maxWidth="145.0" minWidth="145.0" mnemonicParsing="false" onAction="#createMenuReportButton" prefWidth="145.0" text="Створити звіт меню" GridPane.columnIndex="4" GridPane.halignment="RIGHT">
                     <GridPane.margin>
                         <Insets left="30.0" />
                     </GridPane.margin>
                 </Button>
             </children>
             <BorderPane.margin>
-                <Insets bottom="20.0" />
+                <Insets bottom="10.0" top="10.0" />
             </BorderPane.margin>
         </GridPane>
     </top>

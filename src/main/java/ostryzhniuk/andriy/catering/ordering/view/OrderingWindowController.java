@@ -1,18 +1,30 @@
 package ostryzhniuk.andriy.catering.ordering.view;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
+import ostryzhniuk.andriy.catering.menu.view.AddingToMenuController;
 import ostryzhniuk.andriy.catering.menu.view.MenuTableView;
 import ostryzhniuk.andriy.catering.menu.view.dto.DtoMenu;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.ordering.view.dto.DtoOrdering;
+
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -21,7 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
-import static ostryzhniuk.andriy.catering.ordering.view.ContextMenu.initContextMenu;
+import static ostryzhniuk.andriy.catering.ordering.view.ContextMenu.initOrderingContextMenu;
 
 public class OrderingWindowController extends MenuTableView {
 
@@ -71,7 +83,7 @@ public class OrderingWindowController extends MenuTableView {
         initMenuTableView();
         initTopBorderPane();
         setColsDateProperties();
-        initContextMenu(orderingTableView, this);
+        initOrderingContextMenu(orderingTableView, this);
         initOrderingTableView();
 
     }
@@ -201,8 +213,48 @@ public class OrderingWindowController extends MenuTableView {
                     }
                 }
             });
+
+            initContextMenu(row);
             return row ;
         });
+    }
+
+    private void initContextMenu(TableRow<DtoMenu> row){
+        MenuItem infoItem = new MenuItem("Детальніше");
+        infoItem.setOnAction((ActionEvent event) -> {
+            try {
+                showMenuInfoWindow(row.getItem());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        final javafx.scene.control.ContextMenu rowMenu = new javafx.scene.control.ContextMenu();
+        rowMenu.getItems().addAll(infoItem);
+        row.contextMenuProperty().bind(
+                Bindings.when(Bindings.isNotNull(row.itemProperty()))
+                        .then(rowMenu)
+                        .otherwise((javafx.scene.control.ContextMenu) null));
+    }
+
+    public void showMenuInfoWindow(DtoMenu dtoMenu) throws IOException {
+        Stage primaryStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/menu.view/AddingToMenu.fxml"));
+        Parent root = fxmlLoader.load();
+
+        AddingToMenuController addingToMenuController = fxmlLoader.getController();
+        addingToMenuController.setMenuIdToUpdate(dtoMenu.getId());
+        addingToMenuController.setReadOnly();
+
+        addingToMenuController.setMenuTableView(menuTableView);
+        addingToMenuController.setTextToTextFields(dtoMenu.getDishesTypeName(), dtoMenu.getName(),
+                dtoMenu.getPrice(), dtoMenu.getMass(), dtoMenu.getIngredients());
+
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
+        primaryStage.setScene(new Scene(root, 500, 500, Color.rgb(0, 0, 0, 0)));
+        primaryStage.initModality(Modality.WINDOW_MODAL);
+        primaryStage.initOwner(tableView.getScene().getWindow());
+        primaryStage.showAndWait();
     }
 
     private void addOrdering(DtoMenu dtoMenu, Integer numberOfServings) {

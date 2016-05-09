@@ -23,6 +23,7 @@ import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.menu.view.dto.DtoMenu;
 import ostryzhniuk.andriy.catering.subsidiary.classes.AlertWindow;
 import ostryzhniuk.andriy.catering.subsidiary.classes.EditPanel;
+import ostryzhniuk.andriy.catering.subsidiary.classes.SetterExcelStyle;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -40,6 +41,7 @@ public class MenuWindowController extends MenuTableView {
     public void initialize(){
         menuTableView.initialize();
         tableView = menuTableView.getMenuTableView();
+        menuTableView.getBorderPane().setMargin(menuTableView.getTopGridPane(), new Insets(10, 0, 10, 0));
         rootBorderPane.setCenter(menuTableView.getBorderPane());
         initContextMenu(tableView, this);
         initEditPanel();
@@ -119,6 +121,8 @@ public class MenuWindowController extends MenuTableView {
         Button tableReportButton = new Button("Створити звіт таблиці");
         tableReportButton.setMinWidth(155);
         tableReportButton.setMaxWidth(155);
+        SetterExcelStyle setterExcelStyle = new SetterExcelStyle();
+        setterExcelStyle.setStyle(tableReportButton, "Створити звіт таблиці");
 
         tableReportButton.setOnAction((javafx.event.ActionEvent event) -> {
             ExcelMenuReport excelMenuReport = new ExcelMenuReport();

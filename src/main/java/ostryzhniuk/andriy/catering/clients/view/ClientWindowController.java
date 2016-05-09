@@ -27,6 +27,7 @@ import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableCol
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
 import ostryzhniuk.andriy.catering.subsidiary.classes.AlertWindow;
 import ostryzhniuk.andriy.catering.subsidiary.classes.EditPanel;
+import ostryzhniuk.andriy.catering.subsidiary.classes.SetterExcelStyle;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -43,6 +44,7 @@ public class ClientWindowController<T extends DtoClient> {
     public BorderPane rootBorderPane;
     public StackPane stackPane;
     public GridPane topGridPane;
+    public Button tableReportButton;
 
     @FXML
     private TableViewHolder<T> tableView = new TableViewHolder<>();
@@ -68,6 +70,7 @@ public class ClientWindowController<T extends DtoClient> {
         initContextMenu(tableView.getTableView(), this);
         initTableView();
         initEditPanel();
+        initReportButtonsStyle();
     }
 
     public void initTableView(){
@@ -218,5 +221,10 @@ public class ClientWindowController<T extends DtoClient> {
             removeRecord();
         });
 
+    }
+
+    private void initReportButtonsStyle(){
+        SetterExcelStyle setterExcelStyle = new SetterExcelStyle();
+        setterExcelStyle.setStyle(tableReportButton, "Створити звіт таблиці");
     }
 }

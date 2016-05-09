@@ -7,15 +7,11 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
-import ostryzhniuk.andriy.catering.order.view.OrderWindowController;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 
-/**
- * Created by Andriy on 04/17/2016.
- */
 public class ContextMenu {
 
-    public static void initContextMenu(TableView tableView, OrderingWindowController orderingWindowController) {
+    public static void initOrderingContextMenu(TableView tableView, OrderingWindowController orderingWindowController) {
         tableView.setRowFactory(new Callback<TableView<DtoOrder>, TableRow<DtoOrder>>() {
             public TableRow<DtoOrder> call(final TableView<DtoOrder> tableView) {
                 final TableRow<DtoOrder> row = new TableRow();

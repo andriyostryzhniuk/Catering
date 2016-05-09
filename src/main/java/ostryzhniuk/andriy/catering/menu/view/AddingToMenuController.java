@@ -28,6 +28,8 @@ public class AddingToMenuController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AddingToMenuController.class);
     public Group rootGroup;
     public GridPane controlsGridPane;
+    public Button saveButton;
+    public Button cancelButton;
     private ComboBox dishesTypeComboBox = new ComboBox();
     private ComboBox comboBoxListener = new ComboBox();
     public TextField nameTextField;
@@ -380,4 +382,16 @@ public class AddingToMenuController {
         });
     }
 
+    public void setReadOnly(){
+        saveButton.setDisable(true);
+        saveButton.setVisible(false);
+        cancelButton.setText("Закрити");
+
+        dishesTypeComboBox.getStylesheets().add(getClass().getResource("/styles/DisableComboBoxStyle.css").toExternalForm());
+        dishesTypeComboBox.getEditor().setEditable(false);
+        nameTextField.setEditable(false);
+        priceTextField.setEditable(false);
+        massTextField.setEditable(false);
+        ingredientsTextArea.setEditable(false);
+    }
 }

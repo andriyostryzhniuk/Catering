@@ -5,8 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="rootBorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ostryzhniuk.andriy.catering.clients.view.ClientWindowController">
+<BorderPane fx:id="rootBorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ostryzhniuk.andriy.catering.clients.view.ClientWindowController">
     <center>
         <StackPane fx:id="stackPane" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8">
 
@@ -15,19 +14,17 @@
     <top>
         <GridPane fx:id="topGridPane" BorderPane.alignment="CENTER">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="155.0" minWidth="155.0" prefWidth="155.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="155.0" minWidth="155.0" prefWidth="155.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints vgrow="SOMETIMES"/>
+                <RowConstraints vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button maxWidth="155.0" minWidth="155.0" mnemonicParsing="false" onAction="#createTableReportButton"
-                        prefWidth="155.0" text="Створити звіт таблиці" GridPane.columnIndex="1"
-                        GridPane.halignment="RIGHT"/>
+                <Button fx:id="tableReportButton" maxWidth="155.0" minWidth="155.0" mnemonicParsing="false" onAction="#createTableReportButton" prefWidth="155.0" text="Створити звіт таблиці" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
             </children>
             <BorderPane.margin>
-                <Insets bottom="20.0"/>
+                <Insets bottom="10.0" top="10.0" />
             </BorderPane.margin>
         </GridPane>
     </top>

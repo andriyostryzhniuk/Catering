@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
@@ -16,6 +17,8 @@ import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.debtors.view.dto.DtoDebtors;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
+import ostryzhniuk.andriy.catering.subsidiary.classes.SetterExcelStyle;
+
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
@@ -26,6 +29,7 @@ public class DebtorsWindowController<T extends DtoDebtors> {
 
     public BorderPane rootBorderPane;
     public StackPane stackPane;
+    public Button tableReportButton;
 
     private TableViewHolder<T> tableView = new TableViewHolder<>();
     public CustomTableColumn<T, String> clientNameCol = new CustomTableColumn<>("Клієнт");
@@ -49,6 +53,7 @@ public class DebtorsWindowController<T extends DtoDebtors> {
         tableView.getTableView().getStylesheets().add(getClass().getResource("/styles/TableViewStyle.css").toExternalForm());
         tableView.getTableView().setEditable(true);
         stackPane.getChildren().addAll(tableView);
+        initReportButtonsStyle();
         initTableView();
     }
 
@@ -106,5 +111,10 @@ public class DebtorsWindowController<T extends DtoDebtors> {
     public void createTableReportButton(ActionEvent actionEvent) {
         ExcelDebtorsReport excelDebtorsReport = new ExcelDebtorsReport();
         excelDebtorsReport.createTableDebtorsReport(tableView.getTableView(), dtoDebtorsList);
+    }
+
+    private void initReportButtonsStyle(){
+        SetterExcelStyle setterExcelStyle = new SetterExcelStyle();
+        setterExcelStyle.setStyle(tableReportButton, "Створити звіт таблиці");
     }
 }
