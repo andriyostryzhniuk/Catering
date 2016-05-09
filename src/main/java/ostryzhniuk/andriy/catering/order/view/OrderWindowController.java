@@ -238,7 +238,8 @@ public class OrderWindowController<T extends DtoOrder> {
     }
 
     private void initEditPanel(){
-        EditPanel editPanel = new EditPanel();
+        EditPanel editPanel = new EditPanel(tableView.getTableView());
+
         topGridPane.add(editPanel.getContainerGridPane(), 0, 0);
 
         editPanel.getAddButton().setOnAction((ActionEvent event) -> {
@@ -251,6 +252,28 @@ public class OrderWindowController<T extends DtoOrder> {
 
         editPanel.getDeleteButton().setOnAction((ActionEvent event) -> {
             removeRecord();
+        });
+
+        editPanel.initInfoButton();
+        editPanel.getInfoButton().setOnAction((ActionEvent event) -> {
+            TablePosition pos;
+            try {
+                pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
+            } catch (IndexOutOfBoundsException e) {
+                String headerText = null;
+                String contentText = "Не обрано жодного запису для перегляду!\n" +
+                        "Будь ласка, оберіть запис з таблиці та повторіть спробу.";
+                AlertWindow alertWindow = new AlertWindow(Alert.AlertType.INFORMATION, headerText, contentText);
+                alertWindow.showInformation();
+                return;
+            }
+            int rowIndex = pos.getRow();
+            T dtoOrder = tableView.getTableView().getItems().get(rowIndex);
+            try {
+                showOrderDetailsWindow(dtoOrder);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
     }

@@ -138,7 +138,7 @@ public class MenuWindowController extends MenuTableView {
 
         topGridPane.getColumnConstraints().add(columnConstraints);
 
-        EditPanel editPanel = new EditPanel();
+        EditPanel editPanel = new EditPanel(tableView);
         topGridPane.add(editPanel.getContainerGridPane(), 0, 0);
 
         editPanel.getAddButton().setOnAction((ActionEvent event) -> {

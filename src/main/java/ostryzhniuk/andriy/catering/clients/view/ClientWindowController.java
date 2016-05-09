@@ -195,7 +195,7 @@ public class ClientWindowController<T extends DtoClient> {
     }
 
     private void initEditPanel(){
-        EditPanel editPanel = new EditPanel();
+        EditPanel editPanel = new EditPanel(tableView.getTableView());
         topGridPane.add(editPanel.getContainerGridPane(), 0, 0);
 
         editPanel.getAddButton().setOnAction((ActionEvent event) -> {
