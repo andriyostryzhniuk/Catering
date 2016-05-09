@@ -66,8 +66,8 @@ public class ClientWindowController<T extends DtoClient> {
         tableView.getTableView().setEditable(true);
         stackPane.getChildren().add(tableView);
         initContextMenu(tableView.getTableView(), this);
-        initEditPanel();
         initTableView();
+        initEditPanel();
     }
 
     public void initTableView(){

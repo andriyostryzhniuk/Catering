@@ -34,7 +34,7 @@ public class ContextMenu {
 
                 MenuItem removeItem = new MenuItem("Видалити");
                 removeItem.setOnAction((ActionEvent event) -> {
-                    orderWindowController.removeRecord(row.getItem());
+                    orderWindowController.removeRecord();
                 });
 
                 MenuItem detailsOrderItem = new MenuItem("Детальніше");

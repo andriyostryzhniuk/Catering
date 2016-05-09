@@ -27,6 +27,7 @@ import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
 import ostryzhniuk.andriy.catering.subsidiary.classes.AlertWindow;
+import ostryzhniuk.andriy.catering.subsidiary.classes.EditPanel;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -72,9 +73,10 @@ public class OrderWindowController<T extends DtoOrder> {
         initContextMenu(tableView.getTableView(), this);
         initTableView();
         setDatePickerSearchListener();
+        initEditPanel();
 
         Button rejectSearchingButton = initRejectSearchingButton();
-        topGridPane.add(rejectSearchingButton, 2, 0);
+        topGridPane.add(rejectSearchingButton, 3, 0);
         topGridPane.setMargin(rejectSearchingButton, new Insets(0, 0, 0, 5));
     }
 
@@ -124,18 +126,37 @@ public class OrderWindowController<T extends DtoOrder> {
     }
 
     public void editRecord(){
-        TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
+        TablePosition pos;
+        try {
+            pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
+        } catch (IndexOutOfBoundsException e) {
+            AlertWindow alertWindow = new AlertWindow(Alert.AlertType.INFORMATION);
+            alertWindow.showEditingInformation();
+            return;
+        }
         int rowIndex = pos.getRow();
         DtoOrder dtoOrder = tableView.getTableView().getItems().get(rowIndex);
 
         mainWindowController.initOrderingViewForEditing(dtoOrder);
     }
 
-    public void removeRecord(T dtoOrder){
+    public void removeRecord(){
+        TablePosition pos;
+        try {
+            pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
+        } catch (IndexOutOfBoundsException e) {
+            AlertWindow alertWindow = new AlertWindow(Alert.AlertType.INFORMATION);
+            alertWindow.showEditingInformation();
+            return;
+        }
+
         AlertWindow alertWindow = new AlertWindow(Alert.AlertType.WARNING);
         if (! alertWindow.showDeletingWarning()) {
             return;
         }
+
+        int rowIndex = pos.getRow();
+        DtoOrder dtoOrder = tableView.getTableView().getItems().get(rowIndex);
 
         List<Object> objectList = new LinkedList<>();
         objectList.add(dtoOrder.getId());
@@ -214,6 +235,24 @@ public class OrderWindowController<T extends DtoOrder> {
         } else {
             excelOrderReport.createMenuReport(new java.util.Date());
         }
+    }
+
+    public void initEditPanel(){
+        EditPanel editPanel = new EditPanel();
+        topGridPane.add(editPanel.getContainerGridPane(), 0, 0);
+
+        editPanel.getAddButton().setOnAction((ActionEvent event) -> {
+            addRecord();
+        });
+
+        editPanel.getEditButton().setOnAction((ActionEvent event) -> {
+            editRecord();
+        });
+
+        editPanel.getDeleteButton().setOnAction((ActionEvent event) -> {
+            removeRecord();
+        });
+
     }
 
 }
