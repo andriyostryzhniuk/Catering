@@ -59,6 +59,16 @@ public class ODBC_PubsBD {
         return dtoOrdersList;
     }
 
+    public static List<DtoOrder> selectOrdersById(Integer id) {
+        List<DtoOrder> dtoOrdersList = getJdbcTemplate().query("select ordering.id, ordering.date, " +
+                "client.name as client, ordering.cost, ordering.discount, ordering.paid " +
+                "from ordering, client " +
+                "where ordering.id = ? and " +
+                "ordering.client_id = client.id " +
+                "order by ordering.date desc", BeanPropertyRowMapper.newInstance(DtoOrder.class), id);
+        return dtoOrdersList;
+    }
+
     public static List<String> selectClientNames() {
         SqlRowSet rs = getJdbcTemplate().queryForRowSet("select client.name " +
                 "from client " +

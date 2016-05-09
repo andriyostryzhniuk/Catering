@@ -12,6 +12,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -51,6 +53,7 @@ public class OrderWindowController<T extends DtoOrder> {
     public Button tableReportButton;
     public Button orderingReportButton;
     public Button menuReportButton;
+    public TextField textFieldSearch;
 
     private MainWindowController mainWindowController;
 
@@ -77,10 +80,11 @@ public class OrderWindowController<T extends DtoOrder> {
         initContextMenu(tableView.getTableView(), this);
         initTableView();
         setDatePickerSearchListener();
+        setTextFieldSearchListener();
         initEditPanel();
 
         Button rejectSearchingButton = initRejectSearchingButton();
-        topGridPane.add(rejectSearchingButton, 3, 0);
+        topGridPane.add(rejectSearchingButton, 5, 0);
         topGridPane.setMargin(rejectSearchingButton, new Insets(0, 0, 0, 5));
         initReportButtonsStyle();
     }
@@ -89,14 +93,19 @@ public class OrderWindowController<T extends DtoOrder> {
         dtoOrdersList.clear();
         tableView.getTableView().getItems().clear();
 
-        if (datePickerSearch.getValue() == null) {
+        if (textFieldSearch.getText() != null && ! textFieldSearch.getText().isEmpty()) {
+            List<Object> objectList = new LinkedList<>();
+            objectList.add(Integer.parseInt(textFieldSearch.getText()));
             dtoOrdersList.addAll(FXCollections.observableArrayList(
-                    sendARequestToTheServer(ClientCommandTypes.SELECT_ORDER, new LinkedList<>())));
-        } else {
+                    sendARequestToTheServer(ClientCommandTypes.SELECT_ORDER_BY_ID, objectList)));
+        } else if (datePickerSearch.getValue() != null) {
             List<Object> objectList = new LinkedList<>();
             objectList.add(Date.valueOf(datePickerSearch.getValue()));
             dtoOrdersList.addAll(FXCollections.observableArrayList(
                     sendARequestToTheServer(ClientCommandTypes.SELECT_ORDER_BY_DATE, objectList)));
+        } else {
+            dtoOrdersList.addAll(FXCollections.observableArrayList(
+                    sendARequestToTheServer(ClientCommandTypes.SELECT_ORDER, new LinkedList<>())));
         }
 
         tableView.getTableView().setItems(dtoOrdersList);
@@ -197,6 +206,7 @@ public class OrderWindowController<T extends DtoOrder> {
     private void setDatePickerSearchListener() {
         datePickerSearch.setTooltip(new Tooltip("Пошук за датою"));
         datePickerSearch.valueProperty().addListener((obs, oldDate, newDate) -> {
+            textFieldSearch.setText(null);
             initTableView();
         });
     }
@@ -288,6 +298,38 @@ public class OrderWindowController<T extends DtoOrder> {
         setterExcelStyle.setStyle(tableReportButton, "Створити звіт таблиці");
         setterExcelStyle.setStyle(orderingReportButton, "Створити звіт замовлень");
         setterExcelStyle.setStyle(menuReportButton, "Створити звіт кількості замовлених страв");
+    }
+
+    private void setTextFieldSearchListener() {
+        textFieldSearch.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
+        textFieldSearch.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)  {
+                if (textFieldSearchValidation()) {
+                    datePickerSearch.setValue(null);
+                    initTableView();
+                }
+            }
+        });
+
+        textFieldSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            textFieldSearchValidation();
+        });
+    }
+
+    private boolean textFieldSearchValidation(){
+        try {
+            if (textFieldSearch.getText() != null && ! textFieldSearch.getText().isEmpty()) {
+                Integer.parseInt(textFieldSearch.getText());
+            } else {
+                textFieldSearch.getStyleClass().remove("warning");
+            }
+        } catch (NumberFormatException e) {
+            if (! textFieldSearch.getStyleClass().contains("warning")) {
+                textFieldSearch.getStyleClass().add("warning");
+            }
+            return false;
+        }
+        return true;
     }
 
 }

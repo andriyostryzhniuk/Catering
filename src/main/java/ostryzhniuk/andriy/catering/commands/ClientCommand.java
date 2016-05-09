@@ -44,6 +44,9 @@ public class ClientCommand implements Serializable {
         } else if (clientCommandType == ClientCommandTypes.SELECT_ORDER_BY_DATE) {
             return selectOrdersByDate();
 
+        } else if (clientCommandType == ClientCommandTypes.SELECT_ORDER_BY_ID) {
+            return selectOrdersById();
+
         } else if (clientCommandType == ClientCommandTypes.SELECT_CLIENT_NAMES) {
             return ODBC_PubsBD.selectClientNames();
 
@@ -171,6 +174,15 @@ public class ClientCommand implements Serializable {
 
     private List<DtoOrder> selectOrdersByDate(){
         List<DtoOrder> dtoOrdersList = ODBC_PubsBD.selectOrdersByDate((Date) objectList.get(0));
+        dtoOrdersList.forEach(item -> {
+            item.formattingDate();
+            item.calculationBill();
+        });
+        return dtoOrdersList;
+    }
+
+    private List<DtoOrder> selectOrdersById(){
+        List<DtoOrder> dtoOrdersList = ODBC_PubsBD.selectOrdersById((Integer) objectList.get(0));
         dtoOrdersList.forEach(item -> {
             item.formattingDate();
             item.calculationBill();

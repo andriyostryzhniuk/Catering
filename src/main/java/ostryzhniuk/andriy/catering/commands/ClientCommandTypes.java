@@ -5,6 +5,7 @@ public enum ClientCommandTypes {
     //for order view
     SELECT_ORDER(),
     SELECT_ORDER_BY_DATE(),
+    SELECT_ORDER_BY_ID(),
     SELECT_CLIENT_NAMES(),
     INSERT_ORDER(),
     SELECT_CLIENT_ID(),

@@ -5,8 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="rootBorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ostryzhniuk.andriy.catering.order.view.OrderWindowController">
+<BorderPane fx:id="rootBorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ostryzhniuk.andriy.catering.order.view.OrderWindowController">
     <center>
         <StackPane fx:id="stackPane" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8">
 
@@ -15,49 +14,50 @@
     <top>
         <GridPane fx:id="topGridPane" BorderPane.alignment="CENTER">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="102.0" prefWidth="102.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="150.0" prefWidth="150.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.0" minWidth="185.0" prefWidth="185.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="165.0" minWidth="165.0" prefWidth="165.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="102.0" prefWidth="102.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="180.0" prefWidth="180.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.0" minWidth="185.0" prefWidth="185.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="165.0" minWidth="165.0" prefWidth="165.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints vgrow="SOMETIMES"/>
+                <RowConstraints vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label text="Пошук за датою:" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                <Label text="Дата:" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="RIGHT">
                     <GridPane.margin>
-                        <Insets right="10.0"/>
+                        <Insets right="10.0" />
                     </GridPane.margin>
                 </Label>
-                <DatePicker fx:id="datePickerSearch" editable="false" maxWidth="150.0" minWidth="150.0"
-                            prefWidth="150.0" promptText="Дата" GridPane.columnIndex="2" GridPane.halignment="RIGHT"/>
-                <Button fx:id="tableReportButton" maxWidth="155.0" minWidth="155.0" mnemonicParsing="false"
-                        onAction="#createTableReportButton" prefWidth="155.0" text="Створити звіт таблиці"
-                        GridPane.columnIndex="6" GridPane.halignment="RIGHT">
+                <DatePicker fx:id="datePickerSearch" editable="false" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="Пошук за датою" GridPane.columnIndex="4" GridPane.halignment="RIGHT" />
+                <Button fx:id="tableReportButton" maxWidth="155.0" minWidth="155.0" mnemonicParsing="false" onAction="#createTableReportButton" prefWidth="155.0" text="Створити звіт таблиці" GridPane.columnIndex="8" GridPane.halignment="RIGHT">
                     <GridPane.margin>
-                        <Insets left="10.0"/>
+                        <Insets left="10.0" />
                     </GridPane.margin>
                 </Button>
-                <Button fx:id="orderingReportButton" maxWidth="175.0" minWidth="175.0" mnemonicParsing="false"
-                        onAction="#createOrderingReportButton" prefWidth="175.0" text="Створити звіт замовлень"
-                        GridPane.columnIndex="5" GridPane.halignment="RIGHT">
+                <Button fx:id="orderingReportButton" maxWidth="175.0" minWidth="175.0" mnemonicParsing="false" onAction="#createOrderingReportButton" prefWidth="175.0" text="Створити звіт замовлень" GridPane.columnIndex="7" GridPane.halignment="RIGHT">
                     <GridPane.margin>
-                        <Insets left="10.0"/>
+                        <Insets left="10.0" />
                     </GridPane.margin>
                 </Button>
-                <Button fx:id="menuReportButton" maxWidth="145.0" minWidth="145.0" mnemonicParsing="false"
-                        onAction="#createMenuReportButton" prefWidth="145.0" text="Створити звіт меню"
-                        GridPane.columnIndex="4" GridPane.halignment="RIGHT">
+                <Button fx:id="menuReportButton" maxWidth="145.0" minWidth="145.0" mnemonicParsing="false" onAction="#createMenuReportButton" prefWidth="145.0" text="Створити звіт меню" GridPane.columnIndex="6" GridPane.halignment="RIGHT">
                     <GridPane.margin>
-                        <Insets left="30.0"/>
+                        <Insets left="30.0" />
                     </GridPane.margin>
                 </Button>
+            <Label text="Пошук:" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </Label>
+            <TextField fx:id="textFieldSearch" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" promptText="Замовлення №" GridPane.columnIndex="2" />
             </children>
             <BorderPane.margin>
-                <Insets bottom="10.0" top="10.0"/>
+                <Insets bottom="10.0" top="10.0" />
             </BorderPane.margin>
         </GridPane>
     </top>
