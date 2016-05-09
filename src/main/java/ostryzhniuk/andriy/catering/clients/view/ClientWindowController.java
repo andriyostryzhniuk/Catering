@@ -7,11 +7,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TablePosition;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -26,6 +26,7 @@ import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
 import ostryzhniuk.andriy.catering.subsidiary.classes.AlertWindow;
+import ostryzhniuk.andriy.catering.subsidiary.classes.EditPanel;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -41,6 +42,7 @@ public class ClientWindowController<T extends DtoClient> {
 
     public BorderPane rootBorderPane;
     public StackPane stackPane;
+    public GridPane topGridPane;
 
     @FXML
     private TableViewHolder<T> tableView = new TableViewHolder<>();
@@ -64,6 +66,7 @@ public class ClientWindowController<T extends DtoClient> {
         tableView.getTableView().setEditable(true);
         stackPane.getChildren().add(tableView);
         initContextMenu(tableView.getTableView(), this);
+        initEditPanel();
         initTableView();
     }
 
@@ -120,21 +123,35 @@ public class ClientWindowController<T extends DtoClient> {
     }
 
     public void editRecord() throws IOException {
-        TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
+        TablePosition pos;
+        try {
+            pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
+        } catch (IndexOutOfBoundsException e) {
+            AlertWindow alertWindow = new AlertWindow(Alert.AlertType.INFORMATION);
+            alertWindow.showEditingInformation();
+            return;
+        }
         int rowIndex = pos.getRow();
         DtoClient dtoClient = tableView.getTableView().getItems().get(rowIndex);
 
         showEditingRecordWindow(dtoClient.getId());
-
     }
 
     public void removeRecord(){
+        TablePosition pos;
+        try {
+            pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
+        } catch (IndexOutOfBoundsException e) {
+            AlertWindow alertWindow = new AlertWindow(Alert.AlertType.INFORMATION);
+            alertWindow.showEditingInformation();
+            return;
+        }
+
         AlertWindow alertWindow = new AlertWindow(Alert.AlertType.WARNING);
         if (! alertWindow.showDeletingWarning()) {
             return;
         }
 
-        TablePosition pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
         int rowIndex = pos.getRow();
         DtoClient dtoClient = tableView.getTableView().getItems().get(rowIndex);
 
@@ -175,5 +192,31 @@ public class ClientWindowController<T extends DtoClient> {
     public void createTableReportButton(ActionEvent actionEvent) {
         ExcelClientsReport excelClientsReport = new ExcelClientsReport();
         excelClientsReport.createTableClientsReport(tableView.getTableView(), dtoClientsList);
+    }
+
+    public void initEditPanel(){
+        EditPanel editPanel = new EditPanel();
+        topGridPane.add(editPanel.getContainerGridPane(), 0, 0);
+
+        editPanel.getAddButton().setOnAction((ActionEvent event) -> {
+            try {
+                showEditingRecordWindow(null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        editPanel.getEditButton().setOnAction((ActionEvent event) -> {
+            try {
+                editRecord();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        editPanel.getDeleteButton().setOnAction((ActionEvent event) -> {
+            removeRecord();
+        });
+
     }
 }
