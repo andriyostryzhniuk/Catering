@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.order.view.OrderWindowController;
@@ -96,7 +97,7 @@ public class MainWindowController {
     }
 
     public void removeMainGridPaneChildren(){
-        for (int i = mainGridPane.getChildren().size(); i > 1; i--) {
+        for (int i = mainGridPane.getChildren().size(); i > 3; i--) {
             mainGridPane.getChildren().remove(i-1);
         }
     }

@@ -31,6 +31,7 @@ public class DishesTypeWindowController<T extends DtoDishesType> {
 
     @FXML
     public void initialize(){
+        listView.getStylesheets().add(getClass().getResource("/menu.view/dishesType/ListViewStyle.css").toExternalForm());
         initContextMenu();
         initListView();
     }

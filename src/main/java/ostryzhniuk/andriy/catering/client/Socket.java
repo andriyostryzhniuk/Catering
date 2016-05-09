@@ -32,7 +32,7 @@ public class Socket {
 
     private static void alterError(){
         String headerText = "Не вдається отримати доступ до сервера.\nПідключення було невдалим.";
-        String contentText = "Сервер не відповідає, спробуйте пізніше будь ласка.";
+        String contentText = "Сервер не відповідає, будь ласка, спробуйте пізніше.";
         AlertWindow alertWindow = new AlertWindow(Alert.AlertType.ERROR, headerText, contentText);
         alertWindow.showError();
     }

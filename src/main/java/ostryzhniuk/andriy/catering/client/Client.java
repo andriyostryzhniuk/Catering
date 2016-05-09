@@ -52,6 +52,7 @@ public class Client extends Application {
         Parent root = FXMLLoader.load(classLoader.getResource("main/window/MainWindow.fxml"));
         primaryStage.setTitle("Catering Company");
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("styles/Stylesheet.css");
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {

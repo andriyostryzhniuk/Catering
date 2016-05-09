@@ -1,0 +1,17 @@
+.list-view:focused {
+    -fx-background-color: transparent;
+}
+
+.list-cell{
+    -fx-background-color: rgb(217,217,217);
+}
+
+.list-cell:odd{
+    -fx-background-color: rgb(201,201,201);
+}
+
+.list-cell:selected {
+    -fx-background-color: #005797;
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;
+}

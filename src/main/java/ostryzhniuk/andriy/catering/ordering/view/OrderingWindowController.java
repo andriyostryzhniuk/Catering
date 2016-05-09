@@ -251,6 +251,7 @@ public class OrderingWindowController extends MenuTableView {
         GridPane topGridPane = new GridPane();
 
         Label dishesTypeLabel = new Label("Класифікація:");
+        dishesTypeLabel.setStyle("-fx-text-fill: white");
         topGridPane.add(dishesTypeLabel, 0, 0);
         topGridPane.setMargin(dishesTypeLabel, new Insets(0, 0, 7, 0));
 
@@ -258,6 +259,7 @@ public class OrderingWindowController extends MenuTableView {
         topGridPane.add(menuTableView.getDishesTypeComboBox(), 0, 1);
 
         Label dishesNameLabel = new Label("Пошук:");
+        dishesNameLabel.setStyle("-fx-text-fill: white");
         topGridPane.add(dishesNameLabel, 1, 0);
         topGridPane.setMargin(dishesNameLabel, new Insets(0, 0, 7, 30));
 

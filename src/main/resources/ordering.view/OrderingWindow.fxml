@@ -52,12 +52,13 @@
                                 <RowConstraints maxHeight="24.0" minHeight="24.0" prefHeight="24.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                             <children>
-                                <Label text="Замовлення:">
+                                <Label text="Замовлення:" textFill="WHITE">
                                     <padding>
                                         <Insets bottom="7.0"/>
                                     </padding>
                                 </Label>
-                                <Label text="Сума:" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                                <Label text="Сума:" textFill="WHITE" GridPane.columnIndex="1"
+                                       GridPane.halignment="RIGHT">
                                     <GridPane.margin>
                                         <Insets right="10.0"/>
                                     </GridPane.margin>
@@ -81,13 +82,13 @@
     <top>
         <GridPane fx:id="controlsGridPane" BorderPane.alignment="CENTER">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="150.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="140.0"/>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="170.0"/>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="270.0"/>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="150.0"/>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="150.0"/>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="150.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="150.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="130.0"/>
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
@@ -96,28 +97,28 @@
             <children>
                 <DatePicker fx:id="datePicker" minWidth="150.0" prefWidth="150.0" promptText="Дата"
                             GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                <Label text="Дата:" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+                <Label text="Дата:" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT">
                     <GridPane.margin>
                         <Insets/>
                     </GridPane.margin>
                 </Label>
-                <Label text="Клієнт:" GridPane.columnIndex="2" GridPane.halignment="LEFT">
+                <Label text="Клієнт:" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="LEFT">
                     <GridPane.margin>
                         <Insets/>
                     </GridPane.margin>
                 </Label>
-                <Label text="Вартість замовлення:" GridPane.columnIndex="3" GridPane.halignment="LEFT">
+                <Label text="Вартість замовлення:" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="LEFT">
                     <GridPane.margin>
                         <Insets/>
                     </GridPane.margin>
                 </Label>
-                <Label text="Знижка: (%)" GridPane.columnIndex="4" GridPane.halignment="LEFT">
+                <Label text="Знижка: (%)" textFill="WHITE" GridPane.columnIndex="4" GridPane.halignment="LEFT">
                     <GridPane.margin>
                         <Insets/>
                     </GridPane.margin>
                 </Label>
-                <Label text="До оплати:" GridPane.columnIndex="5" GridPane.halignment="LEFT"/>
-                <Label text="Сплачено:" GridPane.columnIndex="6" GridPane.halignment="LEFT"/>
+                <Label text="До оплати:" textFill="WHITE" GridPane.columnIndex="5" GridPane.halignment="LEFT"/>
+                <Label text="Сплачено:" textFill="WHITE" GridPane.columnIndex="6" GridPane.halignment="LEFT"/>
                 <TextField fx:id="costTextField" maxWidth="130.0" minWidth="130.0" prefWidth="130.0"
                            promptText="Вартість замовлення" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
                 <TextField fx:id="discountTextField" maxWidth="130.0" minWidth="130.0" prefWidth="130.0"
@@ -126,8 +127,8 @@
                            promptText="До оплати" GridPane.columnIndex="5" GridPane.rowIndex="1"/>
                 <TextField fx:id="paidTextField" maxWidth="130.0" minWidth="130.0" prefWidth="130.0"
                            promptText="Сплачено" GridPane.columnIndex="6" GridPane.rowIndex="1"/>
-                <Label text="Замовлення №"/>
-                <Label fx:id="orderIdLabel" GridPane.rowIndex="1"/>
+                <Label text="Замовлення №" textFill="WHITE"/>
+                <Label fx:id="orderIdLabel" textFill="WHITE" GridPane.rowIndex="1"/>
             </children>
             <BorderPane.margin>
                 <Insets bottom="30.0"/>

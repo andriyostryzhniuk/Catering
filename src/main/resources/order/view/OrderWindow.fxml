@@ -26,7 +26,7 @@
                 <RowConstraints vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
-                <Label text="Пошук за датою:" GridPane.halignment="RIGHT">
+                <Label text="Пошук за датою:" textFill="WHITE" GridPane.halignment="RIGHT">
                     <GridPane.margin>
                         <Insets right="10.0"/>
                     </GridPane.margin>
