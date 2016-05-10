@@ -335,6 +335,7 @@ public class OrderWindowController<T extends DtoOrder> {
 
     private void setTextFieldSearchListener() {
         textFieldSearch.getStylesheets().add(getClass().getResource("/styles/TextFieldStyle.css").toExternalForm());
+        textFieldSearch.setTooltip(new Tooltip("Пошук за номером замовлення"));
         textFieldSearch.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER)  {
                 if (textFieldSearchValidation()) {
