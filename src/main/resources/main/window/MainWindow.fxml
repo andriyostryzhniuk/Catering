@@ -11,11 +11,11 @@
     <content>
         <BorderPane style="-fx-background-color: rgb(60,63,65);;" styleClass="rootBorder">
             <top>
-                <MenuBar BorderPane.alignment="TOP_LEFT">
+                <MenuBar stylesheets="@../../styles/MenuBarStyle.css" BorderPane.alignment="TOP_LEFT">
                     <menus>
                         <Menu mnemonicParsing="false" text="Файл">
                             <items>
-                                <MenuItem onAction="#close" mnemonicParsing="false" text="Закрити"/>
+                                <MenuItem mnemonicParsing="false" onAction="#close" text="Закрити"/>
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Редагування">
@@ -26,10 +26,10 @@
                                 <MenuItem fx:id="infoMenuItem" mnemonicParsing="false" text="Додатково"/>
                             </items>
                         </Menu>
-                        <Menu fx:id="reportMenu" mnemonicParsing="false" text="Звіти" />
-                        <Menu mnemonicParsing="false" text="Help">
+                        <Menu fx:id="reportMenu" mnemonicParsing="false" text="Звіти"/>
+                        <Menu mnemonicParsing="false" text="Інфо">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="About"/>
+                                <MenuItem onAction="#aboutProgram" mnemonicParsing="false" text="Про програму"/>
                             </items>
                         </Menu>
                     </menus>
@@ -55,21 +55,21 @@
                                 <GridPane prefHeight="517.0" prefWidth="216.0">
                                     <children>
                                         <Button mnemonicParsing="false" onAction="#initOrderView" prefHeight="35.0"
-                                                prefWidth="150.0" stylesheets="@../../styles/MenuButtonStylesheet.css"
+                                                prefWidth="150.0" stylesheets="@../../styles/MenuButtonStyle.css"
                                                 text="Замовлення">
                                             <GridPane.margin>
                                                 <Insets left="10.0"/>
                                             </GridPane.margin>
                                         </Button>
                                         <Button mnemonicParsing="false" onAction="#initClientView" prefHeight="35.0"
-                                                prefWidth="150.0" stylesheets="@../../styles/MenuButtonStylesheet.css"
+                                                prefWidth="150.0" stylesheets="@../../styles/MenuButtonStyle.css"
                                                 text="Клієнти" GridPane.rowIndex="3">
                                             <GridPane.margin>
                                                 <Insets left="10.0"/>
                                             </GridPane.margin>
                                         </Button>
                                         <Button mnemonicParsing="false" onAction="#initMenuView" prefHeight="35.0"
-                                                prefWidth="150.0" stylesheets="@../../styles/MenuButtonStylesheet.css"
+                                                prefWidth="150.0" stylesheets="@../../styles/MenuButtonStyle.css"
                                                 text="Меню" GridPane.rowIndex="2">
                                             <GridPane.margin>
                                                 <Insets left="10.0"/>
@@ -77,15 +77,15 @@
                                         </Button>
                                         <Button mnemonicParsing="false" onAction="#onActionOrderingButton"
                                                 prefHeight="35.0" prefWidth="150.0"
-                                                stylesheets="@../../styles/MenuButtonStylesheet.css"
+                                                stylesheets="@../../styles/MenuButtonStyle.css"
                                                 text="Оформити замовлення" GridPane.rowIndex="1">
                                             <GridPane.margin>
                                                 <Insets left="10.0"/>
                                             </GridPane.margin>
                                         </Button>
                                         <Button mnemonicParsing="false" onAction="#onActionDebtorsButton"
-                                                prefHeight="35.0" stylesheets="@../../styles/MenuButtonStylesheet.css"
-                                                prefWidth="150.0" text="Боржники"
+                                                prefHeight="35.0" prefWidth="150.0"
+                                                stylesheets="@../../styles/MenuButtonStyle.css" text="Боржники"
                                                 GridPane.rowIndex="4">
                                             <GridPane.margin>
                                                 <Insets left="10.0"/>

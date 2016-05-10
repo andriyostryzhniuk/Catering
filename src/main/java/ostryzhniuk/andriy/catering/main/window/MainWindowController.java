@@ -8,10 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import org.slf4j.Logger;
@@ -22,6 +19,7 @@ import ostryzhniuk.andriy.catering.menu.view.MenuWindowController;
 import ostryzhniuk.andriy.catering.order.view.OrderWindowController;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.ordering.view.OrderingWindowController;
+import ostryzhniuk.andriy.catering.subsidiary.classes.AlertWindow;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -199,4 +197,10 @@ public class MainWindowController {
         reportMenu.getItems().clear();
     }
 
+    public void aboutProgram(ActionEvent actionEvent) {
+        String headerText = null;
+        String contentText = "Про програму";
+        AlertWindow alertWindow = new AlertWindow(Alert.AlertType.INFORMATION, headerText, contentText);
+        alertWindow.showInformation();
+    }
 }
