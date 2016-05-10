@@ -13,14 +13,17 @@
             <top>
                 <MenuBar fx:id="menuBar" BorderPane.alignment="TOP_LEFT">
                     <menus>
-                        <Menu mnemonicParsing="false" text="File">
+                        <Menu mnemonicParsing="false" text="Файл">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Close"/>
+                                <MenuItem onAction="#close" mnemonicParsing="false" text="Закрити"/>
                             </items>
                         </Menu>
-                        <Menu mnemonicParsing="false" text="Edit">
+                        <Menu mnemonicParsing="false" text="Редагування">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Delete"/>
+                                <MenuItem fx:id="addMenuItem" mnemonicParsing="false" text="Додати"/>
+                                <MenuItem fx:id="editMenuItem" mnemonicParsing="false" text="Редагувати"/>
+                                <MenuItem fx:id="deleteMenuItem" mnemonicParsing="false" text="Видалити"/>
+                                <MenuItem fx:id="infoMenuItem" mnemonicParsing="false" text="Додатково"/>
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Help">

@@ -74,7 +74,6 @@ public class ClientWindowController<T extends DtoClient> {
         stackPane.getChildren().add(tableView);
         initContextMenu(tableView.getTableView(), this);
         initTableView();
-        initEditPanel();
         initClientNameComboBox();
         initReportButtonsStyle();
     }
@@ -212,8 +211,9 @@ public class ClientWindowController<T extends DtoClient> {
         excelClientsReport.createTableClientsReport(tableView.getTableView(), dtoClientsList);
     }
 
-    private void initEditPanel(){
-        EditPanel editPanel = new EditPanel(tableView.getTableView());
+    public void initEditPanel(MenuItem addMenuItem, MenuItem editMenuItem, MenuItem deleteMenuItem){
+        EditPanel editPanel = new EditPanel(tableView.getTableView(), FXCollections.observableArrayList(
+                editMenuItem, deleteMenuItem));
         topGridPane.add(editPanel.getContainerGridPane(), 0, 0);
 
         editPanel.getAddButton().setOnAction((ActionEvent event) -> {
@@ -236,6 +236,30 @@ public class ClientWindowController<T extends DtoClient> {
             removeRecord();
         });
 
+        setMenuItems(addMenuItem, editMenuItem, deleteMenuItem);
+
+    }
+
+    private void setMenuItems(MenuItem addMenuItem, MenuItem editMenuItem, MenuItem deleteMenuItem){
+        addMenuItem.setOnAction((ActionEvent event) -> {
+            try {
+                showEditingRecordWindow(null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        editMenuItem.setOnAction((ActionEvent event) -> {
+            try {
+                editRecord();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        deleteMenuItem.setOnAction((ActionEvent event) -> {
+            removeRecord();
+        });
     }
 
     private void initReportButtonsStyle(){

@@ -1,5 +1,6 @@
 package ostryzhniuk.andriy.catering.menu.view;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,10 +8,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TablePosition;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -44,7 +42,6 @@ public class MenuWindowController extends MenuTableView {
         menuTableView.getBorderPane().setMargin(menuTableView.getTopGridPane(), new Insets(10, 0, 10, 0));
         rootBorderPane.setCenter(menuTableView.getBorderPane());
         initContextMenu(tableView, this);
-        initEditPanel();
         initTableReportButton();
     }
 
@@ -134,7 +131,7 @@ public class MenuWindowController extends MenuTableView {
         topGridPane.setMargin(tableReportButton, new Insets(0, 0, 0, 50));
     }
 
-    private void initEditPanel(){
+    public void initEditPanel(MenuItem addMenuItem, MenuItem editMenuItem, MenuItem deleteMenuItem){
         GridPane topGridPane = menuTableView.getTopGridPane();
 
         ColumnConstraints columnConstraints = new ColumnConstraints();
@@ -142,7 +139,7 @@ public class MenuWindowController extends MenuTableView {
 
         topGridPane.getColumnConstraints().add(columnConstraints);
 
-        EditPanel editPanel = new EditPanel(tableView);
+        EditPanel editPanel = new EditPanel(tableView, FXCollections.observableArrayList(editMenuItem, deleteMenuItem));
         topGridPane.add(editPanel.getContainerGridPane(), 0, 0);
 
         editPanel.getAddButton().setOnAction((ActionEvent event) -> {
@@ -165,6 +162,30 @@ public class MenuWindowController extends MenuTableView {
             removeRecord();
         });
 
+        setMenuItems(addMenuItem, editMenuItem, deleteMenuItem);
+
+    }
+
+    private void setMenuItems(MenuItem addMenuItem, MenuItem editMenuItem, MenuItem deleteMenuItem){
+        addMenuItem.setOnAction((ActionEvent event) -> {
+            try {
+                showEditingRecordWindow(null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        editMenuItem.setOnAction((ActionEvent event) -> {
+            try {
+                editRecord();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        deleteMenuItem.setOnAction((ActionEvent event) -> {
+            removeRecord();
+        });
     }
 
 }

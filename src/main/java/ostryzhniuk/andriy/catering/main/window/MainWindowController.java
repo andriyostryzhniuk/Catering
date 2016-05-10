@@ -1,15 +1,22 @@
 package ostryzhniuk.andriy.catering.main.window;
 
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ostryzhniuk.andriy.catering.clients.view.ClientWindowController;
+import ostryzhniuk.andriy.catering.menu.view.MenuWindowController;
 import ostryzhniuk.andriy.catering.order.view.OrderWindowController;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
 import ostryzhniuk.andriy.catering.ordering.view.OrderingWindowController;
@@ -22,6 +29,11 @@ public class MainWindowController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MainWindowController.class);
     public GridPane mainGridPane;
+    public MenuItem addMenuItem;
+    public MenuItem editMenuItem;
+    public MenuItem deleteMenuItem;
+    public MenuItem infoMenuItem;
+    public MenuBar menuBar;
 
     private OrderingWindowController orderingWindowController;
 
@@ -31,12 +43,13 @@ public class MainWindowController {
     }
 
     public void initOrderView(ActionEvent actionEvent) {
-        removeMainGridPaneChildren();
+        removeMainGridPaneChildren(false);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/order/view/OrderWindow.fxml"));
         try {
             mainGridPane.add(fxmlLoader.load(), 1, 1);
             OrderWindowController orderWindowController = fxmlLoader.getController();
             orderWindowController.setMainWindowController(this);
+            orderWindowController.initEditPanel(addMenuItem, editMenuItem, deleteMenuItem, infoMenuItem);
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         }
@@ -44,10 +57,12 @@ public class MainWindowController {
     }
 
     public void initClientView(ActionEvent actionEvent) {
-        removeMainGridPaneChildren();
+        removeMainGridPaneChildren(false);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clients.view/ClientWindow.fxml"));
         try {
             mainGridPane.add(fxmlLoader.load(), 1, 1);
+            ClientWindowController clientWindowController = fxmlLoader.getController();
+            clientWindowController.initEditPanel(addMenuItem, editMenuItem, deleteMenuItem);
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         }
@@ -55,10 +70,12 @@ public class MainWindowController {
     }
 
     public void initMenuView(ActionEvent actionEvent) {
-        removeMainGridPaneChildren();
+        removeMainGridPaneChildren(false);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/menu.view/MenuWindow.fxml"));
         try {
             mainGridPane.add(fxmlLoader.load(), 1, 1);
+            MenuWindowController menuWindowController = fxmlLoader.getController();
+            menuWindowController.initEditPanel(addMenuItem, editMenuItem, deleteMenuItem);
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         }
@@ -84,7 +101,7 @@ public class MainWindowController {
     public Button initButtonClose (){
         Button buttonClose = initButton("Закрити");
         buttonClose.setOnAction((ActionEvent event) -> {
-            removeMainGridPaneChildren();
+            removeMainGridPaneChildren(true);
         });
         return buttonClose;
     }
@@ -96,10 +113,11 @@ public class MainWindowController {
         return button;
     }
 
-    public void removeMainGridPaneChildren(){
+    public void removeMainGridPaneChildren(boolean addMenuItemState){
         for (int i = mainGridPane.getChildren().size(); i > 3; i--) {
             mainGridPane.getChildren().remove(i-1);
         }
+        setMenuItemsDisable(addMenuItemState);
     }
 
     public void onActionOrderingButton(ActionEvent actionEvent) {
@@ -107,7 +125,7 @@ public class MainWindowController {
     }
 
     public void initOrderingView(){
-        removeMainGridPaneChildren();
+        removeMainGridPaneChildren(true);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ordering.view/OrderingWindow.fxml"));
         try {
             mainGridPane.add(fxmlLoader.load(), 1, 1);
@@ -119,7 +137,7 @@ public class MainWindowController {
     }
 
     public void initOrderingViewForEditing(DtoOrder dtoOrder){
-        removeMainGridPaneChildren();
+        removeMainGridPaneChildren(true);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ordering.view/OrderingWindow.fxml"));
         try {
             mainGridPane.add(fxmlLoader.load(), 1, 1);
@@ -134,7 +152,7 @@ public class MainWindowController {
     public Button initButtonOrderingCancel (){
         Button buttonCancel = initButton("Скасувати");
         buttonCancel.setOnAction((ActionEvent event) -> {
-            removeMainGridPaneChildren();
+            removeMainGridPaneChildren(true);
         });
         return buttonCancel;
     }
@@ -151,7 +169,7 @@ public class MainWindowController {
     }
 
     public void onActionDebtorsButton(ActionEvent actionEvent) {
-        removeMainGridPaneChildren();
+        removeMainGridPaneChildren(true);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/debtors.view/DebtorsWindow.fxml"));
         try {
             mainGridPane.add(fxmlLoader.load(), 1, 1);
@@ -160,4 +178,17 @@ public class MainWindowController {
         }
         mainGridPane.add(initButtonContainer(initButtonClose()), 1, 2);
     }
+
+    public void close(ActionEvent actionEvent) {
+        Platform.exit();
+        System.exit(0);
+    }
+
+    private void setMenuItemsDisable(boolean addMenuItemState){
+        addMenuItem.setDisable(addMenuItemState);
+        editMenuItem.setDisable(true);
+        deleteMenuItem.setDisable(true);
+        infoMenuItem.setDisable(true);
+    }
+
 }

@@ -79,7 +79,6 @@ public class OrderWindowController<T extends DtoOrder> {
         initTableView();
         setDatePickerSearchListener();
         setTextFieldSearchListener();
-        initEditPanel();
 
         Button rejectSearchingButton = initRejectSearchingButton();
         topGridPane.add(rejectSearchingButton, 5, 0);
@@ -250,8 +249,9 @@ public class OrderWindowController<T extends DtoOrder> {
         }
     }
 
-    private void initEditPanel(){
-        EditPanel editPanel = new EditPanel(tableView.getTableView());
+    public void initEditPanel(MenuItem addMenuItem, MenuItem editMenuItem, MenuItem deleteMenuItem, MenuItem infoMenuItem){
+        EditPanel editPanel = new EditPanel(tableView.getTableView(), FXCollections.observableArrayList(
+                editMenuItem, deleteMenuItem, infoMenuItem));
 
         topGridPane.add(editPanel.getContainerGridPane(), 0, 0);
 
@@ -269,26 +269,49 @@ public class OrderWindowController<T extends DtoOrder> {
 
         editPanel.initInfoButton();
         editPanel.getInfoButton().setOnAction((ActionEvent event) -> {
-            TablePosition pos;
-            try {
-                pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
-            } catch (IndexOutOfBoundsException e) {
-                String headerText = null;
-                String contentText = "Не обрано жодного запису для перегляду!\n" +
-                        "Будь ласка, оберіть запис з таблиці та повторіть спробу.";
-                AlertWindow alertWindow = new AlertWindow(Alert.AlertType.INFORMATION, headerText, contentText);
-                alertWindow.showInformation();
-                return;
-            }
-            int rowIndex = pos.getRow();
-            T dtoOrder = tableView.getTableView().getItems().get(rowIndex);
-            try {
-                showOrderDetailsWindow(dtoOrder);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            infoButtonAction();
         });
 
+        setMenuItems(addMenuItem, editMenuItem, deleteMenuItem, infoMenuItem);
+    }
+
+    private void setMenuItems(MenuItem addMenuItem, MenuItem editMenuItem, MenuItem deleteMenuItem, MenuItem infoMenuItem){
+        addMenuItem.setOnAction((ActionEvent event) -> {
+            addRecord();
+        });
+
+        editMenuItem.setOnAction((ActionEvent event) -> {
+            editRecord();
+        });
+
+        deleteMenuItem.setOnAction((ActionEvent event) -> {
+            removeRecord();
+        });
+
+        infoMenuItem.setOnAction((ActionEvent event) -> {
+            infoButtonAction();
+        });
+    }
+
+    private void infoButtonAction(){
+        TablePosition pos;
+        try {
+            pos = tableView.getTableView().getSelectionModel().getSelectedCells().get(0);
+        } catch (IndexOutOfBoundsException e) {
+            String headerText = null;
+            String contentText = "Не обрано жодного запису для перегляду!\n" +
+                    "Будь ласка, оберіть запис з таблиці та повторіть спробу.";
+            AlertWindow alertWindow = new AlertWindow(Alert.AlertType.INFORMATION, headerText, contentText);
+            alertWindow.showInformation();
+            return;
+        }
+        int rowIndex = pos.getRow();
+        T dtoOrder = tableView.getTableView().getItems().get(rowIndex);
+        try {
+            showOrderDetailsWindow(dtoOrder);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initReportButtonsStyle(){
