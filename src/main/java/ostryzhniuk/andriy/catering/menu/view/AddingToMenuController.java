@@ -6,6 +6,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -62,7 +65,7 @@ public class AddingToMenuController {
         this.ingredientsTextArea.setText(ingredients);
     }
 
-    public void escape(ActionEvent actionEvent) {
+    public void cancel(ActionEvent actionEvent) {
         close();
     }
 
@@ -393,5 +396,11 @@ public class AddingToMenuController {
         priceTextField.setEditable(false);
         massTextField.setEditable(false);
         ingredientsTextArea.setEditable(false);
+    }
+
+    public void initShortcuts(){
+        cancelButton.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ESCAPE), () -> cancelButton.fire());
+        saveButton.getScene().getAccelerators().put(
+                new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN), () -> saveButton.fire());
     }
 }

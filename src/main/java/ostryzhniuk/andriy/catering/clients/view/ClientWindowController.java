@@ -201,6 +201,7 @@ public class ClientWindowController<T extends DtoClient> {
 
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setScene(new Scene(root, 500, 500, Color.rgb(0, 0, 0, 0)));
+        addingNewClientController.initShortcuts();
         primaryStage.initModality(Modality.WINDOW_MODAL);
         primaryStage.initOwner(tableView.getTableView().getScene().getWindow());
         primaryStage.showAndWait();

@@ -110,6 +110,7 @@ public class ControlsElements {
             if (new BigDecimal(costTextField.getText()).compareTo(new BigDecimal(0)) == -1) {
                 if (!costTextField.getStyleClass().contains("warning")) {
                     costTextField.getStyleClass().add("warning");
+
                 }
                 billTextField.setText("");
             } else {

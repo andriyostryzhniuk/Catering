@@ -3,9 +3,13 @@ package ostryzhniuk.andriy.catering.clients.view;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -36,6 +40,8 @@ public class AddingNewClientController {
     public TextField skypeTextField;
     public Label exceptionLabel;
     public Label titleLabel;
+    public Button saveButton;
+    public Button cancelButton;
 
     private Integer clientIdToUpdate;
     private ClientWindowController clientWindowController;
@@ -445,6 +451,13 @@ public class AddingNewClientController {
         emailTextField.setTooltip(new Tooltip("Контактний E-mail"));
         icqTextField.setTooltip(new Tooltip("Номер ICQ"));
         skypeTextField.setTooltip(new Tooltip("Ім'я Skype"));
+    }
+
+    public void initShortcuts(){
+        cancelButton.getScene().getAccelerators().put(
+                new KeyCodeCombination(KeyCode.ESCAPE), () -> cancelButton.fire());
+        saveButton.getScene().getAccelerators().put(
+                new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN), () -> saveButton.fire());
     }
 
 }

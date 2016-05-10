@@ -15,7 +15,8 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="Файл">
                             <items>
-                                <MenuItem mnemonicParsing="false" onAction="#close" text="Закрити"/>
+                                <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#close"
+                                          text="Закрити"/>
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Редагування">
@@ -29,7 +30,8 @@
                         <Menu fx:id="reportMenu" mnemonicParsing="false" text="Звіти"/>
                         <Menu mnemonicParsing="false" text="Інфо">
                             <items>
-                                <MenuItem onAction="#aboutProgram" mnemonicParsing="false" text="Про програму"/>
+                                <MenuItem fx:id="aboutMenuItem" onAction="#aboutProgram" mnemonicParsing="false"
+                                          text="Про програму"/>
                             </items>
                         </Menu>
                     </menus>

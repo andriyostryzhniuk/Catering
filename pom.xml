@@ -119,7 +119,7 @@
                 <version>2.1</version>
                 <executions>
                     <execution>
-                        <orderId>copy-dependencies</orderId>
+                        <id>copy-dependencies</id>
                         <phase>package</phase>
                         <goals>
                             <goal>copy-dependencies</goal>

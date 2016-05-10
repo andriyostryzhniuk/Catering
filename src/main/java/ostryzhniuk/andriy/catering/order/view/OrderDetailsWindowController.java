@@ -4,25 +4,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
 import ostryzhniuk.andriy.catering.ordering.view.dto.DtoOrdering;
-
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
 import static ostryzhniuk.andriy.catering.client.Client.sendARequestToTheServer;
 
-/**
- * Created by Andriy on 05/05/2016.
- */
 public class OrderDetailsWindowController {
 
     public TableView<DtoOrdering> tableView;
@@ -31,6 +26,8 @@ public class OrderDetailsWindowController {
     public TableColumn sumPriceCol;
     public TextField sumPriceTextField;
     public Label orderIdLabel;
+    public Button cancelButton;
+    public Button editButton;
     private Integer orderId;
     private OrderWindowController orderWindowController;
 
@@ -84,5 +81,13 @@ public class OrderDetailsWindowController {
 
     public void setOrderWindowController(OrderWindowController orderWindowController) {
         this.orderWindowController = orderWindowController;
+    }
+
+    public void initShortcuts(){
+        sumPriceTextField.requestFocus();
+        cancelButton.getScene().getAccelerators().put(
+                new KeyCodeCombination(KeyCode.ESCAPE), () -> cancelButton.fire());
+        editButton.getScene().getAccelerators().put(
+                new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN), () -> editButton.fire());
     }
 }

@@ -61,10 +61,10 @@
                 </GridPane>
                 <GridPane GridPane.rowIndex="2">
                     <children>
-                        <Button fx:id="escapeButton" maxHeight="25.0" maxWidth="77.0" minHeight="25.0" minWidth="77.0"
+                        <Button fx:id="cancelButton" maxHeight="25.0" maxWidth="77.0" minHeight="25.0" minWidth="77.0"
                                 mnemonicParsing="false" onAction="#onActionCloseButton" prefHeight="25.0"
                                 prefWidth="77.0" text="Закрити" GridPane.columnIndex="2"/>
-                        <Button fx:id="saveButton" maxHeight="25.0" maxWidth="77.0" minHeight="25.0" minWidth="77.0"
+                        <Button fx:id="editButton" maxHeight="25.0" maxWidth="77.0" minHeight="25.0" minWidth="77.0"
                                 mnemonicParsing="false" onAction="#editOrdering" prefHeight="25.0" prefWidth="77.0"
                                 text="Редагувати" GridPane.columnIndex="1">
                             <GridPane.margin>

@@ -9,6 +9,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import org.slf4j.Logger;
@@ -33,12 +36,21 @@ public class MainWindowController {
     public MenuItem editMenuItem;
     public MenuItem deleteMenuItem;
     public MenuItem infoMenuItem;
+    public MenuItem closeMenuItem;
+    public MenuItem aboutMenuItem;
     public Menu reportMenu;
 
     private OrderingWindowController orderingWindowController;
 
     @FXML
     public void initialize(){
+        addMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN));
+        editMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN));
+        deleteMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.DELETE));
+        infoMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.I, KeyCombination.CONTROL_DOWN));
+        closeMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.F4, KeyCombination.ALT_DOWN));
+        aboutMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.F2));
+
         initOrderView(new ActionEvent());
     }
 
@@ -136,7 +148,10 @@ public class MainWindowController {
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         }
-        mainGridPane.add(initButtonContainer(initButtonOrderingSave (), initButtonOrderingCancel()), 1, 2);
+        Button buttonSave = initButtonOrderingSave ();
+        mainGridPane.add(initButtonContainer(buttonSave, initButtonOrderingCancel()), 1, 2);
+        buttonSave.getScene().getAccelerators().put(
+                new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN), () -> buttonSave.fire());
     }
 
     public void initOrderingViewForEditing(DtoOrder dtoOrder){
@@ -149,7 +164,10 @@ public class MainWindowController {
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         }
-        mainGridPane.add(initButtonContainer(initButtonOrderingSave (), initButtonOrderingCancel()), 1, 2);
+        Button buttonSave = initButtonOrderingSave ();
+        mainGridPane.add(initButtonContainer(buttonSave, initButtonOrderingCancel()), 1, 2);
+        buttonSave.getScene().getAccelerators().put(
+                new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN), () -> buttonSave.fire());
     }
 
     public Button initButtonOrderingCancel (){
@@ -199,7 +217,12 @@ public class MainWindowController {
 
     public void aboutProgram(ActionEvent actionEvent) {
         String headerText = null;
-        String contentText = "Про програму";
+        String contentText = "Дана програма допоможе оформляти та опрацьовувати\n" +
+                "замовлення, проводити звітність, а також працювати\n" +
+                "з клієнтами в сфері надання кейтерингових послуг \n" +
+                "у доступному і простому інтерфейсі.\n" +
+                "Розробник: Острижнюк Андрій (група ПІ-12-02)\n" +
+                "Рік: 2016";
         AlertWindow alertWindow = new AlertWindow(Alert.AlertType.INFORMATION, headerText, contentText);
         alertWindow.showInformation();
     }

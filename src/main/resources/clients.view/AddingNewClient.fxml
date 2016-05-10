@@ -84,7 +84,7 @@
                                    GridPane.rowIndex="8"/>
                         <GridPane GridPane.columnIndex="1" GridPane.rowIndex="9">
                             <children>
-                                <Button fx:id="escapeButton" maxHeight="25.0" maxWidth="72.0" minHeight="25.0"
+                                <Button fx:id="cancelButton" maxHeight="25.0" maxWidth="72.0" minHeight="25.0"
                                         minWidth="72.0" mnemonicParsing="false" onAction="#escape" prefHeight="25.0"
                                         prefWidth="72.0" text="Скасувати" GridPane.columnIndex="2"/>
                                 <Button fx:id="saveButton" maxHeight="25.0" maxWidth="72.0" minHeight="25.0"

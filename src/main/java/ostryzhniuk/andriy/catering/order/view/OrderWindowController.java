@@ -195,6 +195,7 @@ public class OrderWindowController<T extends DtoOrder> {
 
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setScene(new Scene(root, 500, 500, Color.rgb(0, 0, 0, 0)));
+        orderDetailsWindowController.initShortcuts();
         primaryStage.initModality(Modality.WINDOW_MODAL);
         primaryStage.initOwner(tableView.getTableView().getScene().getWindow());
         primaryStage.showAndWait();
