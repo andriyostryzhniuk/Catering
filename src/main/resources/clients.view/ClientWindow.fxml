@@ -28,7 +28,8 @@
                 <Button fx:id="tableReportButton" maxWidth="155.0" minWidth="155.0" mnemonicParsing="false"
                         onAction="#actionTableReportButton" prefWidth="155.0" text="Створити звіт таблиці"
                         GridPane.columnIndex="4" GridPane.halignment="RIGHT"/>
-                <Label text="Пошук:" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                <Label text="Пошук:" style="-fx-text-fill: rgb(200,200,200);" GridPane.columnIndex="1"
+                       GridPane.halignment="RIGHT">
                     <GridPane.margin>
                         <Insets left="50.0" right="10.0"/>
                     </GridPane.margin>

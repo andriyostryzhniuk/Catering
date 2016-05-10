@@ -132,7 +132,7 @@ public class MenuTableView<T extends DtoMenu> {
         topGridPane.setAlignment(Pos.CENTER_RIGHT);
 
         Label dishesTypeLabel = new Label("Класифікація:");
-        dishesTypeLabel.setStyle("-fx-text-fill: white");
+        dishesTypeLabel.setStyle("-fx-text-fill: rgb(200,200,200);");
         topGridPane.add(dishesTypeLabel, 1, 0);
         topGridPane.setMargin(dishesTypeLabel, new Insets(0, 10, 0, 0));
 
@@ -144,7 +144,7 @@ public class MenuTableView<T extends DtoMenu> {
         topGridPane.setMargin(dishesTypeButton, new Insets(0, 0, 0, 2));
 
         Label dishesNameLabel = new Label("Пошук:");
-        dishesNameLabel.setStyle("-fx-text-fill: white");
+        dishesNameLabel.setStyle("-fx-text-fill: rgb(200,200,200);");
         topGridPane.add(dishesNameLabel, 4, 0);
         topGridPane.setMargin(dishesNameLabel, new Insets(0, 10, 0, 80));
 

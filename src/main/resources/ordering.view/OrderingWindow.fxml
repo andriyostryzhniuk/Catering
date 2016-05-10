@@ -53,7 +53,7 @@
                                         <Insets bottom="7.0"/>
                                     </padding>
                                 </Label>
-                                <Label text="Сума:" textFill="WHITE" GridPane.columnIndex="1"
+                                <Label text="Сума:" style="-fx-text-fill: rgb(200,200,200);" GridPane.columnIndex="1"
                                        GridPane.halignment="RIGHT">
                                     <GridPane.margin>
                                         <Insets right="10.0"/>
@@ -93,28 +93,34 @@
             <children>
                 <DatePicker fx:id="datePicker" minWidth="150.0" prefWidth="150.0" promptText="Дата"
                             GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                <Label text="Дата:" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+                <Label text="Дата:" style="-fx-text-fill: rgb(200,200,200);" GridPane.columnIndex="1"
+                       GridPane.halignment="LEFT">
                     <GridPane.margin>
                         <Insets/>
                     </GridPane.margin>
                 </Label>
-                <Label text="Клієнт:" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="LEFT">
+                <Label text="Клієнт:" style="-fx-text-fill: rgb(200,200,200);" GridPane.columnIndex="2"
+                       GridPane.halignment="LEFT">
                     <GridPane.margin>
                         <Insets/>
                     </GridPane.margin>
                 </Label>
-                <Label text="Вартість замовлення:" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="LEFT">
+                <Label text="Вартість замовлення:" style="-fx-text-fill: rgb(200,200,200);" GridPane.columnIndex="3"
+                       GridPane.halignment="LEFT">
                     <GridPane.margin>
                         <Insets/>
                     </GridPane.margin>
                 </Label>
-                <Label text="Знижка: (%)" textFill="WHITE" GridPane.columnIndex="4" GridPane.halignment="LEFT">
+                <Label text="Знижка: (%)" style="-fx-text-fill: rgb(200,200,200);" GridPane.columnIndex="4"
+                       GridPane.halignment="LEFT">
                     <GridPane.margin>
                         <Insets/>
                     </GridPane.margin>
                 </Label>
-                <Label text="До оплати:" textFill="WHITE" GridPane.columnIndex="5" GridPane.halignment="LEFT"/>
-                <Label text="Сплачено:" textFill="WHITE" GridPane.columnIndex="6" GridPane.halignment="LEFT"/>
+                <Label text="До оплати:" style="-fx-text-fill: rgb(200,200,200);" GridPane.columnIndex="5"
+                       GridPane.halignment="LEFT"/>
+                <Label text="Сплачено:" style="-fx-text-fill: rgb(200,200,200);" GridPane.columnIndex="6"
+                       GridPane.halignment="LEFT"/>
                 <TextField fx:id="costTextField" maxWidth="130.0" minWidth="130.0" prefWidth="130.0"
                            promptText="Вартість замовлення" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
                 <TextField fx:id="discountTextField" maxWidth="130.0" minWidth="130.0" prefWidth="130.0"
@@ -123,7 +129,7 @@
                            promptText="До оплати" GridPane.columnIndex="5" GridPane.rowIndex="1"/>
                 <TextField fx:id="paidTextField" maxWidth="130.0" minWidth="130.0" prefWidth="130.0"
                            promptText="Сплачено" GridPane.columnIndex="6" GridPane.rowIndex="1"/>
-                <Label text="Замовлення №" textFill="WHITE"/>
+                <Label text="Замовлення №" style="-fx-text-fill: rgb(200,200,200);"/>
                 <Label fx:id="orderIdLabel" textFill="WHITE" GridPane.rowIndex="1"/>
             </children>
             <BorderPane.margin>
