@@ -36,10 +36,18 @@ public class ODBC_PubsBD {
     }
 
     public static List<DtoClient> selectClients() {
-        List<DtoClient> dtoClientsList = getJdbcTemplate().query("select id, name, address, telephoneNumber, " +
+        return getJdbcTemplate().query("select id, name, address, telephoneNumber, " +
                 "contactPerson, discount, email, icq, skype " +
                 "from client " +
                 "order by name", BeanPropertyRowMapper.newInstance(DtoClient.class));
+    }
+
+    public static List<DtoClient> selectLikeNamesClients(String likeName) {
+        List<DtoClient> dtoClientsList = getJdbcTemplate().query("select id, name, address, telephoneNumber, " +
+                "contactPerson, discount, email, icq, skype " +
+                "from client " +
+                "where LOWER(client.name) LIKE LOWER(?) " +
+                "order by name", BeanPropertyRowMapper.newInstance(DtoClient.class), new String("%"+likeName+"%"));
         return dtoClientsList;
     }
 

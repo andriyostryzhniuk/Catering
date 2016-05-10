@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -23,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.clients.view.dto.DtoClient;
 import ostryzhniuk.andriy.catering.commands.ClientCommandTypes;
+import ostryzhniuk.andriy.catering.menu.view.AutoCompleteComboBoxSearch;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.CustomTableColumn;
 import ostryzhniuk.andriy.catering.overridden.elements.table.view.TableViewHolder;
 import ostryzhniuk.andriy.catering.subsidiary.classes.AlertWindow;
@@ -45,6 +47,9 @@ public class ClientWindowController<T extends DtoClient> {
     public StackPane stackPane;
     public GridPane topGridPane;
     public Button tableReportButton;
+
+    private ComboBox clientNameComboBox = new ComboBox();
+    private ComboBox clientNameComboBoxListener = new ComboBox();
 
     @FXML
     private TableViewHolder<T> tableView = new TableViewHolder<>();
@@ -70,6 +75,7 @@ public class ClientWindowController<T extends DtoClient> {
         initContextMenu(tableView.getTableView(), this);
         initTableView();
         initEditPanel();
+        initClientNameComboBox();
         initReportButtonsStyle();
     }
 
@@ -77,8 +83,17 @@ public class ClientWindowController<T extends DtoClient> {
         dtoClientsList.clear();
         tableView.getTableView().getItems().clear();
 
-        dtoClientsList.addAll(FXCollections.observableArrayList(
-                sendARequestToTheServer(ClientCommandTypes.SELECT_CLIENT, new LinkedList<>())));
+        if (clientNameComboBoxListener.getValue() != null) {
+            List<Object> objectList = new LinkedList<>();
+            objectList.add(clientNameComboBoxListener.getValue());
+            dtoClientsList.addAll(FXCollections.observableArrayList(
+                    sendARequestToTheServer(ClientCommandTypes.SELECT_OF_LIKE_NAMES_CLIENT, objectList)));
+        } else {
+            dtoClientsList.addAll(FXCollections.observableArrayList(
+                    sendARequestToTheServer(ClientCommandTypes.SELECT_CLIENT, new LinkedList<>())));
+            setClientNameComboBoxItems();
+        }
+
         tableView.getTableView().setItems(dtoClientsList);
     }
 
@@ -226,5 +241,49 @@ public class ClientWindowController<T extends DtoClient> {
     private void initReportButtonsStyle(){
         SetterExcelStyle setterExcelStyle = new SetterExcelStyle();
         setterExcelStyle.setStyle(tableReportButton, "Створити звіт таблиці");
+    }
+
+    private void initClientNameComboBox() {
+        clientNameComboBox.getStylesheets().add(getClass().getResource("/menu.view/ComboBoxStyle.css").toExternalForm());
+        clientNameComboBox.setTooltip(new Tooltip("Пошук за назвою клієнта"));
+        clientNameComboBox.setPromptText("Введіть назву клієнта");
+
+        topGridPane.add(clientNameComboBox, 2, 0);
+
+        new AutoCompleteComboBoxSearch(clientNameComboBox, clientNameComboBoxListener);
+
+        setComboBoxCellFactory(clientNameComboBox, clientNameComboBoxListener);
+
+        clientNameComboBoxListener.valueProperty().addListener((observableValue, oldValue, newValue) -> {
+            clientNameComboBox.getStyleClass().remove("warning");
+            initTableView();
+        });
+    }
+
+    private void setClientNameComboBoxItems(){
+        clientNameComboBox.getItems().clear();
+        dtoClientsList.forEach(item -> clientNameComboBox.getItems().add(item.getName()));
+        new AutoCompleteComboBoxSearch(clientNameComboBox, clientNameComboBoxListener);
+
+    }
+
+    private void setComboBoxCellFactory(ComboBox comboBox, ComboBox comboBoxListener) {
+        comboBox.setCellFactory(listCell -> {
+            final ListCell<String> cell = new ListCell<String>() {
+                {
+                    super.setOnMousePressed((MouseEvent event) -> {
+//                            mouse pressed
+                        comboBoxListener.setValue(comboBox.getValue());
+                    });
+                }
+
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    setText(item);
+                }
+            };
+            return cell;
+        });
     }
 }

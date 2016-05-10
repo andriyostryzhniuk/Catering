@@ -17,6 +17,7 @@ public enum ClientCommandTypes {
     DELETE_ORDERING(),
     INSERT_ORDERING(),
     //for client view
+    SELECT_OF_LIKE_NAMES_CLIENT(),
     SELECT_CLIENT(),
     INSERT_CLIENT(),
     UPDATE_CLIENT(),

@@ -129,7 +129,7 @@ public class MenuWindowController extends MenuTableView {
             excelMenuReport.createTableMenuReport(tableView, menuTableView.getDtoMenuList());
         });
 
-        topGridPane.add(tableReportButton, 6, 0);
+        topGridPane.add(tableReportButton, 7, 0);
         topGridPane.setHalignment(tableReportButton, HPos.RIGHT);
         topGridPane.setMargin(tableReportButton, new Insets(0, 0, 0, 50));
     }

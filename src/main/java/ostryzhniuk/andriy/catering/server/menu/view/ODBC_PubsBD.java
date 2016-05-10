@@ -37,7 +37,7 @@ public class ODBC_PubsBD {
         return dtoMenuList;
     }
 
-    public static List<DtoMenu> selectOfLikeNamesMenu(String likeNames, String dishesTypeName) {
+    public static List<DtoMenu> selectOfLikeNamesMenu(String likeName, String dishesTypeName) {
         List<DtoMenu> dtoMenuList;
         if (dishesTypeName.equals("Всі категорії")) {
             dtoMenuList = getJdbcTemplate().query("select menu.id as id,  dishestype.id as dishesTypeId, " +
@@ -46,7 +46,7 @@ public class ODBC_PubsBD {
                     "where LOWER(menu.name) LIKE LOWER(?) and " +
                     "menu.dishesType_id = dishestype.id " +
                     "order by dishestype.type", BeanPropertyRowMapper.newInstance(DtoMenu.class),
-                    new String("%"+likeNames+"%"));
+                    new String("%"+likeName+"%"));
         } else {
             dtoMenuList = getJdbcTemplate().query("select menu.id as id,  dishestype.id as dishesTypeId, " +
                     "dishestype.type as dishesTypeName, menu.name, menu.price, menu.mass, menu.ingredients " +
@@ -55,7 +55,7 @@ public class ODBC_PubsBD {
                     "menu.dishesType_id = ? and " +
                     "menu.dishesType_id = dishestype.id " +
                     "order by dishestype.type", BeanPropertyRowMapper.newInstance(DtoMenu.class),
-                    new String("%"+likeNames+"%"), selectDishesTypeId(dishesTypeName).get(0));
+                    new String("%"+likeName+"%"), selectDishesTypeId(dishesTypeName).get(0));
         }
         return dtoMenuList;
     }

@@ -89,6 +89,9 @@ public class ClientCommand implements Serializable {
         } else if (clientCommandType == ClientCommandTypes.SELECT_CLIENT) {
             return selectClients();
 
+        } else if (clientCommandType == ClientCommandTypes.SELECT_OF_LIKE_NAMES_CLIENT) {
+            return selectLikeNamesClients((String) objectList.get(0));
+
         } else if (clientCommandType == ClientCommandTypes.INSERT_CLIENT) {
             insertClients();
             return new LinkedList<>();
