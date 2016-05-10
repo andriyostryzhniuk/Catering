@@ -38,21 +38,21 @@
                             prefWidth="150.0" promptText="Пошук за датою" GridPane.columnIndex="4"
                             GridPane.halignment="RIGHT"/>
                 <Button fx:id="tableReportButton" maxWidth="155.0" minWidth="155.0" mnemonicParsing="false"
-                        onAction="#createTableReportButton" prefWidth="155.0" text="Створити звіт таблиці"
+                        onAction="#actionTableReportButton" prefWidth="155.0" text="Створити звіт таблиці"
                         GridPane.columnIndex="8" GridPane.halignment="RIGHT">
                     <GridPane.margin>
                         <Insets left="10.0"/>
                     </GridPane.margin>
                 </Button>
                 <Button fx:id="orderingReportButton" maxWidth="175.0" minWidth="175.0" mnemonicParsing="false"
-                        onAction="#createOrderingReportButton" prefWidth="175.0" text="Створити звіт замовлень"
+                        onAction="#actionOrderingReportButton" prefWidth="175.0" text="Створити звіт замовлень"
                         GridPane.columnIndex="7" GridPane.halignment="RIGHT">
                     <GridPane.margin>
                         <Insets left="10.0"/>
                     </GridPane.margin>
                 </Button>
                 <Button fx:id="menuReportButton" maxWidth="145.0" minWidth="145.0" mnemonicParsing="false"
-                        onAction="#createMenuReportButton" prefWidth="145.0" text="Створити звіт меню"
+                        onAction="#actionMenuReportButton" prefWidth="145.0" text="Створити звіт меню"
                         GridPane.columnIndex="6" GridPane.halignment="RIGHT">
                     <GridPane.margin>
                         <Insets left="30.0"/>

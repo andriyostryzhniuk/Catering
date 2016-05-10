@@ -222,12 +222,20 @@ public class OrderWindowController<T extends DtoOrder> {
         return button;
     }
 
-    public void createTableReportButton(ActionEvent actionEvent) {
+    public void actionTableReportButton(ActionEvent actionEvent) {
+        createTableReport();
+    }
+
+    private void createTableReport() {
         ExcelOrderReport excelOrderReport = new ExcelOrderReport();
         excelOrderReport.createTableOrderReport(tableView.getTableView(), dtoOrdersList);
     }
 
-    public void createOrderingReportButton(ActionEvent actionEvent) {
+    public void actionOrderingReportButton(ActionEvent actionEvent) {
+        createOrderingReport();
+    }
+
+    private void createOrderingReport() {
         ExcelOrderReport excelOrderReport = new ExcelOrderReport();
         if (datePickerSearch.getValue() != null) {
             LocalDate localDate = datePickerSearch.getValue();
@@ -238,7 +246,11 @@ public class OrderWindowController<T extends DtoOrder> {
         }
     }
 
-    public void createMenuReportButton(ActionEvent actionEvent) {
+    public void actionMenuReportButton(ActionEvent actionEvent) {
+        createMenuReport();
+    }
+
+    private void createMenuReport() {
         ExcelOrderReport excelOrderReport = new ExcelOrderReport();
         if (datePickerSearch.getValue() != null) {
             LocalDate localDate = datePickerSearch.getValue();
@@ -351,6 +363,25 @@ public class OrderWindowController<T extends DtoOrder> {
             return false;
         }
         return true;
+    }
+
+    public void initReportMenu(Menu reportMenu) {
+        MenuItem tableReportMenuItem = new MenuItem("Створити звіт таблиці");
+        tableReportMenuItem.setOnAction((ActionEvent event) -> {
+            createTableReport();
+        });
+
+        MenuItem orderingReportMenuItem = new MenuItem("Створити звіт замовлень");
+        orderingReportMenuItem.setOnAction((ActionEvent event) -> {
+            createOrderingReport();
+        });
+
+        MenuItem menuReportMenuItem = new MenuItem("Створити звіт меню");
+        menuReportMenuItem.setOnAction((ActionEvent event) -> {
+            createMenuReport();
+        });
+
+        reportMenu.getItems().addAll(tableReportMenuItem, orderingReportMenuItem, menuReportMenuItem);
     }
 
 }

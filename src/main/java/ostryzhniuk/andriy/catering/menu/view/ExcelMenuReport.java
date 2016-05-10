@@ -42,7 +42,11 @@ public class ExcelMenuReport<T extends DtoMenu> {
             cell.setCellValue(Double.parseDouble(String.valueOf(item.getMass())));
 
             cell = row.createCell(++columnCount);
-            cell.setCellValue(item.getIngredients());
+            if (item.getIngredients() == null || item.getIngredients().isEmpty()) {
+                cell.setCellValue("-");
+            } else {
+                cell.setCellValue(item.getIngredients());
+            }
         }
 
         xssfInitializer.setAutoSizeColumn(5);

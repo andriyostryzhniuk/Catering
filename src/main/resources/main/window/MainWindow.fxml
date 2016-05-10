@@ -11,7 +11,7 @@
     <content>
         <BorderPane style="-fx-background-color: rgb(60,63,65);;" styleClass="rootBorder">
             <top>
-                <MenuBar fx:id="menuBar" BorderPane.alignment="TOP_LEFT">
+                <MenuBar BorderPane.alignment="TOP_LEFT">
                     <menus>
                         <Menu mnemonicParsing="false" text="Файл">
                             <items>
@@ -26,6 +26,7 @@
                                 <MenuItem fx:id="infoMenuItem" mnemonicParsing="false" text="Додатково"/>
                             </items>
                         </Menu>
+                        <Menu fx:id="reportMenu" mnemonicParsing="false" text="Звіти" />
                         <Menu mnemonicParsing="false" text="Help">
                             <items>
                                 <MenuItem mnemonicParsing="false" text="About"/>

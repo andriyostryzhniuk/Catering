@@ -122,13 +122,17 @@ public class MenuWindowController extends MenuTableView {
         setterExcelStyle.setStyle(tableReportButton, "Створити звіт таблиці");
 
         tableReportButton.setOnAction((javafx.event.ActionEvent event) -> {
-            ExcelMenuReport excelMenuReport = new ExcelMenuReport();
-            excelMenuReport.createTableMenuReport(tableView, menuTableView.getDtoMenuList());
+            createTableReport();
         });
 
         topGridPane.add(tableReportButton, 7, 0);
         topGridPane.setHalignment(tableReportButton, HPos.RIGHT);
         topGridPane.setMargin(tableReportButton, new Insets(0, 0, 0, 50));
+    }
+
+    private void createTableReport(){
+        ExcelMenuReport excelMenuReport = new ExcelMenuReport();
+        excelMenuReport.createTableMenuReport(tableView, menuTableView.getDtoMenuList());
     }
 
     public void initEditPanel(MenuItem addMenuItem, MenuItem editMenuItem, MenuItem deleteMenuItem){
@@ -186,6 +190,15 @@ public class MenuWindowController extends MenuTableView {
         deleteMenuItem.setOnAction((ActionEvent event) -> {
             removeRecord();
         });
+    }
+
+    public void initReportMenu(Menu reportMenu) {
+        MenuItem tableReportMenuItem = new MenuItem("Створити звіт таблиці");
+        tableReportMenuItem.setOnAction((ActionEvent event) -> {
+            createTableReport();
+        });
+
+        reportMenu.getItems().add(tableReportMenuItem);
     }
 
 }

@@ -22,7 +22,7 @@
             </rowConstraints>
             <children>
                 <Button fx:id="tableReportButton" maxWidth="155.0" minWidth="155.0" mnemonicParsing="false"
-                        onAction="#createTableReportButton" prefWidth="155.0" text="Створити звіт таблиці"
+                        onAction="#actionTableReportButton" prefWidth="155.0" text="Створити звіт таблиці"
                         GridPane.halignment="RIGHT"/>
             </children>
             <BorderPane.margin>

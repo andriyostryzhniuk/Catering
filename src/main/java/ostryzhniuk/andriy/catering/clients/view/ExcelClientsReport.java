@@ -46,13 +46,26 @@ public class ExcelClientsReport<T extends DtoClient> {
             cell.setCellValue(Double.parseDouble(String.valueOf(item.getDiscount().divide(new BigDecimal(100)))));
 
             cell = row.createCell(++columnCount);
-            cell.setCellValue(item.getEmail());
+            if (item.getEmail() == null || item.getSkype().isEmpty()) {
+                cell.setCellValue("-");
+            } else {
+                cell.setCellValue(item.getEmail());
+            }
+
 
             cell = row.createCell(++columnCount);
-            cell.setCellValue(item.getIcq());
+            if (item.getIcq() == null) {
+                cell.setCellValue("-");
+            } else {
+                cell.setCellValue(item.getIcq());
+            }
 
             cell = row.createCell(++columnCount);
-            cell.setCellValue(item.getSkype());
+            if (item.getSkype() == null || item.getSkype().isEmpty()) {
+                cell.setCellValue("-");
+            } else {
+                cell.setCellValue(item.getSkype());
+            }
         }
 
         xssfInitializer.setAutoSizeColumn(8);

@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
@@ -108,7 +110,11 @@ public class DebtorsWindowController<T extends DtoDebtors> {
                 dateCol, costCol, discountCol, billCol, paidCol, debtCol);
     }
 
-    public void createTableReportButton(ActionEvent actionEvent) {
+    public void actionTableReportButton(ActionEvent actionEvent) {
+        createTableReport();
+    }
+
+    private void createTableReport() {
         ExcelDebtorsReport excelDebtorsReport = new ExcelDebtorsReport();
         excelDebtorsReport.createTableDebtorsReport(tableView.getTableView(), dtoDebtorsList);
     }
@@ -116,5 +122,14 @@ public class DebtorsWindowController<T extends DtoDebtors> {
     private void initReportButtonsStyle(){
         SetterExcelStyle setterExcelStyle = new SetterExcelStyle();
         setterExcelStyle.setStyle(tableReportButton, "Створити звіт таблиці");
+    }
+
+    public void initReportMenu(Menu reportMenu) {
+        MenuItem tableReportMenuItem = new MenuItem("Створити звіт таблиці");
+        tableReportMenuItem.setOnAction((ActionEvent event) -> {
+            createTableReport();
+        });
+
+        reportMenu.getItems().add(tableReportMenuItem);
     }
 }

@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.GridPane;
@@ -16,6 +17,7 @@ import javafx.scene.layout.Pane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ostryzhniuk.andriy.catering.clients.view.ClientWindowController;
+import ostryzhniuk.andriy.catering.debtors.view.DebtorsWindowController;
 import ostryzhniuk.andriy.catering.menu.view.MenuWindowController;
 import ostryzhniuk.andriy.catering.order.view.OrderWindowController;
 import ostryzhniuk.andriy.catering.order.view.dto.DtoOrder;
@@ -33,7 +35,7 @@ public class MainWindowController {
     public MenuItem editMenuItem;
     public MenuItem deleteMenuItem;
     public MenuItem infoMenuItem;
-    public MenuBar menuBar;
+    public Menu reportMenu;
 
     private OrderingWindowController orderingWindowController;
 
@@ -50,19 +52,7 @@ public class MainWindowController {
             OrderWindowController orderWindowController = fxmlLoader.getController();
             orderWindowController.setMainWindowController(this);
             orderWindowController.initEditPanel(addMenuItem, editMenuItem, deleteMenuItem, infoMenuItem);
-        } catch (IOException exception) {
-            throw new UncheckedIOException(exception);
-        }
-        mainGridPane.add(initButtonContainer(initButtonClose()), 1, 2);
-    }
-
-    public void initClientView(ActionEvent actionEvent) {
-        removeMainGridPaneChildren(false);
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clients.view/ClientWindow.fxml"));
-        try {
-            mainGridPane.add(fxmlLoader.load(), 1, 1);
-            ClientWindowController clientWindowController = fxmlLoader.getController();
-            clientWindowController.initEditPanel(addMenuItem, editMenuItem, deleteMenuItem);
+            orderWindowController.initReportMenu(reportMenu);
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         }
@@ -76,6 +66,21 @@ public class MainWindowController {
             mainGridPane.add(fxmlLoader.load(), 1, 1);
             MenuWindowController menuWindowController = fxmlLoader.getController();
             menuWindowController.initEditPanel(addMenuItem, editMenuItem, deleteMenuItem);
+            menuWindowController.initReportMenu(reportMenu);
+        } catch (IOException exception) {
+            throw new UncheckedIOException(exception);
+        }
+        mainGridPane.add(initButtonContainer(initButtonClose()), 1, 2);
+    }
+
+    public void initClientView(ActionEvent actionEvent) {
+        removeMainGridPaneChildren(false);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clients.view/ClientWindow.fxml"));
+        try {
+            mainGridPane.add(fxmlLoader.load(), 1, 1);
+            ClientWindowController clientWindowController = fxmlLoader.getController();
+            clientWindowController.initEditPanel(addMenuItem, editMenuItem, deleteMenuItem);
+            clientWindowController.initReportMenu(reportMenu);
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         }
@@ -173,6 +178,8 @@ public class MainWindowController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/debtors.view/DebtorsWindow.fxml"));
         try {
             mainGridPane.add(fxmlLoader.load(), 1, 1);
+            DebtorsWindowController debtorsWindowController = fxmlLoader.getController();
+            debtorsWindowController.initReportMenu(reportMenu);
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         }
@@ -189,6 +196,7 @@ public class MainWindowController {
         editMenuItem.setDisable(true);
         deleteMenuItem.setDisable(true);
         infoMenuItem.setDisable(true);
+        reportMenu.getItems().clear();
     }
 
 }

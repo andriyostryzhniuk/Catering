@@ -206,7 +206,11 @@ public class ClientWindowController<T extends DtoClient> {
         primaryStage.showAndWait();
     }
 
-    public void createTableReportButton(ActionEvent actionEvent) {
+    public void actionTableReportButton(ActionEvent actionEvent) {
+        createTableReport();
+    }
+
+    private void createTableReport() {
         ExcelClientsReport excelClientsReport = new ExcelClientsReport();
         excelClientsReport.createTableClientsReport(tableView.getTableView(), dtoClientsList);
     }
@@ -309,5 +313,14 @@ public class ClientWindowController<T extends DtoClient> {
             };
             return cell;
         });
+    }
+
+    public void initReportMenu(Menu reportMenu) {
+        MenuItem tableReportMenuItem = new MenuItem("Створити звіт таблиці");
+        tableReportMenuItem.setOnAction((ActionEvent event) -> {
+            createTableReport();
+        });
+
+        reportMenu.getItems().add(tableReportMenuItem);
     }
 }
